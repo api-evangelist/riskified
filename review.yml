@@ -1,0 +1,44 @@
+aid: riskified
+name: Riskified
+reviewed: '2026-05-25'
+reviewer: Kin Lane
+tier: 1
+type: company
+summary: |
+  Riskified (NYSE RSKD) is a tier-1 ecommerce risk-management provider with a mature, public REST +
+  webhook developer surface at developers.riskified.com. The platform exposes five product APIs —
+  Chargeback Guarantee, Adaptive Checkout, Account Secure, Policy Protect, and Dispute Resolve (via
+  CGI) — plus an OTP service and a multi-platform Beacon SDK for device intelligence. Authentication
+  is HMAC-SHA256 over the POST body with X-RISKIFIED-HMAC-SHA256 and X-RISKIFIED-SHOP-DOMAIN headers,
+  versioned via the Accept header (application/vnd.riskified.com; version=2). Production and sandbox
+  base URLs are split per product (api.riskified.com, wh.riskified.com, otp.self-veri.com). First-party
+  SDKs ship for PHP, Java, and .NET, published to Packagist, Maven Central, and NuGet, and Beacon
+  SDKs cover iOS, Android, React Native, and Unity. The developer portal exposes an llms.txt index
+  pointing to an OpenAPI-style endpoint catalog, which is a forward-looking AI-readiness signal,
+  though full machine-readable OpenAPI specs are not directly downloadable from the public site.
+strengths:
+- Five well-scoped product APIs (Chargeback Guarantee, Adaptive Checkout, Account Secure, Policy Protect, CGI) with clear pre-auth / post-auth integration patterns
+- Public developer portal with reference, guides, environments, authentication, retries, and notifications fully documented
+- HMAC-SHA256 request signing with explicit headers and versioning, plus separate sandbox per product
+- First-party SDKs for PHP, Java, and .NET, all distributed through standard package registries
+- Multi-platform Beacon SDKs for iOS, Android, React Native, Unity, and web headless
+- Chargeback Gateway Integration (CGI) connectors for Adyen, Braintree, PayPal, Shopify Payments, and Stripe automate dispute recovery
+- Broad ecommerce platform coverage: Shopify (incl. headless), Magento 1/2 + Deco, SAP Commerce/Hybris, SFCC, commercetools, VTEX, PrestaShop
+- Developer portal publishes an llms.txt index for AI agents — a leading-edge AI-readiness practice
+- Public-company financial transparency via NYSE RSKD investor relations
+gaps:
+- No directly downloadable OpenAPI / AsyncAPI / Postman specifications on the public site (llms.txt references OpenAPI endpoints but bare spec files return 404)
+- No public pricing — fully sales-led custom contracts
+- No GraphQL surface; webhooks are documented narratively rather than as AsyncAPI
+- Mobile / Beacon SDKs and most plugin repos live on GitHub but are not consistently versioned or release-tagged
+- The legacy iOS Beacon repo and the publisher repo coexist with no clear deprecation policy
+- No public-facing changelog page on the developer portal (only the apiref-changelog GitHub repo)
+- Status page exists but does not appear to publish a machine-readable feed (e.g. Statuspage.io component JSON not advertised)
+notes: |
+  Riskified was founded in 2012 by Eido Gal and Assaf Feldman, is headquartered in Tel Aviv with a
+  US presence in New York, and IPO'd on the NYSE in July 2021 under ticker RSKD. The platform's
+  differentiator is a 100% financial guarantee on approved orders, putting Riskified on the hook for
+  chargeback losses when its model approves an order that turns out to be fraudulent. Customers
+  include Wayfair, Finish Line, Gametime, Lorna Jane, and a long list of luxury, travel, and digital
+  goods merchants. The developer portal's llms.txt is among the cleaner examples of an established
+  fintech provider publishing an explicit AI-agent-readable index of its API surface area.
