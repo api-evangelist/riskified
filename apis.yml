@@ -348,28 +348,28 @@ common:
   type: GitHubOrganization
 - url: https://github.com/Riskified/php_sdk
   name: PHP SDK
-  type: SDK
+  type: SDKs
 - url: https://packagist.org/packages/riskified/php_sdk
   name: PHP SDK on Packagist
-  type: SDK
+  type: SDKs
 - url: https://github.com/Riskified/java_sdk
   name: Java SDK
-  type: SDK
+  type: SDKs
 - url: https://central.sonatype.com/artifact/com.riskified/riskified-sdk
   name: Java SDK on Maven Central
-  type: SDK
+  type: SDKs
 - url: https://github.com/Riskified/sdk_net
   name: .NET (C#) SDK
-  type: SDK
+  type: SDKs
 - url: https://www.nuget.org/packages/Riskified.SDK
   name: .NET SDK on NuGet
-  type: SDK
+  type: SDKs
 - url: https://github.com/Riskified/riskified_ios_sdk
   name: Riskified iOS Beacon SDK (legacy)
-  type: SDK
+  type: SDKs
 - url: https://github.com/Riskified/riskified-ios-beacon
   name: Riskified iOS Beacon (publisher)
-  type: SDK
+  type: SDKs
 - url: https://github.com/Riskified/api_examples
   name: Riskified API Examples (PHP)
   type: Samples
