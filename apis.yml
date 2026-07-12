@@ -238,6 +238,10 @@ apis:
     Payments, Stripe) so chargeback notifications and evidence flow into the Dispute Resolve product
     without merchant glue code. Underlies the automated chargeback recovery workflow.
 common:
+- type: TrustCenter
+  url: security/riskified-trust-center.yml
+- type: DomainSecurity
+  url: security/riskified-domain-security.yml
 - url: https://www.riskified.com
   name: Riskified
   type: Portal

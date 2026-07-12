@@ -1,0 +1,18 @@
+generated: '2026-07-11'
+method: searched
+probe: true
+source: https://security.riskified.com/
+url: https://security.riskified.com/
+certifications:
+- SOC 2
+- ISO 27001
+- ISO 27017
+- ISO 27018
+- GDPR
+evidence:
+- source: https://security.riskified.com/
+  keywords:
+  - soc 2
+  - iso/iec 27001
+  - trust center
+  - gdpr
