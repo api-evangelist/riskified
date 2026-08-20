@@ -15,6 +15,19 @@ tags:
 - Fraud
 - Fraud Prevention
 - Chargebacks
+- E-Commerce
+- Payments
+- Risk
+- Machine-Learning
+- Account Takeover
+- Policy Abuse
+- 3DS
+- PSD2
+- Returns
+tags_raw:
+- Fraud
+- Fraud Prevention
+- Chargebacks
 - Ecommerce
 - Payments
 - Risk
@@ -42,6 +55,12 @@ apis:
 - aid: riskified:riskified-chargeback-guarantee-api
   name: Riskified Chargeback Guarantee API
   tags:
+  - Chargebacks
+  - Fraud
+  - Order
+  - Decisions
+  - E-Commerce
+  tags_raw:
   - Chargebacks
   - Fraud
   - Orders
@@ -226,6 +245,12 @@ apis:
 - aid: riskified:riskified-chargeback-gateway-integration-api
   name: Riskified Chargeback Gateway Integration (CGI) API
   tags:
+  - CGI
+  - Chargebacks
+  - Payment Gateway
+  - Dispute Resolve
+  - Webhook
+  tags_raw:
   - CGI
   - Chargebacks
   - Payment Gateway
