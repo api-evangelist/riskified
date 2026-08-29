@@ -423,7 +423,7 @@ common:
   type: SDKs
 - url: https://github.com/Riskified/api_examples
   name: Riskified API Examples (PHP)
-  type: Samples
+  type: Examples
 - url: https://github.com/Riskified/magento
   name: Magento 1 Extension
   type: Integrations
