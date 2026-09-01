@@ -217,6 +217,12 @@ apis:
 - aid: riskified:riskified-beacon-sdk-api
   name: Riskified Beacon (Device Intelligence) SDK
   tags:
+  - beacon
+  - Device Intelligence
+  - Fingerprinting
+  - Mobile
+  - Web
+  tags_raw:
   - Beacon
   - Device Intelligence
   - Fingerprinting
