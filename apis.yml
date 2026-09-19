@@ -21,7 +21,7 @@ tags:
 - Machine-Learning
 - Account Takeover
 - Policy Abuse
-- 3DS
+- 3D
 - PSD2
 - Returns
 tags_raw:
@@ -108,6 +108,13 @@ apis:
 - aid: riskified:riskified-adaptive-checkout-api
   name: Riskified Adaptive Checkout API
   tags:
+  - Adaptive Checkout
+  - 3D
+  - PSD2
+  - SCA
+  - Payments
+  - Authorization
+  tags_raw:
   - Adaptive Checkout
   - 3DS
   - PSD2
