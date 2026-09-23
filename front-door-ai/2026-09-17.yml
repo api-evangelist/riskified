@@ -1,0 +1,30 @@
+# Front Door AI Index — riskified — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: riskified
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.riskified.com
+  final_host: www.riskified.com
+  ownership: own
+  owner: riskified
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 11
+  host_score: 11
+  density: 11.26
+  words: 977
+  tiers:
+    agentic: 0
+    core: 11
+    model: 0
+  ambiguous: 6
+  top_terms:
+    AI: 9
+    intelligence: 4
+    ML: 1
+    automation: 1
+    machine learning: 1
+    smart: 1
