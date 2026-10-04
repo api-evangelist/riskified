@@ -12,13 +12,12 @@ description: Riskified (NYSE RSKD) is an Israeli ecommerce risk-management platf
   first-party integrations for Shopify, Magento/Adobe Commerce, Salesforce Commerce Cloud, SAP
   Commerce / Hybris, commercetools, VTEX, Adyen, Braintree, PayPal, and Stripe.
 tags:
-- Fraud
 - Fraud Prevention
 - Chargebacks
 - E-Commerce
 - Payments
-- Risk
-- Machine-Learning
+- Risk Management
+- Machine Learning
 - Account Takeover
 - Policy Abuse
 - 3D
@@ -37,6 +36,7 @@ tags_raw:
 - 3DS
 - PSD2
 - Returns
+- Machine-Learning
 kind: contract
 deliveryModel:
   model: saas
@@ -67,7 +67,7 @@ apis:
   name: Riskified Chargeback Guarantee API
   tags:
   - Chargebacks
-  - Fraud
+  - Fraud Prevention
   - Order
   - Decisions
   - E-Commerce
