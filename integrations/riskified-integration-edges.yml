@@ -1,0 +1,37 @@
+generated: '2026-10-12'
+method: searched
+source:
+- https://zapier.com/apps/riskified/integrations
+checked:
+- https://composio.dev/toolkits/riskified
+- https://monid.ai/tools/riskified
+- https://n8n.io/integrations/riskified/
+- https://zapier.com/apps/riskified/integrations
+summary: null
+marketplace_apps:
+- marketplace: zapier
+  channel: ipaas-listing
+  app: riskified
+  url: https://zapier.com/apps/riskified/integrations
+  external_url: https://www.riskified.com/
+  partner_tier: null
+  triggers: []
+  actions: []
+  searches: []
+edges:
+- partner_name: plaid
+  partner: plaid
+  partner_match: domain
+  type: contract
+  channel: partner-built
+  relationship: processor-connection
+  direction: partner-built
+  evidence: https://github.com/api-evangelist/plaid/blob/main/openapi/plaid-plaid-api-openapi.yml
+  contract_reference:
+    repo: plaid
+    spec_file: plaid-plaid-api-openapi.yml
+    value: riskified
+    property: schemas.ProcessorTokenCreateRequest.processor
+    detected_by: detect-payment-method-edges.py
+    detected: '2026-10-12'
+templates: []
