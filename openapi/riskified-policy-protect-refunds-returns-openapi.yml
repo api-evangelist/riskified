@@ -1,0 +1,1238 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: 'Policy Protect: Refunds & Returns'
+x-samples-languages:
+- json
+- shell
+- javascript
+- python
+- node
+x- explorer-enabled: false
+servers:
+- url: https://api-sandbox.riskified.com/policy/v2
+  description: Sandbox
+- url: https://api.riskified.com/policy/v2
+  description: Production
+paths:
+  /claim_create:
+    post:
+      summary: Create a Claim
+      tags:
+      - Refunds
+      parameters:
+      - $ref: '#/components/parameters/RiskifiedShopDomain'
+      - $ref: '#/components/parameters/RiskifiedSignature'
+      - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/Accept'
+      description: The /claim_create endpoint is used to request that Riskified analyze a claim for abuse after the customer has submitted details on the claim. Riskified's decision is returned synchronously in the response to the /claim_create request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimCreateRequest'
+            examples:
+              create_claim_example:
+                $ref: '#/components/examples/create_claim_example'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/Claim_Create_Response_Approve'
+                - $ref: '#/components/schemas/Claim_Create_Response_Review'
+                - $ref: '#/components/schemas/Claim_Create_Response_Decline'
+                - $ref: '#/components/schemas/Claim_Create_Response_Excluded'
+                - $ref: '#/components/schemas/Claim_Create_Response_Captured'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                bad_request:
+                  value:
+                    error:
+                      message: JSON malformed - missing 'claim_reason' field
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401_response'
+              examples:
+                create_unauthorized_response_401:
+                  $ref: '#/components/examples/create_unauthorized_response_401_example'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                too_many_requests:
+                  value:
+                    error:
+                      message: Too many requests. Please try again later.
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                service_unavailable:
+                  value:
+                    error:
+                      message: 'upstream connect error or disconnect/reset before headers. reset reason: connection termination'
+  /claim_decision:
+    post:
+      summary: Claim Decision
+      tags:
+      - Refunds
+      parameters:
+      - $ref: '#/components/parameters/RiskifiedShopDomain'
+      - $ref: '#/components/parameters/RiskifiedSignature'
+      - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/Accept'
+      description: The /claim_decision endpoint is used to complete the feedback loop and update Riskified on the final status of a claim. This endpoint will not trigger claim analysis. Riskified's acknowledgement response to this endpoint is returned synchronously.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimDecisionRequest'
+            examples:
+              decision_claim_example:
+                $ref: '#/components/examples/decision_claim_example'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimDecisionResponse'
+              examples:
+                decision_claim_response_example:
+                  summary: Example of a Claim Decision Response
+                  value:
+                    claim:
+                      id: claim123
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400_claim_decision'
+              examples:
+                bad_request:
+                  value:
+                    error:
+                      message:
+                      - lineItems.0.orderId should not be null or undefined
+                      - lineItems.0.orderId must be a string
+                      - lineItems.0.orderId should not be empty
+                      error: Bad Request
+                      statusCode: 400
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401_response'
+              examples:
+                create_unauthorized_response_401:
+                  $ref: '#/components/examples/create_unauthorized_response_401_example'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400_claim_decision'
+              examples:
+                not_found:
+                  value:
+                    error:
+                      message: 'Could not find claims for: abcd1234efg'
+                      error: Not Found
+                      statusCode: 404
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_with_code'
+              examples:
+                too_many_requests:
+                  value:
+                    error:
+                      statusCode: 429
+                      message: Too many requests. Please try again later.
+  /claim_update:
+    post:
+      summary: Update Claim
+      tags:
+      - Returns
+      parameters:
+      - $ref: '#/components/parameters/RiskifiedShopDomain'
+      - $ref: '#/components/parameters/RiskifiedSignature'
+      - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/Accept'
+      description: The /claim_update endpoint is used to update Riskified regarding the claim - specifically in regards to the return shipment back to the merchant. This endpoint will not trigger claim analysis. Riskified's acknowledgement response to this endpoint is returned synchronously.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimUpdateRequest'
+            examples:
+              update_claim_example:
+                $ref: '#/components/examples/update_claim_example'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimUpdateResponse'
+              examples:
+                update_claim_response_example:
+                  $ref: '#/components/examples/update_claim_response_example'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response_messages'
+              examples:
+                bad_request:
+                  value:
+                    error:
+                      messages:
+                      - JSON malformed - missing 'tracking_numbers' field
+                      - JSON malformed - 'return_shipping' field in wrong format
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401_response'
+              examples:
+                create_unauthorized_response_401:
+                  $ref: '#/components/examples/create_unauthorized_response_401_example'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_with_code'
+              examples:
+                not_found:
+                  value:
+                    error:
+                      statusCode: 404
+                      message: Claim ABC-DEF-123 not found - unable to update
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_with_code'
+              examples:
+                too_many_requests:
+                  value:
+                    error:
+                      statusCode: 429
+                      message: Too many requests. Please try again later.
+components:
+  schemas:
+    error_response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+    401_response:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '401'
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Missing HMAC configuration
+            error:
+              type: string
+              example: Unauthorized
+            statusCode:
+              type: string
+              example: 401
+    ClaimCreateRequest:
+      type: object
+      properties:
+        claim:
+          $ref: '#/components/schemas/ClaimCreate'
+    Claim_Create_Response_Approve:
+      type: object
+      description: Approved Claim Response
+      properties:
+        claim:
+          type: object
+          properties:
+            id:
+              type: string
+              description: The unique identifier for the claim.
+              example: '53953819'
+            decision:
+              type: string
+              enum:
+              - approve
+              description: "Textual status describing the result of Riskified’s claim analysis. \n\n**Always 'approve' for approved claims.**"
+              example: approve
+            decision_reason:
+              type: string
+              description: "Additional context on Riskified’s decision. This can be customizable based on merchant needs.\n\n Some example values are: \n - `approved in accordance to policy`\n - `Risky First Claim`\n - `Likely Abusive`\n - `Flagrant Abuse`"
+              example: approved in accordance to policy
+            followed_action:
+              type: string
+              description: "Any secondary actions that Riskified recommends in response to the claim. This can be customizable based on merchant needs. Some example values are:\n\n - `warning_1`\n - `warning_2`\n - `handling_fee`"
+              example: none
+        warnings:
+          type: array
+          items:
+            type: string
+          description: 'A string of text that highlights any issues seen in the API call. **It’s expected this will be null for the majority of analyzed claims.**
+
+
+            Some issues that can be highlighted in this field may include, but not limited to:
+
+            - `order not found` - the order listed in the API call cannot be found in Riskified’s system
+
+            - `duplicate to claim` - the claim submitted is a duplicate of a previously submitted claim
+
+            - `claim filtered from analysis` - claim not analyzed due to exclusion filters in place in Riskified’s system
+
+            - `order is older than 180 days` - the original order was placed more than 180 days before the claim was submitted, and therefore, the claim is not subject to analysis.'
+          example: []
+    Claim_Create_Response_Review:
+      type: object
+      description: Review Required Claim Response
+      properties:
+        claim:
+          type: object
+          properties:
+            id:
+              type: string
+              description: The unique identifier for the claim.
+              example: '53953819'
+            decision:
+              type: string
+              enum:
+              - review
+              description: "Textual status describing the result of Riskified’s claim analysis. \n\n**Always 'review' for claims requiring manual review.**"
+              example: review
+            decision_reason:
+              type: string
+              description: "Additional context on Riskified’s decision. This can be customizable based on merchant needs.\n\n Some example values are: \n - `approved in accordance to policy`\n - `Risky First Claim`\n - `Likely Abusive`\n - `Flagrant Abuse`"
+              example: back to review in accordance to policy
+            followed_action:
+              type: string
+              description: "Any secondary actions that Riskified recommends in response to the claim. This can be customizable based on merchant needs. Some example values are:\n\n - `warning_1`\n - `warning_2`\n - `handling_fee`"
+              example: none
+        warnings:
+          type: array
+          items:
+            type: string
+          description: 'A string of text that highlights any issues seen in the API call. **It’s expected this will be null for the majority of analyzed claims.**
+
+
+            Some issues that can be highlighted in this field may include, but not limited to:
+
+            - `order not found` - the order listed in the API call cannot be found in Riskified’s system
+
+            - `duplicate to claim` - the claim submitted is a duplicate of a previously submitted claim
+
+            - `claim filtered from analysis` - claim not analyzed due to exclusion filters in place in Riskified’s system
+
+            - `order is older than 180 days` - the original order was placed more than 180 days before the claim was submitted, and therefore, the claim is not subject to analysis.'
+          example: []
+    Claim_Create_Response_Decline:
+      type: object
+      description: Decline Claim Response
+      properties:
+        claim:
+          type: object
+          properties:
+            id:
+              type: string
+              description: The unique identifier for the claim.
+              example: '53953819'
+            decision:
+              type: string
+              enum:
+              - decline
+              description: "Textual status describing the result of Riskified’s claim analysis. \n\n**Always 'decline' if Riskified recommends declining the claim.**"
+              example: decline
+            decision_reason:
+              type: string
+              description: "Additional context on Riskified’s decision. This can be customizable based on merchant needs.\n\n Some example values are: \n - `Risky First Claim`\n - `Likely Abusive`\n - `Flagrant Abuse`"
+              example: Risky First Claim
+            followed_action:
+              type: string
+              description: "Any secondary actions that Riskified recommends in response to the claim. This can be customizable based on merchant needs. Some example values are:\n\n - `warning_1`\n - `warning_2`\n - `handling_fee`"
+              example: none
+        warnings:
+          type: array
+          items:
+            type: string
+          description: 'A string of text that highlights any issues seen in the API call. **It’s expected this will be null for the majority of analyzed claims.**
+
+
+            Some issues that can be highlighted in this field may include, but not limited to:
+
+            - `order not found` - the order listed in the API call cannot be found in Riskified’s system
+
+            - `duplicate to claim` - the claim submitted is a duplicate of a previously submitted claim
+
+            - `claim filtered from analysis` - claim not analyzed due to exclusion filters in place in Riskified’s system
+
+            - `order is older than 180 days` - the original order was placed more than 180 days before the claim was submitted, and therefore, the claim is not subject to analysis.'
+          example: []
+    Claim_Create_Response_Excluded:
+      type: object
+      description: Decline Claim Response
+      properties:
+        claim:
+          type: object
+          properties:
+            id:
+              type: string
+              description: The unique identifier for the claim.
+              example: '53953819'
+            decision:
+              type: string
+              enum:
+              - excluded
+              description: "Textual status describing the result of Riskified’s claim analysis. \n\n**Always 'excluded' if Riskified excluded the claim from both analysis and statistics due to filters, etc.**"
+              example: excluded
+            decision_reason:
+              type: string
+              description: "Additional context on Riskified’s decision. This can be customizable based on merchant needs.\n\n Some example values are: \n - `order not found`\n - `duplicate`\n - `filtered`"
+              example: order not found
+            followed_action:
+              type: string
+              description: "Any secondary actions that Riskified recommends in response to the claim. This can be customizable based on merchant needs. Some example values are:\n\n - `warning_1`\n - `warning_2`\n - `handling_fee`"
+              example: none
+        warnings:
+          type: array
+          items:
+            type: string
+            description: Examples of the values are 'order not found 450789469', 'duplicate to claim 53953819'
+          description: 'A string of text that highlights any issues seen in the API call. **It’s expected this will be null for the majority of analyzed claims.**
+
+
+            Some issues that can be highlighted in this field may include, but not limited to:
+
+            - `order not found` - the order listed in the API call cannot be found in Riskified’s system
+
+            - `duplicate to claim` - the claim submitted is a duplicate of a previously submitted claim
+
+            - `claim filtered from analysis` - claim not analyzed due to exclusion filters in place in Riskified’s system
+
+            - `order is older than 180 days` - the original order was placed more than 180 days before the claim was submitted, and therefore, the claim is not subject to analysis.'
+          example:
+          - order not found 53953819
+    Claim_Create_Response_Captured:
+      type: object
+      description: Captured Claim Response. Riskified excluded the claim from analysis, but will ingest for statistics
+      properties:
+        claim:
+          type: object
+          properties:
+            id:
+              type: string
+              description: The unique identifier for the claim.
+              example: '53953819'
+            decision:
+              type: string
+              enum:
+              - captured
+              description: "Textual status describing the result of Riskified’s claim analysis. \n\n**Always 'captured' for captured claims.**"
+              example: captured
+            decision_reason:
+              type: string
+              description: "Additional context on Riskified’s decision. This can be customizable based on merchant needs.\n\n Some example values are: \n - `approved in accordance to policy`\n - `Risky First Claim`\n - `Likely Abusive`\n - ~Flagrant Abuse`"
+              example: Filtered
+            followed_action:
+              type: string
+              description: "Any secondary actions that Riskified recommends in response to the claim. This can be customizable based on merchant needs. Some example values are:\n\n - `warning_1`\n - `warning_2`\n - `handling_fee`"
+              example: none
+        warnings:
+          type: array
+          items:
+            type: string
+          description: 'A string of text that highlights any issues seen in the API call. **It’s expected this will be null for the majority of analyzed claims.**
+
+
+            Some issues that can be highlighted in this field may include, but not limited to:
+
+            - `order not found` - the order listed in the API call cannot be found in Riskified’s system
+
+            - `duplicate to claim` - the claim submitted is a duplicate of a previously submitted claim
+
+            - `claim filtered from analysis` - claim not analyzed due to exclusion filters in place in Riskified’s system
+
+            - `order is older than 180 days` - the original order was placed more than 180 days before the claim was submitted, and therefore, the claim is not subject to analysis.'
+          example: []
+    ClaimCreate:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the claim.
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time (ISO 8601) when the claim was created.
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemCreate'
+          description: An array of line item objects, each one containing information about a unit of an item in the claim.
+        source:
+          type: string
+          description: The channel that the claim originated from.
+          enum:
+          - email
+          - chat
+          - phone
+          - desktop_web
+          - mobile_web
+          - web
+          - mobile_app
+          - in_store
+        customer:
+          $ref: '#/components/schemas/Customer'
+          description: An object containing information about the customer. Required if the customer contact information has changed from the order.
+        handling_fee:
+          type: number
+          format: float
+          description: Sum of any fees (i.e., handling or restocking fee, etc.) that is applicable to the claim.
+        cart_token:
+          type: string
+          description: The session id that this claim was created on, this value should match the session id value that is passed in the Beacon JavaScript.
+          maxLength: 100
+        device_id:
+          type: string
+          description: The mobile device identifier. Use if claim is submitted via native app platform.
+        browser_ip:
+          type: string
+          description: The customer's browser IP address at the time of claim submission.
+        note:
+          type: string
+          description: A note attached to the claim.
+      required:
+      - id
+      - created_at
+      - line_items
+    LineItemCreate:
+      type: object
+      properties:
+        order_id:
+          type: string
+          description: The unique identifier for the order which is associated with the claim.
+        claim_amount:
+          type: number
+          format: float
+          description: 'The amount that the customer is claiming for the specific line item. Note: this should be in the same currency as the original order sent to Riskified.'
+        sku:
+          type: string
+          description: The sku of the item in the fulfillment.
+        item_id:
+          type: string
+          description: The unique identifier of the individual line item object in the claim/order.
+        claim_reason:
+          type: string
+          enum:
+          - not_received
+          - missing_item
+          - wrong_item
+          - damaged
+          - customer_preference
+          - other
+          - valid_complaint
+          description: The reason a refund/return is being claimed.
+        orig_claim_reason:
+          type: string
+          description: The original claim reason of the merchant.
+        requested_action:
+          type: string
+          enum:
+          - store_credit
+          - refund
+          - reshipment
+          - exchange
+          - physical_gift_card
+          - none
+          description: The action requested by the customer.
+        return_deadline:
+          type: string
+          format: date-time
+          description: The date and time (ISO 8601) of the return deadline for the individual product.
+        return_requested:
+          type: boolean
+          description: States whether the item is expected to be returned back to the merchant.
+        customer_note:
+          type: string
+          description: A note added by the customer when opening a claim.
+        fulfillment:
+          $ref: '#/components/schemas/Fulfillment'
+          description: An object containing information regarding the order fulfillment attempt to the customer. Recommended for refund use cases only.
+      required:
+      - order_id
+      - claim_amount
+      - sku
+      - claim_reason
+      - orig_claim_reason
+      - requested_action
+    Customer:
+      type: object
+      properties:
+        is_logged_in:
+          type: boolean
+          description: An indication of whether the customer is logged into their account at the time of claim submission.
+        email:
+          type: string
+          description: The email address of the customer who's submitting the claim, if different from the order.
+        id:
+          type: string
+          description: The id of the customer who's submitting the claim, if different from the order.
+        first_name:
+          type: string
+          description: The first name of the customer who's submitting the claim, if different from the order.
+        last_name:
+          type: string
+          description: The last name of the customer who's submitting the claim, if different from the order.
+        phone:
+          type: string
+          description: The phone number of the customer who's submitting the claim, if different from the order.
+        address:
+          $ref: '#/components/schemas/Address'
+          description: This is only applicable if the reshipment/return shipping address differs from the original order address.
+    Fulfillment:
+      type: object
+      properties:
+        fulfillment_id:
+          type: string
+          description: The unique identifier of the original shipment from the merchant to the customer. This should line up with /fulfill (if implemented).
+        status:
+          type: string
+          description: The fulfillment status at the time the claim was submitted.
+          enum:
+          - did_not_ship
+          - in_transit
+          - delivered
+          - back_to_sender
+          - voided
+        delivered_at:
+          type: string
+          format: date-time
+          description: The date and time (ISO8601) that the order was delivered
+        tracking_company:
+          type: string
+          description: 'The name of the shipping company. Possible values are: usps, ups, fedex, dhl_express, dhl_ecommerce, canada post. If company is not listed, insert the name.'
+        tracking_numbers:
+          type: string
+          description: A list of shipping numbers, provided by the shipping company.
+        tracking_urls:
+          type: string
+          description: The URLs to track the fulfillment.
+        proof_of_delivery:
+          type: boolean
+          description: Indication of if any proof of delivery is obtained (signature, image, etc)
+        proof_of_delivery_type:
+          type: string
+          enum:
+          - image
+          - signature
+          description: The type of proof of delivery obtained.
+      required:
+      - fulfillment_id
+    Address:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: The first name of the person associated with the address.
+        last_name:
+          type: string
+          description: The last name of the person associated with the address.
+        address1:
+          type: string
+          description: The street name of the address.
+        country:
+          type: string
+          description: The name of the country address.
+        country_code:
+          type: string
+          description: The 2 letter country code (ISO 3166-1 alpha-2) of the country address.
+        phone:
+          type: string
+          description: The phone number at the address.
+        city:
+          type: string
+          description: The city of the address.
+        zip:
+          type: string
+          description: The zip or postal code of the address.
+        address2:
+          type: string
+          description: An optional additional field for the street address.
+        company:
+          type: string
+          description: '**(Conditional Requirement)** Required if the address is associated to a company. The company of the person associated with the address.'
+        additional_phone:
+          type: string
+          description: Additional phone number at the address.
+        verified_phone:
+          type: boolean
+          description: Indicates whether the provided phone number was verified.
+        province:
+          type: string
+          description: The name of the state or province of the address.
+        province_code:
+          type: string
+          description: The two-letter ISO 3166-2 alpha-2 code for the state or province of the address.
+        neighborhood:
+          type: string
+          description: The district or city division of the address. The neighborhood should be provided if used in a country’s official postal addresses. Examples of this include the Colonia in Mexico or Bairro in Brazil.
+        latitude:
+          type: number
+          format: float
+          description: The latitude coordinates of the address.
+        longitude:
+          type: number
+          format: float
+          description: The longitude coordinates of the address.
+        id:
+          type: string
+          description: '**(Conditional Requirement)** unique ID, is required in case of multiple shipping addresses.'
+      required:
+      - first_name
+      - last_name
+      - address1
+      - country
+      - country_code
+      - phone
+      - city
+      - zip
+      - province
+    error_with_code:
+      type: object
+      properties:
+        statusCode:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Error message
+    400_claim_decision:
+      type: object
+      properties:
+        message:
+          type: array
+          items:
+            type: string
+        error:
+          type: string
+          example: Bad Request
+        statusCode:
+          type: string
+          example: 400
+    ClaimDecisionRequest:
+      type: object
+      properties:
+        claim:
+          $ref: '#/components/schemas/ClaimDecision'
+    ClaimDecisionResponse:
+      type: object
+      properties:
+        claim:
+          $ref: '#/components/schemas/ClaimOnlyId'
+    ClaimOnlyId:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the claim.
+    ClaimDecision:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the claim.
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemDecision'
+          description: An array of line item objects, each one containing information about an item in the claim.
+        handling_fee:
+          type: number
+          format: float
+          description: Sum of any fees (i.e., handling or restocking fee, etc.) that was applied to the claim.
+        note:
+          type: string
+          description: A note attached to the claim/decision.
+      required:
+      - id
+      - line_items
+    LineItemDecision:
+      type: object
+      properties:
+        order_id:
+          type: string
+          description: The unique identifier for the order which is associated with the claim.
+        sku:
+          type: string
+          description: The sku of the item in the fulfillment.
+        item_id:
+          type: string
+          description: The unique identifier of the individual line item object in the claim/order.
+        claim_reason:
+          type: string
+          enum:
+          - not_received
+          - missing_item
+          - wrong_item
+          - damaged
+          - customer_preference
+          - other
+          - valid_complaint
+          description: The reason a refund/return is being claimed.
+        orig_claim_reason:
+          type: string
+          description: The original claim reason of the merchant.
+        decision:
+          $ref: '#/components/schemas/Decision'
+          description: An object containing information regarding the final decision on the claim/item.
+      required:
+      - order_id
+      - sku
+    Decision:
+      type: object
+      properties:
+        decision:
+          type: string
+          enum:
+          - approve
+          - decline
+          - review
+          - cancel
+          description: The result/decision of the claim.
+        decided_at:
+          type: string
+          format: date-time
+          description: The date and time (ISO 8601) that the final decision on the claim was made.
+        decision_reason:
+          type: string
+          enum:
+          - manual_review
+          - successful_delivery
+          - chargeback
+          - business_policy
+          - riskified
+          - valid_complaint
+          description: The reason for the claim decision.
+        refund_amount:
+          type: number
+          format: float
+          description: The dollar amount that was refunded back to the customer, or cost of item that was reshipped.
+        action:
+          type: string
+          enum:
+          - store_credit
+          - refund
+          - reshipment
+          - exchange
+          - physical_gift_card
+          - none
+          description: The action by the merchant to appease the claim.
+        decided_by:
+          type: string
+          description: The person/organization that decided on the claim.
+      required:
+      - decision
+      - decided_at
+    ReturnShipping:
+      type: object
+      properties:
+        tracking_numbers:
+          type: string
+          description: The return shipping number, provided by the shipping company.
+        scanned_at:
+          type: string
+          format: date-time
+          description: The date and time (ISO 8601) that the package was scanned (picked up) by the carrier.
+        label_created_at:
+          type: string
+          format: date-time
+          description: The date and time (ISO 8601) that the return shipping label was created.
+        arrived_at:
+          type: string
+          format: date-time
+          description: The date and time (ISO 8601) that the package has arrived to the store/warehouse.
+        tracking_company:
+          type: string
+          description: The name of the shipping company.
+        weight:
+          type: number
+          format: float
+          description: The package weight in grams or ounces.
+        weight_unit:
+          type: string
+          enum:
+          - grams
+          - ounces
+          description: The unit of measure for the weight.
+        is_verified:
+          type: boolean
+          description: Indication of whether the content of the box was physically inspected/verified at the time of scan.
+        address:
+          $ref: '#/components/schemas/Address'
+          description: The address of the drop-off location.
+      required:
+      - tracking_numbers
+    Inspection:
+      type: object
+      properties:
+        condition:
+          type: string
+          enum:
+          - pristine
+          - second_quality
+          - poor
+          - fake
+          - missing
+          - valid_complaint
+          description: The condition of the item at time of inspection.
+        external_condition:
+          type: string
+          description: The condition of the item at time of inspection as recorded in the merchant's system.
+        inspected_at:
+          type: string
+          format: date-time
+          description: The date and time (ISO 8601) when the item was inspected.
+        location:
+          type: string
+          enum:
+          - in_store
+          - warehouse
+          - third_party
+          description: The type of location where the item was inspected.
+        location_id:
+          type: string
+          description: The ID of the store/warehouse where the item was inspected.
+        note:
+          type: string
+          description: Free text or note added to claim as part of the inspection process.
+      required:
+      - condition
+      - location
+      - inspected_at
+    error_response_messages:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+    ClaimUpdateRequest:
+      type: object
+      properties:
+        claim:
+          $ref: '#/components/schemas/ClaimUpdate'
+    ClaimUpdateResponse:
+      type: object
+      properties:
+        claim:
+          $ref: '#/components/schemas/ClaimOnlyId'
+    ClaimUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the claim.
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemUpdate'
+          description: An array of line item objects, each one containing information about a unit of an item in the claim.
+        note:
+          type: string
+          description: A note attached to the claim.
+      required:
+      - id
+      - line_items
+    LineItemUpdate:
+      type: object
+      properties:
+        order_id:
+          type: string
+          description: The unique identifier for the order which is associated with the claim.
+        sku:
+          type: string
+          description: The sku of the item in the fulfillment.
+        item_id:
+          type: string
+          description: The unique identifier of the individual line item object in the claim/order.
+        requested_action:
+          type: string
+          enum:
+          - store_credit
+          - refund
+          - reshipment
+          - exchange
+          - physical_gift_card
+          - none
+          description: '**(Conditional Requirement)** The action requested by the customer. The field is required to be provided either in /claim_create or in /claim_update.'
+        return_deadline:
+          type: string
+          format: date-time
+          description: The date and time (ISO 8601) of the return deadline for the individual product.
+        return_requested:
+          type: boolean
+          description: States whether the item is expected to be returned back to the merchant.
+        event_type:
+          type: string
+          description: Where the item is in the claim/return lifecycle.
+          enum:
+          - label_scan
+          - inspection
+        return_shipping:
+          $ref: '#/components/schemas/ReturnShipping'
+          description: 'An object containing information regarding the return shipment back to the merchant. Required when event_type: label_scan.'
+        inspection:
+          $ref: '#/components/schemas/Inspection'
+          description: 'An object containing information regarding item inspection. Required when event_type: inspection.'
+      required:
+      - order_id
+      - sku
+      - event_type
+  examples:
+    create_claim_example:
+      summary: Example of a Claim Create Request
+      value:
+        claim:
+          id: '53953819'
+          created_at: '2020-06-30T11:00:00-05:00'
+          line_items:
+          - order_id: '450789469'
+            claim_amount: 900
+            sku: 3AF0F17A323D4
+            item_id: 3AF0F17A323D4_1
+            claim_reason: not_received
+            orig_claim_reason: Delivery not received
+            customer_note: The package says it’s delivered but I didn’t receive it
+            requested_action: refund
+            return_requested: false
+            fulfillment:
+              fulfillment_id: '187884957293'
+              delivered_at: '2020-06-16T11:00:00-05:00'
+              status: delivered
+              tracking_company: fedex
+              tracking_numbers: '3810384410'
+              tracking_urls: http://fedex.com/track?q=abc123
+              proof_of_delivery: false
+              proof_of_delivery_type: image
+          - order_id: '450789469'
+            claim_amount: 900
+            item_id: 3AF0F17A323D4_2
+            sku: 3AF0F17A323D4
+            claim_reason: not_received
+            orig_claim_reason: Delivery not received
+            customer_note: The package says it’s delivered but I didn’t receive it
+            requested_action: refund
+            return_requested: false
+            fulfillment:
+              fulfillment_id: '187884957293'
+              delivered_at: '2020-06-16T11:00:00-05:00'
+              status: delivered
+              tracking_company: fedex
+              tracking_numbers: '3810384410'
+              tracking_urls: http://fedex.com/track?q=abc123
+              proof_of_delivery: false
+              proof_of_delivery_type: image
+          customer:
+            is_logged_in: true
+            email: bob.norman@hostmail.com
+            first_name: Bob
+            last_name: Norman
+            phone: 555-625-1199
+            address:
+              address1: 92 Chestnut Street
+              address2: ''
+              country: United States
+              country_code: US
+              city: Louisville
+              province: Kentucky
+              province_code: KY
+              zip: '40202'
+          cart_token: 68778783ad298f1c80c3bafcddeea02f
+          browser_ip: 111.111.111.111
+          device_id: 01234567-89ABCDEF-01234567-89ABCDEF
+          source: mobile_app
+          note: refund claim
+    create_unauthorized_response_401_example:
+      summary: Unauthorized
+      value:
+        code: 401
+        error:
+          message: Missing HMAC configuration
+          error: Unauthorized
+          statusCode: 401
+    decision_claim_example:
+      summary: Example of a Claim Decision Request
+      value:
+        claim:
+          id: '53953819'
+          line_items:
+          - order_id: '450789469'
+            item_id: 3AF0F17A323D4_1
+            sku: 3AF0F17A323D4
+            claim_reason: customer_preference
+            orig_claim_reason: 'Item not as
+
+              expected'
+            decision:
+              decision: approve
+              decision_reason: riskified
+              decided_at: '2020-06-30T12:05:00-05:00'
+              refund_amount: 900
+              action: store_credit
+              decided_by: John Smith
+          - order_id: '450789469'
+            item_id: 3AF0F17A323D4_2
+            sku: 3AF0F17A323D4
+            claim_reason: customer_preference
+            orig_claim_reason: 'Item not as
+
+              expected'
+            decision:
+              decision: approve
+              decision_reason: riskified
+              decided_at: '2020-06-30T12:05:00-05:00'
+              refund_amount: 900
+              action: store_credit
+              decided_by: John Smith
+          handling_fee: 40
+          note: return claim
+    update_claim_example:
+      summary: Example of a Claim Update Request
+      value:
+        claim:
+          id: '53953819'
+          line_items:
+          - event_type: inspection
+            order_id: '450789469'
+            item_id: 3AF0F17A323D4_1
+            sku: 3AF0F17A323D4
+            inspection:
+              inspected_at: '2020-07-14T10:36:04-05:00'
+              location: warehouse
+              location_id: '3458972'
+              condition: second_quality
+          - event_type: label_scan
+            order_id: '450789469'
+            item_id: 3AF0F17A323D4_2
+            sku: 3AF0F17A323D4
+            return_shipping:
+              tracking_numbers: '[REDACTED_PHONE_NUMBER_1]'
+              label_created_at: '2020-07-08T19:05:40-05:00'
+              scanned_at: '2020-07-09T13:20:34-05:00'
+              arrived_at: '2020-07-14T14:48:16-05:00'
+              tracking_company: UPS
+              weight: '4030.54'
+              weight_unit: grams
+              is_verified: false
+              address:
+                address1: 55 UPS Drive
+                address2: ''
+                country: United States
+                country_code: US
+                city: Louisville
+                province: Kentucky
+                province_code: KY
+                zip: '40202'
+        note: return claim
+    update_claim_response_example:
+      summary: Example of a Claim Update Response
+      value:
+        claim:
+          id: claim123
+    decision_claim_response_example:
+      summary: Example of a Claim Decision Response
+      value:
+        claim:
+          id: claim123
+  parameters:
+    RiskifiedShopDomain:
+      name: x-riskified-shop-domain
+      in: header
+      required: true
+      schema:
+        type: string
+        example: merchant.example.com
+      description: The merchant shop domain registered with Riskified.
+    RiskifiedSignature:
+      name: x-riskified-hmac-sha256
+      in: header
+      required: true
+      schema:
+        type: string
+        example: b1946ac92492d2347c6235b4d2611184
+      description: 'Verification hash for the Request.
+
+        Generated by performing an SHA256 encryption on the request''s POST body and calculating the HMAC hash of the result using your Riskified authentication token.
+
+        Please use UTF8 encoding.'
+    ContentType:
+      name: content_type
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+        - application/json
+      description: 'As payloads are sent to Riskified in JSON format, value should be: `application/json`'
+    Accept:
+      name: accept
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+        - application/vnd.riskified.com; version=2
+      description: 'Specify the version of the API to target. For example, to target the latest version of the API, use the following: `application/vnd.riskified.com; version=2`'
+x-provenance:
+  method: searched
+  source: https://developers.riskified.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developers.riskified.com/reference/refunds-claim_create.md
+  - https://developers.riskified.com/reference/refunds-claim_decision.md
+  - https://developers.riskified.com/reference/returns-claim_create.md
+  - https://developers.riskified.com/reference/returns-claim_decision.md
+  - https://developers.riskified.com/reference/returns-claim_update.md
+  merge:
+    pages: 5
+    deduped: 48
+    conflicts_kept_first: 4

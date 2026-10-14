@@ -1,0 +1,116 @@
+# Riskified documentation Documentation
+
+> Riskified Documentation
+
+## Guides: Primary Integration
+- [API Integration Guide ](https://developers.riskified.com/docs/api-integration-guide.md)
+  - [Plaid Integration Guide](https://developers.riskified.com/docs/plaid-integration-guide.md)
+- [Integration Timeline](https://developers.riskified.com/docs/integration-timeline.md)
+- [Integration Console](https://developers.riskified.com/docs/integration-console.md)
+- [SSO Login Integration ](https://developers.riskified.com/docs/sso.md): This guide explains how to enable Single Sign-On (SSO) to access your Riskified account. Follow the steps below to configure SAML authentication through your Identity Provider (IdP).
+
+## Guides: RISKIFIED PRODUCTS
+- [Account Secure Integration Guide](https://developers.riskified.com/docs/account-secure-integration-guide.md)
+- [Adaptive Checkout](https://developers.riskified.com/docs/adaptive-checkout.md)
+  - Regulated Markets
+    - [PSD2 Pre-Auth - /Decide](https://developers.riskified.com/docs/regulated-psd2-decide.md)
+    - [PSD2 Pre-Auth - /Advise](https://developers.riskified.com/docs/regulated-psd2-advise.md)
+    - [Japan 3DS Recommendation - /Advise](https://developers.riskified.com/docs/regulated-3ds-advise.md)
+    - [Japan 3DS Recommendation - /Decide](https://developers.riskified.com/docs/regulated-3ds-decide.md)
+  - Non-Regulated Markets
+    - [3DS Recommendation - /Decide](https://developers.riskified.com/docs/non-regulated-3ds-decide.md)
+    - [3DS Recommendation - /Advise](https://developers.riskified.com/docs/non-regulated-3ds-advise.md)
+    - [CVV Recommendation - /Advise](https://developers.riskified.com/docs/non-regulated-cvv-advise.md)
+- Policy Protect:  Refunds & Returns
+  - [Policy Protect Integration Guide](https://developers.riskified.com/docs/policy-protect-integration-guide.md)
+- OTP Recover
+  - [Review Original Flow - Integration Guide](https://developers.riskified.com/docs/review-original-flow-integration-guide.md)
+  - [Review Replacement Flow - Integration Guide](https://developers.riskified.com/docs/review-replacement-flow-integration-guide.md)
+
+## Guides: Beacon
+- [Beacon Overview & FAQ](https://developers.riskified.com/docs/beacon-faq.md)
+- [Beacon for Web](https://developers.riskified.com/docs/beacon-for-web.md)
+- [Beacon for Mobile](https://developers.riskified.com/docs/beacon-for-mobile.md)
+  - [Beacon for Android](https://developers.riskified.com/docs/mobile-sdk-integration-guide-android.md)
+    - [Android Change Log](https://developers.riskified.com/docs/beacon-android-changelog.md)
+  - [Beacon for iOS](https://developers.riskified.com/docs/mobile-sdk-integration-guide-ios.md)
+    - [iOS Change Log](https://developers.riskified.com/docs/beacon-ios-changelog.md)
+  - [Beacon for React Native](https://developers.riskified.com/docs/mobile-sdk-integration-guide-react-native.md)
+    - [React Native Change Log](https://developers.riskified.com/docs/beacon-react-native-changelog.md)
+  - [Beacon for Unity](https://developers.riskified.com/docs/mobile-sdk-integration-guide-unity.md)
+
+## Guides: E-commerce Platform Integrations
+- [Shopify](https://developers.riskified.com/docs/shopify-integration.md)
+  - [Beacon for Shopify Headless](https://developers.riskified.com/docs/beacon-for-shopify-headless.md)
+- [Magento](https://developers.riskified.com/docs/magento-integration.md)
+- [VTEX](https://developers.riskified.com/docs/vtex.md)
+- [CommerceTools](https://developers.riskified.com/docs/commercetools.md)
+- [SAP Commerce (Hybris)](https://developers.riskified.com/docs/sap-commerce-hybris.md)
+- [Agentforce Commerce (SFCC)](https://developers.riskified.com/docs/sfcc.md)
+
+## Guides: Gateway Integration Guides
+- [Chargeback Gateway Integration (CGI) Overview](https://developers.riskified.com/docs/chargeback-gateway-integration-cgi-overview.md)
+  - [Braintree CGI](https://developers.riskified.com/docs/braintree-cgi.md)
+  - [Adyen CGI](https://developers.riskified.com/docs/adyen-cgi.md)
+  - [PayPal CGI](https://developers.riskified.com/docs/paypal-cgi.md)
+  - [Stripe CGI](https://developers.riskified.com/docs/stripe-cgi.md)
+  - [Shopify Payments CGI](https://developers.riskified.com/docs/shopify-cgi.md)
+  - [Checkout.com CGI](https://developers.riskified.com/docs/checkoutcom-cgi.md)
+
+## API Reference: Getting Started
+- [API Overview](https://developers.riskified.com/reference/api-overview.md)
+- [SDKs](https://developers.riskified.com/reference/sdks.md)
+- [Platforms](https://developers.riskified.com/reference/integrated-platforms.md)
+- [Authentication](https://developers.riskified.com/reference/api-authentication.md)
+- [API Environments](https://developers.riskified.com/reference/api-environments.md)
+- [Notification Endpoints (Async flow)](https://developers.riskified.com/reference/notifications.md)
+- [Retry Logic](https://developers.riskified.com/reference/retries.md)
+- [Common HTTP Responses](https://developers.riskified.com/reference/http-responses.md)
+
+## API Reference: Chargeback Guarantee
+- Pre-Authorization Flow
+  - [Order Review (Synchronous)](https://developers.riskified.com/reference/pre-auth-flow-decide.md): The `/decide` endpoint is used to request that Riskified review an order for fraud after the customer has input their payment data and completed the purchase. This allows us to analyze the full order…
+  - [Failed Payment Authorization](https://developers.riskified.com/reference/pre-auth-flow-checkout_denied.md): The `/checkout_denied` endpoint is used to inform Riskified that the payment gateway declined the payment authorization. The gateway’s authorization error message and error code are passed to…
+  - [Merchant Decision](https://developers.riskified.com/reference/pre-auth-flow-decision.md): Update the existing order external status. The `/decision` endpoint should be used in the following scenarios:   - To confirm to Riskified that authorization was successful  (common scenario)   - To…
+- Post-Authorization Flow
+  - [Authorized Order Review (Asynchronous)](https://developers.riskified.com/reference/post-auth-flow-submit.md): The `/submit` endpoint sends transaction data to Riskified after the gateway authorizes the transaction for fraud analysis. Because this is an asynchronous endpoint, the fraud decision is returned…
+  - [Authorized Order Review (Synchronous)](https://developers.riskified.com/reference/post-auth-flow-decide.md): The `/decide` endpoint is used to request that Riskified review an order for fraud after the customer has input their payment data and completed the purchase. This allows us to analyze the full order…
+  - [Failed Payment Authorization](https://developers.riskified.com/reference/post-auth-flow-checkout_denied.md): The `/checkout_denied` endpoint is used to inform Riskified that the payment gateway declined the payment authorization. The gateway’s authorization error message and error code are passed to…
+- Automation Endpoints
+  - [Merchant Decision](https://developers.riskified.com/reference/decision.md): Notify Riskified of the final external status of an order. Use this call to update Riskified when the merchant’s or payment gateway’s final decision differs from Riskified’s recommendation — for…
+  - [Cancellation](https://developers.riskified.com/reference/cancel.md): Mark a previously submitted order as cancelled. If the order has not yet been reviewed, it is excluded from future review. If the order has already been reviewed and approved, canceling it will also…
+  - [Partial Refund](https://developers.riskified.com/reference/refund.md): Mark a previously submitted order as refunded. This can be a full or partial refund.  This endpoint is used when an order is refunded after submission.
+  - [Order Fulfillment](https://developers.riskified.com/reference/fulfill.md): This endpoint informs Riskified that fulfillment information has been generated for a specific order, encompassing both successful and unsuccessful attempts. It can be called multiple times if there…
+  - [Chargeback](https://developers.riskified.com/reference/chargeback.md): Notifies Riskified that a chargeback has been submitted for a specific order. Note: Riskified offers fully automated chargeback gateway integrations for major gateways: Braintree, Stripe, Adyen,…
+
+## API Reference: Adaptive Checkout
+- Pre-Gateway Recommendation
+  - [Advise Recommendation](https://developers.riskified.com/reference/advise.md): This integration gives us the ability to gather data about the orders at the earliest stage of the checkout process, before the transactions are even submitted for authorization.   For each order…
+  - PSD2/3DS Recommendations under /decide
+    - [3DS Recommendation](https://developers.riskified.com/reference/pre-auth-flow-3ds-recommendation.md)
+    - [PSD2 Optimization ](https://developers.riskified.com/reference/pre-auth-flow-psd2-optimization.md)
+
+## API Reference: Account Secure
+- Customer Actions
+  - [Login Attempt Request](https://developers.riskified.com/reference/login.md): Login API is a **synchronous POST-method** API call.  API is triggered **only** for customer-initiated authentication requests, e.g., user tries to login to their account. It must **not** be called…
+  - [Reset Password Request](https://developers.riskified.com/reference/reset_password.md): Reset password API is a **synchronous POST-method** API call.  It allows Riskified to understand whether an account has been secured following an incident (if not it needs to be treated as a…
+- Customer Management
+  - [Customer Create](https://developers.riskified.com/reference/customer_create.md): Customer create is a **synchronous POST-method** API call.  Riskified receives account data creation events and performs fraud review to block suspicious account as well as blocking multiple account…
+  - [Customer Update](https://developers.riskified.com/reference/customer_update.md): Customer update is a **synchronous POST-method** API call.  API is triggered at the time of in account activity, such as when changing email, address, saving a new payment method etc.  **Response:**…
+
+## API Reference: OTP Recovery
+- OTP Recover (Sync flow)
+  - [Initiate OTP](https://developers.riskified.com/reference/otp-initiate.md): Triggers an OTP SMS to the customer if the order is eligible for recovery. This call should be triggered from the backend after receiving a “declined” response and that the order is eligible for OTP…
+
+## API Reference: Policy Protect: Refunds & Returns
+- Refunds
+  - [Create a Claim](https://developers.riskified.com/reference/refunds-claim_create.md): The /claim_create endpoint is used to request that Riskified analyze a claim for abuse after the customer has submitted details on the claim. Riskified's decision is returned synchronously in the…
+  - [Claim Decision](https://developers.riskified.com/reference/refunds-claim_decision.md): The /claim_decision endpoint is used to complete the feedback loop and update Riskified on the final status of a claim. This endpoint will not trigger claim analysis. Riskified's acknowledgement…
+- Returns
+  - [Create a Claim](https://developers.riskified.com/reference/returns-claim_create.md): The /claim_create endpoint is used to request that Riskified analyze a claim for abuse after the customer has submitted details on the claim. Riskified's decision is returned synchronously in the…
+  - [Update Claim](https://developers.riskified.com/reference/returns-claim_update.md): The /claim_update endpoint is used to update Riskified regarding the claim - specifically in regards to the return shipment back to the merchant. This endpoint will not trigger claim analysis.…
+  - [Claim Decision](https://developers.riskified.com/reference/returns-claim_decision.md): The /claim_decision endpoint is used to complete the feedback loop and update Riskified on the final status of a claim. This endpoint will not trigger claim analysis. Riskified's acknowledgement…
+
+## API Reference: Beacon
+- [Beacon SDKs & Integration](https://developers.riskified.com/reference/beacon-sdks.md)
+- [Custom Domain for Beacon JS](https://developers.riskified.com/reference/custom-domain-for-beacon-js.md): Bypassing ad and tracker blockers for Riskified Beacon

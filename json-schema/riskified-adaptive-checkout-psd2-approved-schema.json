@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/riskified/main/json-schema/riskified-adaptive-checkout-psd2-approved-schema.json",
+  "title": "adaptive_checkout_psd2_approved",
+  "description": "Approved Decide Response with PSD2 recommendation",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/adaptive_checkout_psd2_approved",
+  "type": "object",
+  "properties": {
+    "order": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique ID of order being acted upon. \n\n Note: This value should be later reflected also as order.id on the subsequent calls"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "approved"
+          ],
+          "description": "Textual status describing the result of Riskified analysis. \n\n Always 'approve' for approved orders. Order is approved and guaranteed by Riskified"
+        },
+        "description": {
+          "type": "string",
+          "description": "Additional context on Riskified decision."
+        },
+        "advice": {
+          "type": "object",
+          "description": "PSD2 recommendation",
+          "properties": {
+            "recommendations": {
+              "type": "array",
+              "description": "An array of recommendation types and values.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Recommendation type",
+                    "enum": [
+                      "psd2"
+                    ]
+                  },
+                  "recommendation": {
+                    "type": "string",
+                    "enum": [
+                      "sca",
+                      "tra",
+                      "low_value",
+                      "out_of_scope"
+                    ],
+                    "description": "Textual status describing the PSD2 recommendation.\n\n Possible values are: \n - `sca` - requesting exemption not recommended\n - `tra` - order is recommended and should be liable for exemption request\n - `low_value` - the order qualifies for the Low Value Transaction (LVT) exemption\n - `out_of_scope` - the order is out of scope for PSD2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "description",
+        "advice"
+      ]
+    }
+  }
+}

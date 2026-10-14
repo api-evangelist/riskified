@@ -1,16 +1,17 @@
 aid: riskified
+
 url: https://raw.githubusercontent.com/api-evangelist/riskified/refs/heads/main/apis.yml
+
 name: Riskified
-description: Riskified (NYSE RSKD) is an Israeli ecommerce risk-management platform that uses machine
-  learning and a global merchant intelligence network to make sub-second decisions across the entire
-  shopper journey. Its Chargeback Guarantee, Adaptive Checkout, Account Secure, Policy Protect, and
-  Dispute Resolve products are exposed through a REST + webhook API surface at developers.riskified.com,
-  covering pre-auth and post-auth order review, 3DS / PSD2 optimization, account integrity (login,
-  password reset, customer create/update), claim adjudication for refund and return abuse, and an
-  OTP service. Authentication is HMAC-SHA256 over the request body. Official SDKs ship for PHP, Java,
-  and .NET, with iOS, Android, React Native, and Unity Beacon SDKs for device intelligence, plus
-  first-party integrations for Shopify, Magento/Adobe Commerce, Salesforce Commerce Cloud, SAP
-  Commerce / Hybris, commercetools, VTEX, Adyen, Braintree, PayPal, and Stripe.
+
+description: Riskified (NYSE RSKD) is an Israeli ecommerce risk-management platform that uses machine learning and a global merchant intelligence
+  network to make sub-second decisions across the entire shopper journey. Its Chargeback Guarantee, Adaptive Checkout, Account Secure, Policy
+  Protect, and Dispute Resolve products are exposed through a REST + webhook API surface at developers.riskified.com, covering pre-auth and post-auth
+  order review, 3DS / PSD2 optimization, account integrity (login, password reset, customer create/update), claim adjudication for refund and
+  return abuse, and an OTP service. Authentication is HMAC-SHA256 over the request body. Official SDKs ship for PHP, Java, and .NET, with iOS,
+  Android, React Native, and Unity Beacon SDKs for device intelligence, plus first-party integrations for Shopify, Magento/Adobe Commerce, Salesforce
+  Commerce Cloud, SAP Commerce / Hybris, commercetools, VTEX, Adyen, Braintree, PayPal, and Stripe.
+
 tags:
 - Fraud Prevention
 - Chargebacks
@@ -23,6 +24,7 @@ tags:
 - 3D
 - PSD2
 - Returns
+
 tags_raw:
 - Fraud
 - Fraud Prevention
@@ -37,7 +39,9 @@ tags_raw:
 - PSD2
 - Returns
 - Machine-Learning
+
 kind: contract
+
 deliveryModel:
   model: saas
   open_source: false
@@ -49,6 +53,7 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+
 accessModel:
   pricing: unknown
   onboarding: unknown
@@ -60,244 +65,60 @@ accessModel:
   source: []
   generated: '2026-07-22'
   method: derived
+
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/riskified.png
+
 access: 3rd-Party
-apis:
-- aid: riskified:riskified-chargeback-guarantee-api
-  name: Riskified Chargeback Guarantee API
-  tags:
-  - Chargebacks
-  - Fraud Prevention
-  - Order
-  - Decisions
-  - E-Commerce
-  tags_raw:
-  - Chargebacks
-  - Fraud
-  - Orders
-  - Decision
-  - Ecommerce
-  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
-  baseURL: https://wh.riskified.com/
-  properties:
-  - url: https://developers.riskified.com/reference/post-auth-flow-decide
-    type: Documentation
-  - url: https://developers.riskified.com/reference/pre-auth-flow-decide
-    type: Documentation
-  - url: https://developers.riskified.com/reference/post-auth-flow-submit
-    type: Documentation
-  - url: https://developers.riskified.com/reference/cancel
-    type: Documentation
-  - url: https://developers.riskified.com/reference/fulfill
-    type: Documentation
-  - url: https://developers.riskified.com/reference/refund
-    type: Documentation
-  - url: https://developers.riskified.com/reference/chargeback
-    type: Documentation
-  - url: https://developers.riskified.com/reference/decision
-    type: Documentation
-  - url: https://developers.riskified.com/reference/post-auth-flow-checkout_denied
-    type: Documentation
-  - url: https://developers.riskified.com/reference/pre-auth-flow-checkout_denied
-    type: Documentation
-  description: Submit orders to Riskified for fraud and chargeback risk evaluation, in either a
-    pre-authorization (Decide / Decision) or post-authorization (Submit / Decide) flow. Returns an
-    APPROVED, DECLINED, or SUBMITTED status, with approved orders financially guaranteed against
-    fraudulent chargebacks. Companion endpoints (Cancel, Fulfill, Refund, Chargeback, Checkout Denied)
-    keep the order lifecycle in sync.
-- aid: riskified:riskified-adaptive-checkout-api
-  name: Riskified Adaptive Checkout API
-  tags:
-  - Adaptive Checkout
-  - 3D
-  - PSD2
-  - SCA
-  - Payments
-  - Authorization
-  tags_raw:
-  - Adaptive Checkout
-  - 3DS
-  - PSD2
-  - SCA
-  - Payments
-  - Authorization
-  humanURL: https://developers.riskified.com/reference/advise
-  baseURL: https://api.riskified.com/
-  properties:
-  - url: https://developers.riskified.com/reference/advise
-    type: Documentation
-  - url: https://developers.riskified.com/reference/pre-auth-flow-3ds-recommendation
-    type: Documentation
-  - url: https://developers.riskified.com/reference/pre-auth-flow-psd2-optimization
-    type: Documentation
-  - url: https://developers.riskified.com/docs/adaptive-checkout
-    type: Documentation
-  - url: https://developers.riskified.com/docs/non-regulated-3ds-advise
-    type: Documentation
-  - url: https://developers.riskified.com/docs/non-regulated-3ds-decide
-    type: Documentation
-  - url: https://developers.riskified.com/docs/non-regulated-cvv-advise
-    type: Documentation
-  - url: https://developers.riskified.com/docs/regulated-3ds-advise
-    type: Documentation
-  - url: https://developers.riskified.com/docs/regulated-3ds-decide
-    type: Documentation
-  - url: https://developers.riskified.com/docs/regulated-psd2-advise
-    type: Documentation
-  - url: https://developers.riskified.com/docs/regulated-psd2-decide
-    type: Documentation
-  description: Recommend the optimal authentication path at checkout — friction-free, CVV, 3DS, or
-    PSD2 exemption — to maximize approval rates while remaining SCA-compliant. The Advise endpoint
-    returns a recommendation; Decide endpoints commit to a Riskified-guaranteed outcome. Covers both
-    regulated (PSD2/SCA) and non-regulated geographies.
-- aid: riskified:riskified-account-secure-api
-  name: Riskified Account Secure API
-  tags:
-  - Account Secure
-  - Account Takeover
-  - Identity
-  - Authentication
-  - Customers
-  humanURL: https://developers.riskified.com/reference/login
-  baseURL: https://api.riskified.com/
-  properties:
-  - url: https://developers.riskified.com/reference/login
-    type: Documentation
-  - url: https://developers.riskified.com/reference/reset_password
-    type: Documentation
-  - url: https://developers.riskified.com/reference/customer_create
-    type: Documentation
-  - url: https://developers.riskified.com/reference/customer_update
-    type: Documentation
-  - url: https://developers.riskified.com/docs/account-secure-integration-guide
-    type: Documentation
-  description: Protect non-purchase customer journeys against account takeover, synthetic identity,
-    and credential abuse. Submit Login, Reset Password, Customer Create, and Customer Update events
-    and receive a real-time risk decision so merchants can step up authentication, block, or allow
-    the action.
-- aid: riskified:riskified-policy-protect-api
-  name: Riskified Policy Protect API
-  tags:
-  - Policy Protect
-  - Returns
-  - Refunds
-  - Abuse
-  - Claims
-  humanURL: https://developers.riskified.com/reference/refunds-claim_create
-  baseURL: https://api.riskified.com/
-  properties:
-  - url: https://developers.riskified.com/reference/refunds-claim_create
-    type: Documentation
-  - url: https://developers.riskified.com/reference/refunds-claim_decision
-    type: Documentation
-  - url: https://developers.riskified.com/reference/returns-claim_create
-    type: Documentation
-  - url: https://developers.riskified.com/reference/returns-claim_decision
-    type: Documentation
-  - url: https://developers.riskified.com/reference/returns-claim_update
-    type: Documentation
-  - url: https://developers.riskified.com/docs/policy-protect-integration-guide
-    type: Documentation
-  - url: https://developers.riskified.com/docs/review-original-flow-integration-guide
-    type: Documentation
-  - url: https://developers.riskified.com/docs/review-replacement-flow-integration-guide
-    type: Documentation
-  description: Detect and prevent refund, return, and promotional abuse. Submit refund and return
-    claims for adjudication (claim_create), retrieve Riskified's decision (claim_decision), and update
-    in-flight returns (claim_update). Supports both original-flow and replacement-flow review patterns.
-- aid: riskified:riskified-otp-api
-  name: Riskified OTP API
-  tags:
-  - OTP
-  - Identity
-  - Verification
-  - Account Recovery
-  humanURL: https://developers.riskified.com/reference/otp-initiate
-  baseURL: https://otp.self-veri.com/recover/v1/otp/
-  properties:
-  - url: https://developers.riskified.com/reference/otp-initiate
-    type: Documentation
-  description: Initiate a one-time password challenge as a step-up verification mechanism for
-    high-risk login, password reset, or account modification events. Pairs with the Account Secure
-    API to mediate friction adaptively. Hosted on the self-veri.com domain with dedicated sandbox
-    and production environments.
-- aid: riskified:riskified-beacon-sdk-api
-  name: Riskified Beacon (Device Intelligence) SDK
-  tags:
-  - beacon
-  - Device Intelligence
-  - Fingerprinting
-  - Mobile
-  - Web
-  tags_raw:
-  - Beacon
-  - Device Intelligence
-  - Fingerprinting
-  - Mobile
-  - Web
-  humanURL: https://developers.riskified.com/reference/beacon-sdks
-  properties:
-  - url: https://developers.riskified.com/reference/beacon-sdks
-    type: Documentation
-  - url: https://developers.riskified.com/docs/beacon-for-web
-    type: Documentation
-  - url: https://developers.riskified.com/docs/beacon-for-mobile
-    type: Documentation
-  - url: https://developers.riskified.com/docs/beacon-faq
-    type: Documentation
-  - url: https://developers.riskified.com/docs/beacon-for-shopify-headless
-    type: Documentation
-  - url: https://developers.riskified.com/docs/mobile-sdk-integration-guide-ios
-    type: Documentation
-  - url: https://developers.riskified.com/docs/mobile-sdk-integration-guide-android
-    type: Documentation
-  - url: https://developers.riskified.com/docs/mobile-sdk-integration-guide-react-native
-    type: Documentation
-  - url: https://developers.riskified.com/docs/mobile-sdk-integration-guide-unity
-    type: Documentation
-  - url: https://developers.riskified.com/docs/beacon-android-changelog
-    type: ChangeLog
-  - url: https://developers.riskified.com/docs/beacon-ios-changelog
-    type: ChangeLog
-  - url: https://developers.riskified.com/docs/beacon-react-native-changelog
-    type: ChangeLog
-  description: Collect device, browser, and behavioral telemetry from the shopper's session and feed
-    it into Riskified's risk models. The Beacon is delivered as a JavaScript snippet for web and as
-    iOS, Android, React Native, and Unity SDKs for mobile and game-engine surfaces. Required for
-    accurate decisioning across Chargeback Guarantee, Adaptive Checkout, Account Secure, and Policy
-    Protect.
-- aid: riskified:riskified-chargeback-gateway-integration-api
-  name: Riskified Chargeback Gateway Integration (CGI) API
-  tags:
-  - CGI
-  - Chargebacks
-  - Payment Gateway
-  - Dispute Resolve
-  - Webhook
-  tags_raw:
-  - CGI
-  - Chargebacks
-  - Payment Gateway
-  - Dispute Resolve
-  - Webhooks
-  humanURL: https://developers.riskified.com/docs/chargeback-gateway-integration-cgi-overview
-  properties:
-  - url: https://developers.riskified.com/docs/chargeback-gateway-integration-cgi-overview
-    type: Documentation
-  - url: https://developers.riskified.com/docs/adyen-cgi
-    type: Documentation
-  - url: https://developers.riskified.com/docs/braintree-cgi
-    type: Documentation
-  - url: https://developers.riskified.com/docs/paypal-cgi
-    type: Documentation
-  - url: https://developers.riskified.com/docs/shopify-cgi
-    type: Documentation
-  - url: https://developers.riskified.com/docs/stripe-cgi
-    type: Documentation
-  description: Connect Riskified directly to a payment gateway (Adyen, Braintree, PayPal, Shopify
-    Payments, Stripe) so chargeback notifications and evidence flow into the Dispute Resolve product
-    without merchant glue code. Underlies the automated chargeback recovery workflow.
+
+maintainers:
+- FN: Kin Lane
+  email: info@apievangelist.com
+  X: apievangelist
+  url: https://apievangelist.com
+
+created: '2026-05-25'
+
+modified: '2026-05-25'
+
+position: Consuming
+
+specificationVersion: '0.23'
+
 common:
+- type: AgenticAccess
+  url: agentic-access/riskified-agentic-access.yml
+- type: Spectral
+  url: rules/riskified-rules.yml
+- type: JSONLD
+  url: json-ld/riskified-context.jsonld
+- type: Vocabulary
+  url: vocabulary/riskified-vocabulary.yml
+- type: Webhooks
+  url: asyncapi/riskified-webhooks.yml
+- type: DataModel
+  url: data-model/riskified-data-model.yml
+- type: Compliance
+  url: https://security.riskified.com/
+- type: ErrorCatalog
+  url: errors/riskified-problem-types.yml
+- type: Conformance
+  url: conformance/riskified-conformance.yml
+- type: LLMsTxt
+  url: llms/riskified-llms.txt
+- type: SecurityTxt
+  url: well-known/riskified-status-security.txt
+- type: WellKnown
+  url: well-known/riskified-well-known.yml
+- type: Hosts
+  url: hosts/riskified-hosts.yml
+- type: IntegrationEdges
+  url: integrations/riskified-integration-edges.yml
+- type: Vendors
+  url: vendors/riskified-vendors.yml
+- type: Support
+  url: https://support.riskified.com/hc/en-us?_gl=1*h5db4w*_gcl_au*NTY1ODg5MDI2LjE3ODEyNzE2ODkuLS4tLjE3ODQzMTI0MzAuNjY5OTE5ODU0LjE3ODQ3NDQ4MTAuMTc4NDc1MDQ4MQ..*_ga*MTM0Mzk3ODAyNy4xNzgxMjcxNjkz*_ga_L8RV3KLX8W*czE3ODQ3Mzg2NTQkbzc4JGcxJHQxNzg0NzUzMTM1JGo0MyRsMCRoMTM2NzU4NzA1Ng..
+- type: Login
+  url: https://app.riskified.com/login
 - type: Website
   url: https://www.riskified.com/
 - type: TrustCenter
@@ -485,7 +306,8 @@ common:
   - Beacon device-intelligence JavaScript snippet plus iOS, Android, React Native, and Unity SDKs
   - First-party PHP, Java, and .NET SDKs published to Packagist, Maven Central, and NuGet
   - Chargeback Gateway Integration (CGI) connectors for Adyen, Braintree, PayPal, Shopify Payments, and Stripe
-  - Native ecommerce platform integrations for Shopify (incl. headless), Magento / Adobe Commerce, SAP Commerce / Hybris, Salesforce Commerce Cloud, commercetools, and VTEX
+  - Native ecommerce platform integrations for Shopify (incl. headless), Magento / Adobe Commerce, SAP Commerce / Hybris, Salesforce Commerce
+    Cloud, commercetools, and VTEX
   - SSO support for Riskified Control Center access
   - LLMs.txt index of the developer portal for AI agent consumption
   sources:
@@ -541,12 +363,340 @@ common:
   sources:
   - https://www.riskified.com
   updated: '2026-05-25'
-maintainers:
-- FN: Kin Lane
-  email: info@apievangelist.com
-  X: apievangelist
-  url: https://apievangelist.com
-created: '2026-05-25'
-modified: '2026-05-25'
-position: Consuming
-specificationVersion: '0.23'
+
+apis:
+- aid: riskified:riskified-chargeback-guarantee-api
+  name: Riskified Chargeback Guarantee API
+  tags:
+  - Chargebacks
+  - Fraud Prevention
+  - Order
+  - Decisions
+  - E-Commerce
+  tags_raw:
+  - Chargebacks
+  - Fraud
+  - Orders
+  - Decision
+  - Ecommerce
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  properties:
+  - url: https://developers.riskified.com/reference/post-auth-flow-decide
+    type: Documentation
+  - url: https://developers.riskified.com/reference/pre-auth-flow-decide
+    type: Documentation
+  - url: https://developers.riskified.com/reference/post-auth-flow-submit
+    type: Documentation
+  - url: https://developers.riskified.com/reference/cancel
+    type: Documentation
+  - url: https://developers.riskified.com/reference/fulfill
+    type: Documentation
+  - url: https://developers.riskified.com/reference/refund
+    type: Documentation
+  - url: https://developers.riskified.com/reference/chargeback
+    type: Documentation
+  - url: https://developers.riskified.com/reference/decision
+    type: Documentation
+  - url: https://developers.riskified.com/reference/post-auth-flow-checkout_denied
+    type: Documentation
+  - url: https://developers.riskified.com/reference/pre-auth-flow-checkout_denied
+    type: Documentation
+  description: Submit orders to Riskified for fraud and chargeback risk evaluation, in either a pre-authorization (Decide / Decision) or post-authorization
+    (Submit / Decide) flow. Returns an APPROVED, DECLINED, or SUBMITTED status, with approved orders financially guaranteed against fraudulent
+    chargebacks. Companion endpoints (Cancel, Fulfill, Refund, Chargeback, Checkout Denied) keep the order lifecycle in sync.
+- aid: riskified:riskified-adaptive-checkout-api
+  name: Riskified Adaptive Checkout API
+  tags:
+  - Adaptive Checkout
+  - 3D
+  - PSD2
+  - SCA
+  - Payments
+  - Authorization
+  tags_raw:
+  - Adaptive Checkout
+  - 3DS
+  - PSD2
+  - SCA
+  - Payments
+  - Authorization
+  humanURL: https://developers.riskified.com/reference/advise
+  baseURL: https://api.riskified.com/
+  properties:
+  - url: https://developers.riskified.com/reference/advise
+    type: Documentation
+  - url: https://developers.riskified.com/reference/pre-auth-flow-3ds-recommendation
+    type: Documentation
+  - url: https://developers.riskified.com/reference/pre-auth-flow-psd2-optimization
+    type: Documentation
+  - url: https://developers.riskified.com/docs/adaptive-checkout
+    type: Documentation
+  - url: https://developers.riskified.com/docs/non-regulated-3ds-advise
+    type: Documentation
+  - url: https://developers.riskified.com/docs/non-regulated-3ds-decide
+    type: Documentation
+  - url: https://developers.riskified.com/docs/non-regulated-cvv-advise
+    type: Documentation
+  - url: https://developers.riskified.com/docs/regulated-3ds-advise
+    type: Documentation
+  - url: https://developers.riskified.com/docs/regulated-3ds-decide
+    type: Documentation
+  - url: https://developers.riskified.com/docs/regulated-psd2-advise
+    type: Documentation
+  - url: https://developers.riskified.com/docs/regulated-psd2-decide
+    type: Documentation
+  description: Recommend the optimal authentication path at checkout — friction-free, CVV, 3DS, or PSD2 exemption — to maximize approval rates
+    while remaining SCA-compliant. The Advise endpoint returns a recommendation; Decide endpoints commit to a Riskified-guaranteed outcome. Covers
+    both regulated (PSD2/SCA) and non-regulated geographies.
+- aid: riskified:riskified-account-secure-api
+  name: Riskified Account Secure API
+  tags:
+  - Account Secure
+  - Account Takeover
+  - Identity
+  - Authentication
+  - Customers
+  humanURL: https://developers.riskified.com/reference/login
+  baseURL: https://api.riskified.com/
+  properties:
+  - url: https://developers.riskified.com/reference/login
+    type: Documentation
+  - url: https://developers.riskified.com/reference/reset_password
+    type: Documentation
+  - url: https://developers.riskified.com/reference/customer_create
+    type: Documentation
+  - url: https://developers.riskified.com/reference/customer_update
+    type: Documentation
+  - url: https://developers.riskified.com/docs/account-secure-integration-guide
+    type: Documentation
+  description: Protect non-purchase customer journeys against account takeover, synthetic identity, and credential abuse. Submit Login, Reset
+    Password, Customer Create, and Customer Update events and receive a real-time risk decision so merchants can step up authentication, block,
+    or allow the action.
+- aid: riskified:riskified-policy-protect-api
+  name: Riskified Policy Protect API
+  tags:
+  - Policy Protect
+  - Returns
+  - Refunds
+  - Abuse
+  - Claims
+  humanURL: https://developers.riskified.com/reference/refunds-claim_create
+  baseURL: https://api.riskified.com/
+  properties:
+  - url: https://developers.riskified.com/reference/refunds-claim_create
+    type: Documentation
+  - url: https://developers.riskified.com/reference/refunds-claim_decision
+    type: Documentation
+  - url: https://developers.riskified.com/reference/returns-claim_create
+    type: Documentation
+  - url: https://developers.riskified.com/reference/returns-claim_decision
+    type: Documentation
+  - url: https://developers.riskified.com/reference/returns-claim_update
+    type: Documentation
+  - url: https://developers.riskified.com/docs/policy-protect-integration-guide
+    type: Documentation
+  - url: https://developers.riskified.com/docs/review-original-flow-integration-guide
+    type: Documentation
+  - url: https://developers.riskified.com/docs/review-replacement-flow-integration-guide
+    type: Documentation
+  description: Detect and prevent refund, return, and promotional abuse. Submit refund and return claims for adjudication (claim_create), retrieve
+    Riskified's decision (claim_decision), and update in-flight returns (claim_update). Supports both original-flow and replacement-flow review
+    patterns.
+- aid: riskified:riskified-otp-api
+  name: Riskified OTP API
+  tags:
+  - OTP
+  - Identity
+  - Verification
+  - Account Recovery
+  humanURL: https://developers.riskified.com/reference/otp-initiate
+  baseURL: https://otp.self-veri.com/recover/v1/otp/
+  properties:
+  - url: https://developers.riskified.com/reference/otp-initiate
+    type: Documentation
+  description: Initiate a one-time password challenge as a step-up verification mechanism for high-risk login, password reset, or account modification
+    events. Pairs with the Account Secure API to mediate friction adaptively. Hosted on the self-veri.com domain with dedicated sandbox and production
+    environments.
+- aid: riskified:riskified-beacon-sdk-api
+  name: Riskified Beacon (Device Intelligence) SDK
+  tags:
+  - beacon
+  - Device Intelligence
+  - Fingerprinting
+  - Mobile
+  - Web
+  tags_raw:
+  - Beacon
+  - Device Intelligence
+  - Fingerprinting
+  - Mobile
+  - Web
+  humanURL: https://developers.riskified.com/reference/beacon-sdks
+  properties:
+  - url: https://developers.riskified.com/reference/beacon-sdks
+    type: Documentation
+  - url: https://developers.riskified.com/docs/beacon-for-web
+    type: Documentation
+  - url: https://developers.riskified.com/docs/beacon-for-mobile
+    type: Documentation
+  - url: https://developers.riskified.com/docs/beacon-faq
+    type: Documentation
+  - url: https://developers.riskified.com/docs/beacon-for-shopify-headless
+    type: Documentation
+  - url: https://developers.riskified.com/docs/mobile-sdk-integration-guide-ios
+    type: Documentation
+  - url: https://developers.riskified.com/docs/mobile-sdk-integration-guide-android
+    type: Documentation
+  - url: https://developers.riskified.com/docs/mobile-sdk-integration-guide-react-native
+    type: Documentation
+  - url: https://developers.riskified.com/docs/mobile-sdk-integration-guide-unity
+    type: Documentation
+  - url: https://developers.riskified.com/docs/beacon-android-changelog
+    type: ChangeLog
+  - url: https://developers.riskified.com/docs/beacon-ios-changelog
+    type: ChangeLog
+  - url: https://developers.riskified.com/docs/beacon-react-native-changelog
+    type: ChangeLog
+  description: Collect device, browser, and behavioral telemetry from the shopper's session and feed it into Riskified's risk models. The Beacon
+    is delivered as a JavaScript snippet for web and as iOS, Android, React Native, and Unity SDKs for mobile and game-engine surfaces. Required
+    for accurate decisioning across Chargeback Guarantee, Adaptive Checkout, Account Secure, and Policy Protect.
+- aid: riskified:riskified-chargeback-gateway-integration-api
+  name: Riskified Chargeback Gateway Integration (CGI) API
+  tags:
+  - CGI
+  - Chargebacks
+  - Payment Gateway
+  - Dispute Resolve
+  - Webhook
+  tags_raw:
+  - CGI
+  - Chargebacks
+  - Payment Gateway
+  - Dispute Resolve
+  - Webhooks
+  humanURL: https://developers.riskified.com/docs/chargeback-gateway-integration-cgi-overview
+  properties:
+  - url: https://developers.riskified.com/docs/chargeback-gateway-integration-cgi-overview
+    type: Documentation
+  - url: https://developers.riskified.com/docs/adyen-cgi
+    type: Documentation
+  - url: https://developers.riskified.com/docs/braintree-cgi
+    type: Documentation
+  - url: https://developers.riskified.com/docs/paypal-cgi
+    type: Documentation
+  - url: https://developers.riskified.com/docs/shopify-cgi
+    type: Documentation
+  - url: https://developers.riskified.com/docs/stripe-cgi
+    type: Documentation
+  description: Connect Riskified directly to a payment gateway (Adyen, Braintree, PayPal, Shopify Payments, Stripe) so chargeback notifications
+    and evidence flow into the Dispute Resolve product without merchant glue code. Underlies the automated chargeback recovery workflow.
+- aid: riskified:riskified-account-secure
+  name: Riskified Customer Actions API
+  description: Operations related to customer activity, including login, password resets, customer verification attempts, and customer-merchant
+    contact events.
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - Customer Actions
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-account-secure-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-update-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-reset-password-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-response-schema.json
+- aid: riskified:riskified-chargeback-guarantee
+  name: Riskified Pre-Authorization Flow API
+  description: Operations that allow you to send orders to Riskified for fraud review before payment authorization
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - Pre-Authorization Flow
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-chargeback-guarantee-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-psd2-approved-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-psd2-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-cvv-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-3ds-declined-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-3ds-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-decline-schema.json
+- aid: riskified:riskified-chargeback-guarantee-post-auth
+  name: Riskified Post-Authorization Flow API
+  description: Operations that allow you to send orders to Riskified for fraud review after payment authorization
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - Post-Authorization Flow
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-chargeback-guarantee-post-auth-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-chargeback-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-cancel-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-refund-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-submit-response-submitted-schema.json
+- aid: riskified:riskified-otp-recovery
+  name: Riskified OTP Recover (Sync flow) API
+  description: Operations for initiating and verifying one-time password recovery requests.
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - OTP Recover (Sync flow)
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-otp-recovery-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-response-schema.json
+- aid: riskified:riskified-policy-protect-refunds-returns
+  name: Riskified Policy Protect Refunds Returns Openapi.Yml API
+  description: The Policy Protect Refunds Returns Openapi.Yml API from Riskified — 3 operation(s) for policy protect refunds returns openapi.yml.
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - Policy Protect Refunds Returns Openapi.Yml
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-policy-protect-refunds-returns-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-excluded-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-captured-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-review-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-decision-request-schema.json
+
+x-readme-harvest:
+  date: '2026-10-14'
+  ops: 20
+  tool: harvest-readme-openapi.py
+  portal: https://developers.riskified.com

@@ -1,0 +1,102 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-mcp-candidate.py
+source:
+- openapi/riskified-account-secure-openapi.yml
+- openapi/riskified-chargeback-guarantee-openapi.yml
+- openapi/riskified-chargeback-guarantee-post-auth-openapi.yml
+- openapi/riskified-otp-recovery-openapi.yml
+- openapi/riskified-policy-protect-refunds-returns-openapi.yml
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: derived
+note: No MCP server was found. No probe result in the dossier. Candidate tools below are derived from the 17 operation(s) in the provider's own
+  OpenAPI (17 listed); they describe what a server WOULD expose, not one that exists.
+tools:
+- name: customer_create
+  operationId: customer_create
+  method: POST
+  path: /customer_create
+  description: Customer Create
+- name: advise
+  operationId: advise
+  method: POST
+  path: /api/advise
+  description: Advise Recommendation
+- name: cancel
+  operationId: cancel
+  method: POST
+  path: /api/cancel
+  description: Cancellation
+- name: initiate_otp
+  operationId: initiateOtp
+  method: POST
+  path: /initiate
+  description: Initiate OTP
+- name: create_claim_create
+  operationId: POST /claim_create
+  method: POST
+  path: /claim_create
+  description: Create a Claim
+- name: customer_update
+  operationId: customer_update
+  method: POST
+  path: /customer_update
+  description: Customer Update
+- name: checkout_denied
+  operationId: checkout_denied
+  method: POST
+  path: /api/checkout_denied
+  description: Failed Payment Authorization
+- name: chargeback
+  operationId: chargeback
+  method: POST
+  path: /api/chargeback
+  description: Chargeback
+- name: create_claim_decision
+  operationId: POST /claim_decision
+  method: POST
+  path: /claim_decision
+  description: Claim Decision
+- name: login
+  operationId: login
+  method: POST
+  path: /login
+  description: Login Attempt Request
+- name: decide
+  operationId: decide
+  method: POST
+  path: /api/decide
+  description: Order Review (Synchronous)
+- name: fulfill
+  operationId: fulfill
+  method: POST
+  path: /api/fulfill
+  description: Order Fulfillment
+- name: create_claim_update
+  operationId: POST /claim_update
+  method: POST
+  path: /claim_update
+  description: Update Claim
+- name: reset_password
+  operationId: reset_password
+  method: POST
+  path: /reset_password
+  description: Reset Password Request
+- name: decision
+  operationId: decision
+  method: POST
+  path: /api/decision
+  description: Merchant Decision
+- name: refund
+  operationId: refund
+  method: POST
+  path: /api/refund
+  description: Partial Refund
+- name: submit
+  operationId: submit
+  method: POST
+  path: /api/submit
+  description: Authorized Order Review (Asynchronous)

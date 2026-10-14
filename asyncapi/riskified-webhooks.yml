@@ -1,0 +1,12 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-webhooks.py
+source:
+- openapi/riskified-chargeback-guarantee-post-auth-openapi.yml
+description: 'Event surface derived from the provider''s own OpenAPI: callbacks. No AsyncAPI document is published by the provider; this catalog
+  lists the events the contract names.'
+management_operations: []
+events:
+- event: onData
+  description: callback declared on submit
+  declared_in: callbacks

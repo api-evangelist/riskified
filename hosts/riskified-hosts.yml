@@ -1,0 +1,166 @@
+generated: '2026-10-14'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 14
+  own: 6
+  other_domain: 5
+  platform: 3
+  roles:
+  - api
+  - docs
+  - other
+  - source
+  - status
+  - website
+hosts:
+- host: api.riskified.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: riskified.com
+  role: api
+  relation: own
+- host: central.sonatype.com
+  found_by:
+  - pointer
+  types:
+  - SDKs
+  serves: []
+  registrable_domain: sonatype.com
+  role: other
+  relation: other-domain
+- host: developers.riskified.com
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - Portal
+  - APIReference
+  - GettingStarted
+  - Authentication
+  - Documentation
+  - Integrations
+  serves:
+  - docs
+  registrable_domain: riskified.com
+  role: docs
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  - SDKs
+  - Examples
+  - Integrations
+  - ChangeLog
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: ir.riskified.com
+  found_by:
+  - pointer
+  types:
+  - InvestorRelations
+  serves: []
+  registrable_domain: riskified.com
+  role: other
+  relation: own
+- host: otp.self-veri.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: self-veri.com
+  role: other
+  relation: other-domain
+- host: packagist.org
+  found_by:
+  - pointer
+  types:
+  - SDKs
+  serves: []
+  registrable_domain: packagist.org
+  role: other
+  relation: other-domain
+- host: status.riskified.com
+  found_by:
+  - pointer
+  types:
+  - StatusPage
+  serves: []
+  registrable_domain: riskified.com
+  role: status
+  relation: own
+- host: wh.riskified.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: riskified.com
+  role: other
+  relation: own
+- host: www.facebook.com
+  found_by:
+  - pointer
+  types:
+  - Facebook
+  serves: []
+  registrable_domain: facebook.com
+  role: other
+  relation: platform
+- host: www.instagram.com
+  found_by:
+  - pointer
+  types:
+  - Instagram
+  serves: []
+  registrable_domain: instagram.com
+  role: other
+  relation: other-domain
+- host: www.linkedin.com
+  found_by:
+  - pointer
+  types:
+  - LinkedIn
+  serves: []
+  registrable_domain: linkedin.com
+  role: other
+  relation: platform
+- host: www.nuget.org
+  found_by:
+  - pointer
+  types:
+  - SDKs
+  serves: []
+  registrable_domain: nuget.org
+  role: other
+  relation: other-domain
+- host: www.riskified.com
+  found_by:
+  - pointer
+  types:
+  - Website
+  - Portal
+  - AboutUs
+  - Blog
+  - PressReleases
+  - CaseStudies
+  - Library
+  - Careers
+  - Contact
+  - Pricing
+  - TermsOfService
+  - PrivacyPolicy
+  - ProductInformation
+  serves: []
+  registrable_domain: riskified.com
+  role: website
+  relation: own

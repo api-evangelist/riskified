@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/riskified/main/json-schema/riskified-adaptive-checkout-3ds-declined-schema.json",
+  "title": "adaptive_checkout_3ds_declined",
+  "description": "Approved Decide Response with 3DS recommendation",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/adaptive_checkout_3ds_declined",
+  "type": "object",
+  "properties": {
+    "order": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique ID of order being acted upon. \n\n Note: This value should be later reflected also as order.id on the subsequent calls"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "declined"
+          ],
+          "description": "Textual status describing the result of Riskified analysis."
+        },
+        "description": {
+          "type": "string",
+          "description": "Additional context on Riskified decision."
+        },
+        "old_status": {
+          "type": "string",
+          "description": "Old order status"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Considerable Risk"
+          ]
+        },
+        "advice": {
+          "type": "object",
+          "properties": {
+            "recommendations": {
+              "type": "array",
+              "description": "An array of recommendation types and values.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Recommendation type",
+                    "enum": [
+                      "three_ds"
+                    ]
+                  },
+                  "recommended": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ],
+                    "description": "Textual status describing the 3DS recommendation.\n\n - `True`  should route for 3DS\n - `False` - we don't recomment proceeding to the gateway."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "description",
+        "advice"
+      ]
+    }
+  }
+}

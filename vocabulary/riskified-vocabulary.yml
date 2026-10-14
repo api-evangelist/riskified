@@ -1,0 +1,442 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/riskified-account-secure-openapi.yml
+- openapi/riskified-chargeback-guarantee-openapi.yml
+- openapi/riskified-chargeback-guarantee-post-auth-openapi.yml
+- openapi/riskified-otp-recovery-openapi.yml
+- openapi/riskified-policy-protect-refunds-returns-openapi.yml
+vocabulary:
+  name: Riskified Domain Vocabulary
+  description: 'Terms declared by Riskified''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-14'
+  terms:
+  - term: Customer Actions
+    definition: Operations related to customer activity, including login, password resets, customer verification attempts, and customer-merchant
+      contact events.
+    tags:
+    - Resource Group
+    source: openapi/riskified-account-secure-openapi.yml
+  - term: Customer Management
+    definition: Operations related to account management, including customer creation and updates.
+    tags:
+    - Resource Group
+    source: openapi/riskified-account-secure-openapi.yml
+  - term: Pre-Authorization Flow
+    definition: Operations that allow you to send orders to Riskified for fraud review before payment authorization
+    tags:
+    - Resource Group
+    source: openapi/riskified-chargeback-guarantee-openapi.yml
+  - term: Order Pre-Auth Review and PSD2/3DS/CVV Recommendations
+    definition: Riskified's PSD2 Optimization product, which is complementary to our Chargeback Guarantee product, is designed to minimize the
+      friction associated with SCA and maximize conversions - all while meeting full PSD2 compliance.
+    tags:
+    - Resource Group
+    source: openapi/riskified-chargeback-guarantee-openapi.yml
+  - term: Post-Authorization Flow
+    definition: Operations that allow you to send orders to Riskified for fraud review after payment authorization
+    tags:
+    - Resource Group
+    source: openapi/riskified-chargeback-guarantee-post-auth-openapi.yml
+  - term: Automation Endpoints
+    definition: Operations for managing order lifecycle (cancel, refund, fulfill, chargeback)
+    tags:
+    - Resource Group
+    source: openapi/riskified-chargeback-guarantee-post-auth-openapi.yml
+  - term: OTP Recover (Sync flow)
+    definition: Operations for initiating and verifying one-time password recovery requests.
+    tags:
+    - Resource Group
+    source: openapi/riskified-otp-recovery-openapi.yml
+  - term: login_action
+    definition: 'Object declared by the contract with fields: customer_id, email, login_status, client_details, session_details, customer_created_at,
+      implicit_login, username, login_at_checkout, challenge_redirect_url, account_recovery_url, localization_language. (2 more)'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/login_action
+  - term: login_status
+    definition: An object containing details of the customer's login attempt.
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/login_status
+  - term: client_details
+    definition: An object containing technical information regarding the customer’s browsing session
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/client_details
+  - term: session_details
+    definition: An object containing basic information regarding the session. Session data points, such as `cart_token`, `browser_ip`, and `user_agent`,
+      should be those associated with values at the time of user's login request - **before** the authentication result is available.
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/session_details
+  - term: login_action_response
+    definition: The response to the login action request.
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/login_action_response
+  - term: error
+    definition: 'Object declared by the contract with fields: message, code, details.'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/error
+  - term: error_response
+    definition: 'Object declared by the contract with fields: error.'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/error_response
+  - term: reset_password_action
+    definition: 'Object declared by the contract with fields: customer_id, email, status, reason, client_details, session_details, vendor_name.'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/reset_password_action
+  - term: reset_password_action_response
+    definition: The response to the reset password action request.
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/reset_password_action_response
+  - term: account_balance
+    definition: An object containing account balance information as provided by the Payment Service Provider or bank. If provided, this object
+      should contain all required fields.
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/account_balance
+  - term: account_identity_address
+    definition: 'Object declared by the contract with fields: address1, city, province_code, zip, country_code.'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/account_identity_address
+  - term: account_identity
+    definition: An object containing identity information about the purchasing customer as provided by the Payment Service Provider or bank.
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/account_identity
+  - term: customer_create
+    definition: 'Object declared by the contract with fields: customer_id, client_details, session_details, customer, payment_details, billing_address,
+      shipping_address, vendor_name, created_at.'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/customer_create
+  - term: customer_create_response
+    definition: The response to the customer create action request.
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/customer_create_response
+  - term: Digital Wallets
+    definition: 'Object declared by the contract with fields: payment_type, credit_card_bin, credit_card_company, credit_card_number, credit_card_country,
+      credit_card_token, cardholder_name, mid, id, stored_payment_created_at, stored_payment_updated_at, installments. (7 more)'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/digital_wallets_payment_details
+  - term: Credit Card
+    definition: 'Object declared by the contract with fields: payment_type, credit_card_bin, credit_card_company, credit_card_number, credit_card_country,
+      credit_card_token, cardholder_name, mid, id, stored_payment_created_at, stored_payment_updated_at, installments. (7 more)'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/credit_card_payment_details_pre_auth
+  - term: Paypal
+    definition: 'Object declared by the contract with fields: payment_type, payer_email, mid, id, acquirer_bin.'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/paypal_payment_details_details_pre_auth
+  - term: Bank Wire / ACH
+    definition: 'Object declared by the contract with fields: payment_type, account_number, routing_number, token, account_balance, account_identity.'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/bank_wire_payment_details
+  - term: Buy Now, Pay Later (BNPL)
+    definition: 'Object declared by the contract with fields: payment_type, payment_frequency, initial_payment_amount, installments.'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/buy_now_pay_later_payment_details
+  - term: Store credits and gift card payments
+    definition: 'Object declared by the contract with fields: payment_type.'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/non_chb_payment_details
+  - term: address
+    definition: 'Object declared by the contract with fields: first_name, last_name, address1, country, country_code, phone, city, zip, address2,
+      company, additional_phone, verified_phone. (6 more)'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/address
+  - term: customer
+    definition: 'Object declared by the contract with fields: email, verified_email, first_name, last_name, id, created_at, orders_count, account_type,
+      phone, verified_phone, date_of_birth, gender. (2 more)'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/customer
+  - term: customer_update
+    definition: 'Object declared by the contract with fields: customer_id, password_changed, client_details, session_details, customer, payment_details,
+      billing_address, shipping_address, vendor_name, updated_at.'
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/customer_update
+  - term: customer_update_response
+    definition: The response to the customer update action request.
+    tags:
+    - Object
+    source: openapi/riskified-account-secure-openapi.yml#/components/schemas/customer_update_response
+  - term: kyc_details
+    definition: The details of Know Your Customer (KYC) checks for the customer. Each check corresponds to a new object in the array. If kyc_details[]
+      is provided, objects should contain all required fields.
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/kyc_details
+  - term: crypto_wallet
+    definition: A crypto wallet associated with the customer account.
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/crypto_wallet
+  - term: decide_response_approve
+    definition: Approved Decide Response
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/decide_response_approve
+  - term: adaptive_checkout_psd2_approved
+    definition: Approved Decide Response with PSD2 recommendation
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/adaptive_checkout_psd2_approved
+  - term: adaptive_checkout_3ds_declined
+    definition: Approved Decide Response with 3DS recommendation
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/adaptive_checkout_3ds_declined
+  - term: decide_response_decline
+    definition: Decline Decide Response
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/decide_response_decline
+  - term: decide_response_captured
+    definition: Captured Decide Response
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/decide_response_captured
+  - term: base_order
+    definition: 'Object declared by the contract with fields: id, email, created_at, currency, gateway, browser_ip, total_price, total_discounts,
+      referring_site, line_items, shipping_lines, payment_details. (21 more)'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/base_order
+  - term: order_wrapper
+    definition: 'Object declared by the contract with fields: order.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/order_wrapper
+  - term: charge_free_payment_details
+    definition: 'Object declared by the contract with fields: amount, gateway.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/charge_free_payment_details
+  - term: physical_line_item
+    definition: A line item that is a physical product. This is the default type of line item.
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/physical_line_item
+  - term: digital_line_item
+    definition: 'Object declared by the contract with fields: price, quantity, title, product_id, category, brand, product_type, requires_shipping,
+      sku, condition, seller, vendor. (16 more)'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/digital_line_item
+  - term: giftcard_line_item
+    definition: 'Object declared by the contract with fields: price, quantity, title, product_id, category, brand, product_type, requires_shipping,
+      sku, condition, seller, vendor. (16 more)'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/giftcard_line_item
+  - term: travel_line_item
+    definition: 'Object declared by the contract with fields: price, quantity, title, product_id, category, brand, product_type, requires_shipping,
+      sku, condition, seller, vendor. (23 more)'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/travel_line_item
+  - term: rides_line_item
+    definition: 'Object declared by the contract with fields: price, quantity, title, product_id, category, brand, product_type, requires_shipping,
+      sku, condition, seller, vendor. (28 more)'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/rides_line_item
+  - term: events_line_item
+    definition: 'Object declared by the contract with fields: price, quantity, title, product_id, category, brand, product_type, requires_shipping,
+      sku, condition, seller, vendor. (14 more)'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/events_line_item
+  - term: accommodation_line_item
+    definition: 'Object declared by the contract with fields: price, quantity, title, product_id, category, brand, product_type, requires_shipping,
+      sku, condition, seller, vendor. (16 more)'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/accommodation_line_item
+  - term: remittance_line_item
+    definition: 'Object declared by the contract with fields: price, quantity, title, category, product_type, product_id, requires_shipping, recipient.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/remittance_line_item
+  - term: crypto_line_item
+    definition: Represents a cryptocurrency transaction line item.
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/crypto_line_item
+  - term: recipient_crypto
+    definition: 'Object declared by the contract with fields: email, phone, crypto_wallet.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/recipient_crypto
+  - term: recipient_ACH
+    definition: 'Object declared by the contract with fields: account_number, routing_number, bank_code, email, created_at, updated_at, self_recipient.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/recipient_ACH
+  - term: discount_code
+    definition: 'Object declared by the contract with fields: amount, code.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/discount_code
+  - term: shipping_line
+    definition: Details the shipping methods used to deliver the items. * Please note That this can either be an array or a standalone object
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/shipping_line
+  - term: decision_details
+    definition: 'Object declared by the contract with fields: external_status, decided_at, reason, amount, currency, notes.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/decision_details
+  - term: decision_type
+    definition: 'Enumeration declared by the contract with values: approved, declined, cancelled, declined_fraud, declined_business.'
+    tags:
+    - Enumeration
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/decision_type
+  - term: passenger
+    definition: 'Object declared by the contract with fields: first_name, last_name, date_of_birth, nationality_code, document_number, document_type,
+      insurance_type, insurance_price, document_issue_date, document_expiration_date, passenger_type.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/passenger
+  - term: vendor_line_item
+    definition: 'Object declared by the contract with fields: vendor_id, vendor_name.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/vendor_line_item
+  - term: seller
+    definition: 'Object declared by the contract with fields: customer, correspondence, price_negotiated, starting_price.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/seller
+  - term: social_details
+    definition: 'Object declared by the contract with fields: network, public_username, id, account_url, community_score, profile_picture, email,
+      bio, following, followed, posts, auth_token. (1 more)'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/social_details
+  - term: recipient
+    definition: 'Object declared by the contract with fields: email, phone, social, account_number, routing_number, crypto_wallet.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/recipient
+  - term: checkout_denied_response
+    definition: Declined Payment Authorization Response
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/checkout_denied_response
+  - term: pre_auth_checkout_denied_order
+    definition: 'Object declared by the contract with fields: id, payment_details.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/pre_auth_checkout_denied_order
+  - term: checkout_denied_order_wrapper
+    definition: 'Object declared by the contract with fields: checkout.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/checkout_denied_order_wrapper
+  - term: Digital Wallets
+    definition: 'Object declared by the contract with fields: payment_type, authorization_error, authentication_result.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/digital_wallets_payment_details_pre_auth_checkout_denied
+  - term: Credit Card
+    definition: 'Object declared by the contract with fields: payment_type, authorization_error, authentication_result.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/credit_card_payment_details_pre_auth_checkout_denied
+  - term: Paypal
+    definition: 'Object declared by the contract with fields: payment_type, payer_email, payer_status, payer_address_status, protection_eligibility,
+      payment_status, pending_reason, authorization_id, mid, id, acquirer_bin, authorization_error.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/paypal_payment_details_details_pre_auth_checkout_denied
+  - term: authorization_error
+    definition: 'Object declared by the contract with fields: created_at, error_code, drop_off, message.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/authorization_error
+  - term: authentication_result
+    definition: 'Object declared by the contract with fields: eci, liability_shift, created_at, cavv, trans_status, three_d_challenge, TRA_exemption,
+      trans_status_reason.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/authentication_result
+  - term: decision_response
+    definition: Decision Response
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/decision_response
+  - term: decision_order
+    definition: 'Object declared by the contract with fields: id, gateway, decision, payment_details.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/decision_order
+  - term: decision_order_wrapper
+    definition: 'Object declared by the contract with fields: order.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/decision_order_wrapper
+  - term: Digital Wallets
+    definition: 'Object declared by the contract with fields: payment_type, credit_card_company, credit_card_country, credit_card_token, cardholder_name,
+      mid, id, stored_payment_created_at, stored_payment_updated_at, installments, acquirer_bin, acquirer_region. (9 more)'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/digital_wallets_payment_details_pre_auth_decision
+  - term: Credit Card
+    definition: 'Object declared by the contract with fields: payment_type, credit_card_bin, credit_card_company, credit_card_number, credit_card_country,
+      credit_card_token, cardholder_name, mid, id, stored_payment_created_at, stored_payment_updated_at, installments. (12 more)'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/credit_card_payment_details_pre_auth_decision
+  - term: Paypal
+    definition: 'Object declared by the contract with fields: payment_type, payer_email, mid, id, acquirer_bin, payer_status, payer_address_status,
+      protection_eligibility, payment_status, pending_reason, authorization_id, authorization_error.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/paypal_payment_details_details_pre_auth_decision
+  - term: advise_psd2_request
+    definition: 'Object declared by the contract with fields: checkout.'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/advise_psd2_request
+  - term: advise_psd2_response
+    definition: Advise PSD2 Response
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/advise_psd2_response
+  - term: advise_3ds_response
+    definition: Advise 3DS Response
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/advise_3ds_response
+  - term: advise_cvv_response
+    definition: Advise CVV Response
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/advise_cvv_response
+  - term: Credit Card
+    definition: 'Object declared by the contract with fields: payment_type, credit_card_bin, avs_result_code, cvv_result_code, credit_card_company,
+      credit_card_number, credit_card_country, credit_card_token, cardholder_name, authorization_id, mid, id. (12 more)'
+    tags:
+    - Object
+    source: openapi/riskified-chargeback-guarantee-post-auth-openapi.yml#/components/schemas/credit_card_payment_details_post_auth

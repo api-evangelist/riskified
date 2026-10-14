@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/riskified/main/json-schema/riskified-login-action-response-schema.json",
+  "title": "login_action_response",
+  "description": "The response to the login action request.",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/riskified-account-secure-openapi.yml#/components/schemas/login_action_response",
+  "type": "object",
+  "properties": {
+    "login_id": {
+      "type": "string",
+      "description": "Riskified-assigned identifier for the event."
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "allow",
+        "notify",
+        "challenge"
+      ],
+      "description": "The decision made by Riskified regarding the login attempt.\n\n**Possible values:**\n- `allow`: Login is approved\n- `notify`: Login is allowed but customer should be notified\n- `challenge`: Additional verification required before allowing login"
+    }
+  },
+  "required": [
+    "login_id",
+    "decision"
+  ]
+}

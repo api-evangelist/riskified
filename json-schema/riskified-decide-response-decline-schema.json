@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/riskified/main/json-schema/riskified-decide-response-decline-schema.json",
+  "title": "decide_response_decline",
+  "description": "Decline Decide Response",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/decide_response_decline",
+  "type": "object",
+  "properties": {
+    "order": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique ID of order being acted upon. \n\n Note: This value should be later reflected also as order.id on the subsequent calls"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "declined"
+          ],
+          "description": "Textual status describing the result of Riskified analysis. \n\n Always 'declined' for declined orders. Order is declined and not guaranteed"
+        },
+        "description": {
+          "type": "string",
+          "description": "Additional context on Riskified decision."
+        },
+        "old_status": {
+          "type": "string",
+          "description": "Old order status"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Considerable Risk",
+            "High-Risk",
+            "Fraudulent",
+            "Business Policy",
+            "Technical Issue"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "description",
+        "old_status",
+        "category"
+      ]
+    }
+  }
+}

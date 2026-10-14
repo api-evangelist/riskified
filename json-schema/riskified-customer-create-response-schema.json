@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/riskified/main/json-schema/riskified-customer-create-response-schema.json",
+  "title": "customer_create_response",
+  "description": "The response to the customer create action request.",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/riskified-account-secure-openapi.yml#/components/schemas/customer_create_response",
+  "type": "object",
+  "properties": {
+    "customer_create_id": {
+      "type": "string",
+      "description": "Riskified ID of the created customer."
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "allow",
+        "block"
+      ],
+      "description": "The decision made by Riskified regarding the customer creation process.\n\n**Possible values:**\n- `allow`: Customer creation is approved\n- `block`: Customer creation should be blocked\n\n**Note:** \"allow\"/\"block\" response controlled by threshold set for `/customer_create` (threshold is applied to both sandbox and production)."
+    },
+    "decision_reason": {
+      "type": "string",
+      "enum": [
+        "multiple_accounts",
+        "suspicious_account"
+      ],
+      "description": "The reason of the decision made by Riskified regarding the customer creation process."
+    }
+  },
+  "required": [
+    "customer_create_id",
+    "decision"
+  ]
+}

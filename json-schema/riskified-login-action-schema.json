@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/riskified/main/json-schema/riskified-login-action-schema.json",
+  "title": "login_action",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/riskified-account-secure-openapi.yml#/components/schemas/login_action",
+  "type": "object",
+  "properties": {
+    "customer_id": {
+      "type": "string",
+      "description": "**(Conditional Requirement)** A unique numeric identifier for the customer. customer_id should be null when login failes because of no customer account exisistent (e.g. failure_reason = 'nonexistent account'). "
+    },
+    "email": {
+      "type": "string",
+      "description": "**(Conditional Requirement)** The email address used for the login attempt.\nIt is required for successful logins. It is an optional field for failed logins (if username is provided)."
+    },
+    "login_status": {
+      "$ref": "#/$defs/login_status",
+      "description": "An object containing details of the customer's login attempt."
+    },
+    "client_details": {
+      "$ref": "#/$defs/client_details",
+      "description": "An object containing technical information regarding the customer’s browsing session."
+    },
+    "session_details": {
+      "$ref": "#/$defs/session_details",
+      "description": "An object containing basic information regarding the session."
+    },
+    "customer_created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "**(Conditional Requirement)** Use if login_status_type = 'success'.\n\n• The timestamp (ISO8601) of the initial registration of the customer's account in the merchant's systems.\n\n• customer_created_at should be null for failed logins (login_status_type = 'failure') where the failure_reason = 'nonexistent account' or 'other'."
+    },
+    "implicit_login": {
+      "type": "boolean",
+      "description": "Indicates whether this login was made by entering the user’s credentials or not (“remember me” - cookie usage)"
+    },
+    "username": {
+      "type": "string",
+      "description": "**(Conditional Requirement)** The username used for the login attempt.\nUsername is an optional field for successful logins. It is a required field for failed logins (if no email address is provided)."
+    },
+    "login_at_checkout": {
+      "type": "boolean",
+      "description": "Indicates whether the login attempt was made at checkout."
+    },
+    "challenge_redirect_url": {
+      "type": "string",
+      "description": "**(Conditional Requirement)** URL to which customer will be redirected to upon taking action from the verification emails. It is only required for integrations that involve **'challenge'** decisions. It will be the secure magic link, embedded in a user's challenge email 'it was me' prompt.\n\n Note: mandatory for merchants using the challenge flow"
+    },
+    "account_recovery_url": {
+      "type": "string",
+      "description": "URL to which customer will be redirected to upon taking action from the verification emails to recover user account. It is used as redirect URL for 'it was not me' CTA in a user's notify/challenge email. However, merchant can also set fixed url for redirect in Riskified system instead of setting `account_recovery_url` in login request."
+    },
+    "localization_language": {
+      "type": "string",
+      "description": "The 2 letter code (ISO 639-1) to indicate the language the user has selected for merchant site content browsing and communications."
+    },
+    "vendor_name": {
+      "type": "string",
+      "description": "The name of the affiliated partner or selling vendor."
+    },
+    "social_login_type": {
+      "type": "string",
+      "enum": [
+        "facebook",
+        "google",
+        "linkedin",
+        "twitter",
+        "yahoo",
+        "other"
+      ],
+      "description": "In case the user used a social network to log in, send one of the following values.\n\n**Possible values:**\n- `facebook`\n- `google`\n- `linkedin`\n- `twitter`\n- `yahoo`\n- `other`"
+    }
+  },
+  "required": [
+    "login_status",
+    "client_details",
+    "session_details"
+  ],
+  "$defs": {
+    "client_details": {
+      "type": "object",
+      "description": "An object containing technical information regarding the customer’s browsing session",
+      "properties": {
+        "user_agent": {
+          "type": "string",
+          "description": "The full User-Agent sent from the client."
+        },
+        "accept_language": {
+          "type": "string",
+          "description": "List of two-letter language codes sent from the client."
+        }
+      },
+      "required": [
+        "user_agent",
+        "accept_language"
+      ]
+    },
+    "login_status": {
+      "type": "object",
+      "description": "An object containing details of the customer's login attempt.",
+      "properties": {
+        "login_status_type": {
+          "type": "string",
+          "enum": [
+            "success",
+            "failure"
+          ],
+          "description": "Indicates the success or failure of a login attempt.\n\n**Possible values:**\n- `success`: Login was successful\n- `failure`: Login failed"
+        },
+        "failure_reason": {
+          "type": "string",
+          "enum": [
+            "wrong password",
+            "captcha",
+            "disabled account",
+            "nonexistent account",
+            "other"
+          ],
+          "description": "**(Conditional Requirement)** The reason for the unsuccessful login, required if `login_status_type` = `'failure'`.\n\n**Possible values:**\n- `wrong password`: When login failed with wrong password\n- `captcha`: When login failed at Captcha or reCaptcha\n- `disabled account`: When login failed due to the account being logically deleted (disabled)\n- `nonexistent account`: When login failed because account never exists at merchant\n- `other`: When login failed due to other reasons such as \"account is locked\""
+        }
+      },
+      "required": [
+        "login_status_type"
+      ]
+    },
+    "session_details": {
+      "type": "object",
+      "description": "An object containing basic information regarding the session.\n\nSession data points, such as `cart_token`, `browser_ip`, and `user_agent`, should be those associated with values at the time of user's login request - **before** the authentication result is available.",
+      "properties": {
+        "cart_token": {
+          "type": "string",
+          "description": "The session id at the time that the user is on the login webpage or started password reset, prior to authentication attempt.\nMust match the `session_details.cart_token` value set by the Beacon JavaScript snippet. For standard integrations, this value is automatically generated by Beacon. For merchants who manage their own sessions, the same session ID must be passed to both the Beacon and this field. Must remain consistent throughout a purchase flow. Max 100 characters."
+        },
+        "browser_ip": {
+          "type": "string",
+          "description": "The customer's browser IP address during the session."
+        },
+        "created_at": {
+          "type": "string",
+          "description": "The date and time (ISO8601) of the session."
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "desktop_web",
+            "mobile_web",
+            "web",
+            "mobile_app",
+            "other"
+          ],
+          "description": "The platform that the session originated from.\n\n**Possible values:**\n- `desktop_web`: Session originated on the website, using a desktop device\n- `mobile_web`: Session originated on the mobile website, using a mobile device\n- `web`: Session originated on the website, with no available info about the type of device used\n- `mobile_app`: Session originated on the mobile app, using a mobile device\n- `other`: The session's origin is unknown"
+        },
+        "device_id": {
+          "type": "string",
+          "description": "**(Conditional Requirement)** Required for mobile applications. The mobile device identifier, which corresponds to a value extracted via the Riskified mobile beacon SDK."
+        },
+        "referring_site": {
+          "type": "string",
+          "description": "**(Strongly Recommended)** The webpage from which the customer accessed the shop. Domain level is enough, and usually set the shop_url provided by Riskified. In case you have several sites may be used by different population, set different url per the scenario (e.g. regular ec-site: www.shop-regular.com, employee ec-site: www.shop-employee.com)"
+        }
+      },
+      "required": [
+        "created_at",
+        "cart_token",
+        "browser_ip",
+        "source"
+      ]
+    }
+  }
+}

@@ -1,0 +1,72 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/riskified-account-secure-openapi.yml
+- openapi/riskified-chargeback-guarantee-openapi.yml
+- openapi/riskified-chargeback-guarantee-post-auth-openapi.yml
+- openapi/riskified-otp-recovery-openapi.yml
+- openapi/riskified-policy-protect-refunds-returns-openapi.yml
+format: custom
+envelope:
+  media_type: application/json
+  schema: error_response
+coverage:
+  operations: 20
+  statuses_declared: 8
+problems:
+- status: 400
+  title: Bad Request
+  description: Bad request
+  operations: 20
+  media_types:
+  - application/json
+  schema: error_response
+- status: 401
+  title: Unauthorized
+  description: Unauthorized
+  operations: 20
+  media_types:
+  - application/json
+  schema: error_response
+- status: 403
+  title: Forbidden
+  description: 'Unauthorized request: Order has already passed the recovery flow'
+  operations: 1
+  media_types:
+  - application/json
+  schema: null
+- status: 404
+  title: Not Found
+  description: Not found
+  operations: 18
+  media_types:
+  - application/json
+  schema: error_response
+- status: 429
+  title: Too Many Requests
+  description: Too many requests
+  operations: 19
+  media_types:
+  - application/json
+  schema: error_response
+- status: 500
+  title: Internal Server Error
+  description: Contact Riskified support
+  operations: 17
+  media_types:
+  - application/json
+  schema: null
+- status: 503
+  title: Service Unavailable
+  description: Service Unavailable
+  operations: 1
+  media_types:
+  - application/json
+  schema: error_response
+- status: 504
+  title: Gateway Timeout
+  description: Temporary error, please retry
+  operations: 16
+  media_types: []
+  schema: null

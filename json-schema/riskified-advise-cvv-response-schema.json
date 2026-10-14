@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/riskified/main/json-schema/riskified-advise-cvv-response-schema.json",
+  "title": "advise_cvv_response",
+  "description": "Advise CVV Response",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/riskified-chargeback-guarantee-openapi.yml#/components/schemas/advise_cvv_response",
+  "type": "object",
+  "properties": {
+    "checkout": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Unique ID of a checkout being acted upon."
+        },
+        "action": {
+          "type": "string",
+          "description": "Indicates if the order is likely to be fraudulent and therefore should be declined, or should proceed to the Gateway. \n\nIf the action is `decline`, the `advice` object won't be present.",
+          "enum": [
+            "decline",
+            "proceed"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "description": "Indicates that the order is captured at Riskified systems.",
+          "enum": [
+            "captured"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the operation, if it exists."
+        },
+        "advice": {
+          "type": "object",
+          "properties": {
+            "recommendations": {
+              "type": "array",
+              "description": "An array of recommendation types and values.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Recommendation type",
+                    "enum": [
+                      "CVV"
+                    ]
+                  },
+                  "recommended": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ],
+                    "description": "Textual status describing the CVV recommendation.\n\n - `True`  should request for CVV \n - `False` - proceed to the gateway without asking for CVV"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "id",
+        "action",
+        "status",
+        "description",
+        "advice"
+      ]
+    }
+  }
+}

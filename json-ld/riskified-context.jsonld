@@ -1,0 +1,1186 @@
+{
+  "@context": {
+    "@vocab": "https://riskified.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "riskified": "https://riskified.com/schema#",
+    "login_action": "riskified:login_action",
+    "customer_id": {
+      "@id": "riskified:customer_id",
+      "@type": "xsd:string"
+    },
+    "email": {
+      "@id": "riskified:email",
+      "@type": "xsd:string"
+    },
+    "login_status": {
+      "@id": "riskified:login_status",
+      "@type": "@id"
+    },
+    "client_details": {
+      "@id": "riskified:client_details",
+      "@type": "@id"
+    },
+    "session_details": {
+      "@id": "riskified:session_details",
+      "@type": "@id"
+    },
+    "customer_created_at": {
+      "@id": "riskified:customer_created_at",
+      "@type": "xsd:dateTime"
+    },
+    "implicit_login": {
+      "@id": "riskified:implicit_login",
+      "@type": "xsd:boolean"
+    },
+    "username": {
+      "@id": "riskified:username",
+      "@type": "xsd:string"
+    },
+    "login_at_checkout": {
+      "@id": "riskified:login_at_checkout",
+      "@type": "xsd:boolean"
+    },
+    "challenge_redirect_url": {
+      "@id": "riskified:challenge_redirect_url",
+      "@type": "xsd:string"
+    },
+    "account_recovery_url": {
+      "@id": "riskified:account_recovery_url",
+      "@type": "xsd:string"
+    },
+    "localization_language": {
+      "@id": "riskified:localization_language",
+      "@type": "xsd:string"
+    },
+    "vendor_name": {
+      "@id": "riskified:vendor_name",
+      "@type": "xsd:string"
+    },
+    "social_login_type": {
+      "@id": "riskified:social_login_type",
+      "@type": "xsd:string"
+    },
+    "login_action_response": "riskified:login_action_response",
+    "login_id": {
+      "@id": "riskified:login_id",
+      "@type": "xsd:string"
+    },
+    "decision": {
+      "@id": "riskified:decision",
+      "@type": "xsd:string"
+    },
+    "error": "riskified:error",
+    "message": {
+      "@id": "riskified:message",
+      "@type": "xsd:string"
+    },
+    "code": {
+      "@id": "riskified:code",
+      "@type": "xsd:string"
+    },
+    "details": {
+      "@id": "riskified:details",
+      "@type": "xsd:string"
+    },
+    "error_response": "riskified:error_response",
+    "reset_password_action": "riskified:reset_password_action",
+    "status": {
+      "@id": "riskified:status",
+      "@type": "xsd:string"
+    },
+    "reason": {
+      "@id": "riskified:reason",
+      "@type": "xsd:string"
+    },
+    "reset_password_action_response": "riskified:reset_password_action_response",
+    "account_balance": "riskified:account_balance",
+    "available_balance": {
+      "@id": "riskified:available_balance",
+      "@type": "xsd:integer"
+    },
+    "service_name": {
+      "@id": "riskified:service_name",
+      "@type": "xsd:string"
+    },
+    "updated_at": {
+      "@id": "riskified:updated_at",
+      "@type": "xsd:dateTime"
+    },
+    "currency_code": {
+      "@id": "riskified:currency_code",
+      "@type": "xsd:string"
+    },
+    "account_identity_address": "riskified:account_identity_address",
+    "address1": {
+      "@id": "riskified:address1",
+      "@type": "xsd:string"
+    },
+    "city": {
+      "@id": "riskified:city",
+      "@type": "xsd:string"
+    },
+    "province_code": {
+      "@id": "riskified:province_code",
+      "@type": "xsd:string"
+    },
+    "zip": {
+      "@id": "riskified:zip",
+      "@type": "xsd:string"
+    },
+    "country_code": {
+      "@id": "riskified:country_code",
+      "@type": "xsd:string"
+    },
+    "account_identity": "riskified:account_identity",
+    "names": {
+      "@id": "riskified:names",
+      "@container": "@list"
+    },
+    "addresses": {
+      "@id": "riskified:addresses",
+      "@container": "@list"
+    },
+    "phone_numbers": {
+      "@id": "riskified:phone_numbers",
+      "@container": "@list"
+    },
+    "emails": {
+      "@id": "riskified:emails",
+      "@container": "@list"
+    },
+    "customer_create": "riskified:customer_create",
+    "customer": {
+      "@id": "riskified:customer",
+      "@type": "@id"
+    },
+    "payment_details": {
+      "@id": "riskified:payment_details",
+      "@container": "@list"
+    },
+    "billing_address": {
+      "@id": "riskified:billing_address",
+      "@type": "@id"
+    },
+    "shipping_address": {
+      "@id": "riskified:shipping_address",
+      "@type": "@id"
+    },
+    "created_at": {
+      "@id": "riskified:created_at",
+      "@type": "xsd:dateTime"
+    },
+    "customer_create_response": "riskified:customer_create_response",
+    "customer_create_id": {
+      "@id": "riskified:customer_create_id",
+      "@type": "xsd:string"
+    },
+    "decision_reason": {
+      "@id": "riskified:decision_reason",
+      "@type": "xsd:string"
+    },
+    "digital_wallets_payment_details": "riskified:digital_wallets_payment_details",
+    "payment_type": {
+      "@id": "riskified:payment_type",
+      "@type": "xsd:string"
+    },
+    "credit_card_bin": {
+      "@id": "riskified:credit_card_bin",
+      "@type": "xsd:string"
+    },
+    "credit_card_company": {
+      "@id": "riskified:credit_card_company",
+      "@type": "xsd:string"
+    },
+    "credit_card_number": {
+      "@id": "riskified:credit_card_number",
+      "@type": "xsd:string"
+    },
+    "credit_card_country": {
+      "@id": "riskified:credit_card_country",
+      "@type": "xsd:string"
+    },
+    "credit_card_token": {
+      "@id": "riskified:credit_card_token",
+      "@type": "xsd:string"
+    },
+    "cardholder_name": {
+      "@id": "riskified:cardholder_name",
+      "@type": "xsd:string"
+    },
+    "mid": {
+      "@id": "riskified:mid",
+      "@type": "xsd:string"
+    },
+    "id": {
+      "@id": "riskified:id",
+      "@type": "xsd:string"
+    },
+    "stored_payment_created_at": {
+      "@id": "riskified:stored_payment_created_at",
+      "@type": "xsd:dateTime"
+    },
+    "stored_payment_updated_at": {
+      "@id": "riskified:stored_payment_updated_at",
+      "@type": "xsd:dateTime"
+    },
+    "installments": {
+      "@id": "riskified:installments",
+      "@type": "xsd:integer"
+    },
+    "acquirer_bin": {
+      "@id": "riskified:acquirer_bin",
+      "@type": "xsd:string"
+    },
+    "acquirer_region": {
+      "@id": "riskified:acquirer_region",
+      "@type": "xsd:string"
+    },
+    "expiry_month": {
+      "@id": "riskified:expiry_month",
+      "@type": "xsd:integer"
+    },
+    "expiry_year": {
+      "@id": "riskified:expiry_year",
+      "@type": "xsd:integer"
+    },
+    "initial_payment_amount": {
+      "@id": "riskified:initial_payment_amount",
+      "@type": "xsd:decimal"
+    },
+    "payment_frequency": {
+      "@id": "riskified:payment_frequency",
+      "@type": "xsd:integer"
+    },
+    "billing_address_id": {
+      "@id": "riskified:billing_address_id",
+      "@type": "xsd:string"
+    },
+    "credit_card_payment_details_pre_auth": "riskified:credit_card_payment_details_pre_auth",
+    "paypal_payment_details_details_pre_auth": "riskified:paypal_payment_details_details_pre_auth",
+    "payer_email": {
+      "@id": "riskified:payer_email",
+      "@type": "xsd:string"
+    },
+    "bank_wire_payment_details": "riskified:bank_wire_payment_details",
+    "account_number": {
+      "@id": "riskified:account_number",
+      "@type": "xsd:string"
+    },
+    "routing_number": {
+      "@id": "riskified:routing_number",
+      "@type": "xsd:string"
+    },
+    "token": {
+      "@id": "riskified:token",
+      "@type": "xsd:string"
+    },
+    "buy_now_pay_later_payment_details": "riskified:buy_now_pay_later_payment_details",
+    "non_chb_payment_details": "riskified:non_chb_payment_details",
+    "address": "riskified:address",
+    "first_name": {
+      "@id": "riskified:first_name",
+      "@type": "xsd:string"
+    },
+    "last_name": {
+      "@id": "riskified:last_name",
+      "@type": "xsd:string"
+    },
+    "country": {
+      "@id": "riskified:country",
+      "@type": "xsd:string"
+    },
+    "phone": {
+      "@id": "riskified:phone",
+      "@type": "xsd:string"
+    },
+    "address2": {
+      "@id": "riskified:address2",
+      "@type": "xsd:string"
+    },
+    "company": {
+      "@id": "riskified:company",
+      "@type": "xsd:string"
+    },
+    "additional_phone": {
+      "@id": "riskified:additional_phone",
+      "@type": "xsd:string"
+    },
+    "verified_phone": {
+      "@id": "riskified:verified_phone",
+      "@type": "xsd:boolean"
+    },
+    "province": {
+      "@id": "riskified:province",
+      "@type": "xsd:string"
+    },
+    "neighborhood": {
+      "@id": "riskified:neighborhood",
+      "@type": "xsd:string"
+    },
+    "latitude": {
+      "@id": "riskified:latitude",
+      "@type": "xsd:decimal"
+    },
+    "longitude": {
+      "@id": "riskified:longitude",
+      "@type": "xsd:decimal"
+    },
+    "customer_update": "riskified:customer_update",
+    "password_changed": {
+      "@id": "riskified:password_changed",
+      "@type": "xsd:boolean"
+    },
+    "customer_update_response": "riskified:customer_update_response",
+    "kyc_details": "riskified:kyc_details",
+    "update_at": {
+      "@id": "riskified:update_at",
+      "@type": "xsd:dateTime"
+    },
+    "kyc_verified": {
+      "@id": "riskified:kyc_verified",
+      "@type": "xsd:boolean"
+    },
+    "kyc_type": {
+      "@id": "riskified:kyc_type",
+      "@type": "xsd:string"
+    },
+    "crypto_wallet": "riskified:crypto_wallet",
+    "network": {
+      "@id": "riskified:network",
+      "@type": "xsd:string"
+    },
+    "type": {
+      "@id": "riskified:type",
+      "@type": "xsd:string"
+    },
+    "decide_response_approve": "riskified:decide_response_approve",
+    "order": {
+      "@id": "riskified:order"
+    },
+    "adaptive_checkout_psd2_approved": "riskified:adaptive_checkout_psd2_approved",
+    "adaptive_checkout_3ds_declined": "riskified:adaptive_checkout_3ds_declined",
+    "decide_response_decline": "riskified:decide_response_decline",
+    "decide_response_captured": "riskified:decide_response_captured",
+    "base_order": "riskified:base_order",
+    "currency": {
+      "@id": "riskified:currency",
+      "@type": "xsd:string"
+    },
+    "gateway": {
+      "@id": "riskified:gateway",
+      "@type": "xsd:string"
+    },
+    "browser_ip": {
+      "@id": "riskified:browser_ip",
+      "@type": "xsd:string"
+    },
+    "total_price": {
+      "@id": "riskified:total_price",
+      "@type": "xsd:decimal"
+    },
+    "total_discounts": {
+      "@id": "riskified:total_discounts",
+      "@type": "xsd:decimal"
+    },
+    "referring_site": {
+      "@id": "riskified:referring_site",
+      "@type": "xsd:string"
+    },
+    "line_items": {
+      "@id": "riskified:line_items",
+      "@container": "@list"
+    },
+    "shipping_lines": {
+      "@id": "riskified:shipping_lines",
+      "@container": "@list"
+    },
+    "source": {
+      "@id": "riskified:source",
+      "@type": "xsd:string"
+    },
+    "ai_agent": {
+      "@id": "riskified:ai_agent",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "riskified:name",
+      "@type": "xsd:string"
+    },
+    "cart_token": {
+      "@id": "riskified:cart_token",
+      "@type": "xsd:string"
+    },
+    "checkout_id": {
+      "@id": "riskified:checkout_id",
+      "@type": "xsd:string"
+    },
+    "note": {
+      "@id": "riskified:note",
+      "@type": "xsd:string"
+    },
+    "passengers": {
+      "@id": "riskified:passengers",
+      "@container": "@list"
+    },
+    "discount_codes": {
+      "@id": "riskified:discount_codes",
+      "@container": "@list"
+    },
+    "vendor_id": {
+      "@id": "riskified:vendor_id",
+      "@type": "xsd:string"
+    },
+    "order_type": {
+      "@id": "riskified:order_type",
+      "@type": "xsd:string"
+    },
+    "submission_reason": {
+      "@id": "riskified:submission_reason",
+      "@type": "xsd:string"
+    },
+    "charge_free_payment_details": {
+      "@id": "riskified:charge_free_payment_details",
+      "@container": "@list"
+    },
+    "partner_sub_merchant_id": {
+      "@id": "riskified:partner_sub_merchant_id",
+      "@type": "xsd:string"
+    },
+    "invoice_id": {
+      "@id": "riskified:invoice_id",
+      "@type": "xsd:string"
+    },
+    "order_wrapper": "riskified:order_wrapper",
+    "physical_line_item": "riskified:physical_line_item",
+    "price": {
+      "@id": "riskified:price",
+      "@type": "xsd:decimal"
+    },
+    "quantity": {
+      "@id": "riskified:quantity",
+      "@type": "xsd:integer"
+    },
+    "title": {
+      "@id": "riskified:title",
+      "@type": "xsd:string"
+    },
+    "product_id": {
+      "@id": "riskified:product_id",
+      "@type": "xsd:string"
+    },
+    "category": {
+      "@id": "riskified:category",
+      "@type": "xsd:string"
+    },
+    "brand": {
+      "@id": "riskified:brand",
+      "@type": "xsd:string"
+    },
+    "product_type": {
+      "@id": "riskified:product_type",
+      "@type": "xsd:string"
+    },
+    "requires_shipping": {
+      "@id": "riskified:requires_shipping",
+      "@type": "xsd:boolean"
+    },
+    "sku": {
+      "@id": "riskified:sku",
+      "@type": "xsd:string"
+    },
+    "condition": {
+      "@id": "riskified:condition",
+      "@type": "xsd:string"
+    },
+    "seller": {
+      "@id": "riskified:seller",
+      "@type": "@id"
+    },
+    "vendor": {
+      "@id": "riskified:vendor",
+      "@type": "@id"
+    },
+    "sub_category": {
+      "@id": "riskified:sub_category",
+      "@type": "xsd:string"
+    },
+    "delivered_at": {
+      "@id": "riskified:delivered_at",
+      "@type": "xsd:string"
+    },
+    "delivered_to": {
+      "@id": "riskified:delivered_to",
+      "@type": "xsd:string"
+    },
+    "drop_point": {
+      "@id": "riskified:drop_point",
+      "@type": "xsd:string"
+    },
+    "size": {
+      "@id": "riskified:size",
+      "@type": "xsd:string"
+    },
+    "registry_type": {
+      "@id": "riskified:registry_type",
+      "@type": "xsd:string"
+    },
+    "shipping_address_id": {
+      "@id": "riskified:shipping_address_id",
+      "@type": "xsd:string"
+    },
+    "digital_line_item": "riskified:digital_line_item",
+    "sender_name": {
+      "@id": "riskified:sender_name",
+      "@type": "xsd:string"
+    },
+    "photo_uploaded": {
+      "@id": "riskified:photo_uploaded",
+      "@type": "xsd:boolean"
+    },
+    "photo_url": {
+      "@id": "riskified:photo_url",
+      "@type": "xsd:string"
+    },
+    "display_name": {
+      "@id": "riskified:display_name",
+      "@type": "xsd:string"
+    },
+    "greeting_photo_url": {
+      "@id": "riskified:greeting_photo_url",
+      "@type": "xsd:string"
+    },
+    "greeting_message": {
+      "@id": "riskified:greeting_message",
+      "@type": "xsd:string"
+    },
+    "card_type": {
+      "@id": "riskified:card_type",
+      "@type": "xsd:string"
+    },
+    "recipient": {
+      "@id": "riskified:recipient",
+      "@type": "@id"
+    },
+    "giftcard_line_item": "riskified:giftcard_line_item",
+    "travel_line_item": "riskified:travel_line_item",
+    "leg_id": {
+      "@id": "riskified:leg_id",
+      "@type": "xsd:string"
+    },
+    "departure_city": {
+      "@id": "riskified:departure_city",
+      "@type": "xsd:string"
+    },
+    "departure_country_code": {
+      "@id": "riskified:departure_country_code",
+      "@type": "xsd:string"
+    },
+    "arrival_city": {
+      "@id": "riskified:arrival_city",
+      "@type": "xsd:string"
+    },
+    "arrival_country_code": {
+      "@id": "riskified:arrival_country_code",
+      "@type": "xsd:string"
+    },
+    "departure_date": {
+      "@id": "riskified:departure_date",
+      "@type": "xsd:dateTime"
+    },
+    "carrier_code": {
+      "@id": "riskified:carrier_code",
+      "@type": "xsd:string"
+    },
+    "route_index": {
+      "@id": "riskified:route_index",
+      "@type": "xsd:integer"
+    },
+    "leg_index": {
+      "@id": "riskified:leg_index",
+      "@type": "xsd:integer"
+    },
+    "transport_method": {
+      "@id": "riskified:transport_method",
+      "@type": "xsd:string"
+    },
+    "departure_port_code": {
+      "@id": "riskified:departure_port_code",
+      "@type": "xsd:string"
+    },
+    "arrival_port_code": {
+      "@id": "riskified:arrival_port_code",
+      "@type": "xsd:string"
+    },
+    "arrival_date": {
+      "@id": "riskified:arrival_date",
+      "@type": "xsd:dateTime"
+    },
+    "carrier_name": {
+      "@id": "riskified:carrier_name",
+      "@type": "xsd:string"
+    },
+    "ticket_class": {
+      "@id": "riskified:ticket_class",
+      "@type": "xsd:string"
+    },
+    "cancellation_policy": {
+      "@id": "riskified:cancellation_policy",
+      "@type": "xsd:string"
+    },
+    "rides_line_item": "riskified:rides_line_item",
+    "pickup_date": {
+      "@id": "riskified:pickup_date",
+      "@type": "xsd:dateTime"
+    },
+    "pickup_latitude": {
+      "@id": "riskified:pickup_latitude",
+      "@type": "xsd:decimal"
+    },
+    "pickup_longitude": {
+      "@id": "riskified:pickup_longitude",
+      "@type": "xsd:decimal"
+    },
+    "pickup_address": {
+      "@id": "riskified:pickup_address",
+      "@container": "@list"
+    },
+    "dropoff_date": {
+      "@id": "riskified:dropoff_date",
+      "@type": "xsd:dateTime"
+    },
+    "dropoff_latitude": {
+      "@id": "riskified:dropoff_latitude",
+      "@type": "xsd:decimal"
+    },
+    "dropoff_longitude": {
+      "@id": "riskified:dropoff_longitude",
+      "@type": "xsd:decimal"
+    },
+    "dropoff_address": {
+      "@id": "riskified:dropoff_address",
+      "@container": "@list"
+    },
+    "price_by": {
+      "@id": "riskified:price_by",
+      "@type": "xsd:string"
+    },
+    "vehicle_class": {
+      "@id": "riskified:vehicle_class",
+      "@type": "xsd:string"
+    },
+    "driver_id": {
+      "@id": "riskified:driver_id",
+      "@type": "xsd:string"
+    },
+    "tariff": {
+      "@id": "riskified:tariff",
+      "@type": "xsd:string"
+    },
+    "note_to_driver": {
+      "@id": "riskified:note_to_driver",
+      "@type": "xsd:string"
+    },
+    "meet_n_greet": {
+      "@id": "riskified:meet_n_greet",
+      "@type": "xsd:string"
+    },
+    "authorized_payment": {
+      "@id": "riskified:authorized_payment",
+      "@type": "xsd:decimal"
+    },
+    "damage_excess": {
+      "@id": "riskified:damage_excess",
+      "@type": "xsd:decimal"
+    },
+    "events_line_item": "riskified:events_line_item",
+    "event_date": {
+      "@id": "riskified:event_date",
+      "@type": "xsd:dateTime"
+    },
+    "section": {
+      "@id": "riskified:section",
+      "@type": "xsd:string"
+    },
+    "accommodation_line_item": "riskified:accommodation_line_item",
+    "check_in_date": {
+      "@id": "riskified:check_in_date",
+      "@type": "xsd:dateTime"
+    },
+    "check_out_date": {
+      "@id": "riskified:check_out_date",
+      "@type": "xsd:dateTime"
+    },
+    "accommodation_type": {
+      "@id": "riskified:accommodation_type",
+      "@type": "xsd:string"
+    },
+    "room_type": {
+      "@id": "riskified:room_type",
+      "@type": "xsd:string"
+    },
+    "number_of_guests": {
+      "@id": "riskified:number_of_guests",
+      "@type": "xsd:integer"
+    },
+    "rating": {
+      "@id": "riskified:rating",
+      "@type": "xsd:string"
+    },
+    "remittance_line_item": "riskified:remittance_line_item",
+    "crypto_line_item": "riskified:crypto_line_item",
+    "recipient_crypto": "riskified:recipient_crypto",
+    "recipient_ACH": "riskified:recipient_ACH",
+    "bank_code": {
+      "@id": "riskified:bank_code",
+      "@type": "xsd:string"
+    },
+    "self_recipient": {
+      "@id": "riskified:self_recipient",
+      "@type": "xsd:boolean"
+    },
+    "discount_code": "riskified:discount_code",
+    "amount": {
+      "@id": "riskified:amount",
+      "@type": "xsd:decimal"
+    },
+    "shipping_line": "riskified:shipping_line",
+    "decision_details": "riskified:decision_details",
+    "external_status": {
+      "@id": "riskified:external_status",
+      "@type": "@id"
+    },
+    "decided_at": {
+      "@id": "riskified:decided_at",
+      "@type": "xsd:dateTime"
+    },
+    "notes": {
+      "@id": "riskified:notes",
+      "@type": "xsd:string"
+    },
+    "decision_type": "riskified:decision_type",
+    "passenger": "riskified:passenger",
+    "date_of_birth": {
+      "@id": "riskified:date_of_birth",
+      "@type": "xsd:date"
+    },
+    "nationality_code": {
+      "@id": "riskified:nationality_code",
+      "@type": "xsd:string"
+    },
+    "document_number": {
+      "@id": "riskified:document_number",
+      "@type": "xsd:string"
+    },
+    "document_type": {
+      "@id": "riskified:document_type",
+      "@type": "xsd:string"
+    },
+    "insurance_type": {
+      "@id": "riskified:insurance_type",
+      "@type": "xsd:string"
+    },
+    "insurance_price": {
+      "@id": "riskified:insurance_price",
+      "@type": "xsd:decimal"
+    },
+    "document_issue_date": {
+      "@id": "riskified:document_issue_date",
+      "@type": "xsd:date"
+    },
+    "document_expiration_date": {
+      "@id": "riskified:document_expiration_date",
+      "@type": "xsd:date"
+    },
+    "passenger_type": {
+      "@id": "riskified:passenger_type",
+      "@type": "xsd:string"
+    },
+    "vendor_line_item": "riskified:vendor_line_item",
+    "social_details": "riskified:social_details",
+    "public_username": {
+      "@id": "riskified:public_username",
+      "@type": "xsd:string"
+    },
+    "account_url": {
+      "@id": "riskified:account_url",
+      "@type": "xsd:string"
+    },
+    "community_score": {
+      "@id": "riskified:community_score",
+      "@type": "xsd:integer"
+    },
+    "profile_picture": {
+      "@id": "riskified:profile_picture",
+      "@type": "xsd:string"
+    },
+    "bio": {
+      "@id": "riskified:bio",
+      "@type": "xsd:string"
+    },
+    "following": {
+      "@id": "riskified:following",
+      "@type": "xsd:integer"
+    },
+    "followed": {
+      "@id": "riskified:followed",
+      "@type": "xsd:integer"
+    },
+    "posts": {
+      "@id": "riskified:posts",
+      "@type": "xsd:integer"
+    },
+    "auth_token": {
+      "@id": "riskified:auth_token",
+      "@type": "xsd:string"
+    },
+    "social_data": {
+      "@id": "riskified:social_data"
+    },
+    "checkout_denied_response": "riskified:checkout_denied_response",
+    "checkout": {
+      "@id": "riskified:checkout"
+    },
+    "pre_auth_checkout_denied_order": "riskified:pre_auth_checkout_denied_order",
+    "checkout_denied_order_wrapper": "riskified:checkout_denied_order_wrapper",
+    "digital_wallets_payment_details_pre_auth_checkout_denied": "riskified:digital_wallets_payment_details_pre_auth_checkout_denied",
+    "authorization_error": {
+      "@id": "riskified:authorization_error",
+      "@type": "@id"
+    },
+    "authentication_result": {
+      "@id": "riskified:authentication_result",
+      "@type": "@id"
+    },
+    "credit_card_payment_details_pre_auth_checkout_denied": "riskified:credit_card_payment_details_pre_auth_checkout_denied",
+    "paypal_payment_details_details_pre_auth_checkout_denied": "riskified:paypal_payment_details_details_pre_auth_checkout_denied",
+    "payer_status": {
+      "@id": "riskified:payer_status",
+      "@type": "xsd:string"
+    },
+    "payer_address_status": {
+      "@id": "riskified:payer_address_status",
+      "@type": "xsd:string"
+    },
+    "protection_eligibility": {
+      "@id": "riskified:protection_eligibility",
+      "@type": "xsd:string"
+    },
+    "payment_status": {
+      "@id": "riskified:payment_status",
+      "@type": "xsd:string"
+    },
+    "pending_reason": {
+      "@id": "riskified:pending_reason",
+      "@type": "xsd:string"
+    },
+    "authorization_id": {
+      "@id": "riskified:authorization_id",
+      "@type": "xsd:string"
+    },
+    "decision_response": "riskified:decision_response",
+    "decision_order": "riskified:decision_order",
+    "decision_order_wrapper": "riskified:decision_order_wrapper",
+    "digital_wallets_payment_details_pre_auth_decision": "riskified:digital_wallets_payment_details_pre_auth_decision",
+    "avs_result_code": {
+      "@id": "riskified:avs_result_code",
+      "@type": "xsd:string"
+    },
+    "authorization_type": {
+      "@id": "riskified:authorization_type",
+      "@type": "xsd:string"
+    },
+    "credit_card_payment_details_pre_auth_decision": "riskified:credit_card_payment_details_pre_auth_decision",
+    "cvv_result_code": {
+      "@id": "riskified:cvv_result_code",
+      "@type": "xsd:string"
+    },
+    "paypal_payment_details_details_pre_auth_decision": "riskified:paypal_payment_details_details_pre_auth_decision",
+    "advise_psd2_request": "riskified:advise_psd2_request",
+    "advise_psd2_response": "riskified:advise_psd2_response",
+    "advise_3ds_response": "riskified:advise_3ds_response",
+    "advise_cvv_response": "riskified:advise_cvv_response",
+    "credit_card_payment_details_post_auth": "riskified:credit_card_payment_details_post_auth",
+    "paypal_payment_details_details_post_auth": "riskified:paypal_payment_details_details_post_auth",
+    "notification_decision": "riskified:notification_decision",
+    "description": {
+      "@id": "riskified:description",
+      "@type": "xsd:string"
+    },
+    "old_status": {
+      "@id": "riskified:old_status",
+      "@type": "xsd:string"
+    },
+    "submit_response_submitted": "riskified:submit_response_submitted",
+    "checkout_denied_base_order": "riskified:checkout_denied_base_order",
+    "digital_wallets_payment_details_post_auth_checkout_denied": "riskified:digital_wallets_payment_details_post_auth_checkout_denied",
+    "credit_card_payment_details_post_auth_checkout_denied": "riskified:credit_card_payment_details_post_auth_checkout_denied",
+    "cancel": "riskified:cancel",
+    "cancel_reason": {
+      "@id": "riskified:cancel_reason",
+      "@type": "xsd:string"
+    },
+    "cancelled_at": {
+      "@id": "riskified:cancelled_at",
+      "@type": "xsd:dateTime"
+    },
+    "cancel_order_wrapper": "riskified:cancel_order_wrapper",
+    "Cancel_Response": "riskified:Cancel_Response",
+    "refund": "riskified:refund",
+    "refunds": {
+      "@id": "riskified:refunds",
+      "@container": "@list"
+    },
+    "refund_order_wrapper": "riskified:refund_order_wrapper",
+    "refund_details": "riskified:refund_details",
+    "refund_id": {
+      "@id": "riskified:refund_id",
+      "@type": "xsd:string"
+    },
+    "refunded_at": {
+      "@id": "riskified:refunded_at",
+      "@type": "xsd:dateTime"
+    },
+    "sku_quantity": {
+      "@id": "riskified:sku_quantity",
+      "@type": "xsd:integer"
+    },
+    "refund_response": "riskified:refund_response",
+    "fulfillment_order": "riskified:fulfillment_order",
+    "fulfillments": {
+      "@id": "riskified:fulfillments",
+      "@container": "@list"
+    },
+    "fulfillment_order_wrapper": "riskified:fulfillment_order_wrapper",
+    "fulfillment_details": "riskified:fulfillment_details",
+    "fulfillment_id": {
+      "@id": "riskified:fulfillment_id",
+      "@type": "xsd:string"
+    },
+    "tracking_company": {
+      "@id": "riskified:tracking_company",
+      "@type": "xsd:string"
+    },
+    "tracking_numbers": {
+      "@id": "riskified:tracking_numbers",
+      "@type": "xsd:string"
+    },
+    "tracking_urls": {
+      "@id": "riskified:tracking_urls",
+      "@type": "xsd:string"
+    },
+    "receipt": {
+      "@id": "riskified:receipt",
+      "@type": "xsd:string"
+    },
+    "fulfill_response": "riskified:fulfill_response",
+    "chargeback_order": "riskified:chargeback_order",
+    "chargeback_details": {
+      "@id": "riskified:chargeback_details",
+      "@type": "@id"
+    },
+    "fulfillment": {
+      "@id": "riskified:fulfillment",
+      "@type": "@id"
+    },
+    "dispute_details": {
+      "@id": "riskified:dispute_details",
+      "@type": "@id"
+    },
+    "chargeback_order_wrapper": "riskified:chargeback_order_wrapper",
+    "chargeback_response": "riskified:chargeback_response",
+    "OtpInitiateRequest": "riskified:OtpInitiateRequest",
+    "challenge_access_token": {
+      "@id": "riskified:challenge_access_token",
+      "@type": "xsd:string"
+    },
+    "contact_details": {
+      "@id": "riskified:contact_details",
+      "@type": "xsd:string"
+    },
+    "channel_method": {
+      "@id": "riskified:channel_method",
+      "@type": "@id"
+    },
+    "OtpInitiateResponse": "riskified:OtpInitiateResponse",
+    "widgetToken": {
+      "@id": "riskified:widgetToken",
+      "@type": "xsd:string"
+    },
+    "401_response": "riskified:401_response",
+    "ClaimCreateRequest": "riskified:ClaimCreateRequest",
+    "claim": {
+      "@id": "riskified:claim",
+      "@type": "@id"
+    },
+    "Claim_Create_Response_Approve": "riskified:Claim_Create_Response_Approve",
+    "warnings": {
+      "@id": "riskified:warnings",
+      "@container": "@list"
+    },
+    "Claim_Create_Response_Review": "riskified:Claim_Create_Response_Review",
+    "Claim_Create_Response_Decline": "riskified:Claim_Create_Response_Decline",
+    "Claim_Create_Response_Excluded": "riskified:Claim_Create_Response_Excluded",
+    "Claim_Create_Response_Captured": "riskified:Claim_Create_Response_Captured",
+    "ClaimCreate": "riskified:ClaimCreate",
+    "handling_fee": {
+      "@id": "riskified:handling_fee",
+      "@type": "xsd:decimal"
+    },
+    "device_id": {
+      "@id": "riskified:device_id",
+      "@type": "xsd:string"
+    },
+    "LineItemCreate": "riskified:LineItemCreate",
+    "order_id": {
+      "@id": "riskified:order_id",
+      "@type": "xsd:string"
+    },
+    "claim_amount": {
+      "@id": "riskified:claim_amount",
+      "@type": "xsd:decimal"
+    },
+    "item_id": {
+      "@id": "riskified:item_id",
+      "@type": "xsd:string"
+    },
+    "claim_reason": {
+      "@id": "riskified:claim_reason",
+      "@type": "xsd:string"
+    },
+    "orig_claim_reason": {
+      "@id": "riskified:orig_claim_reason",
+      "@type": "xsd:string"
+    },
+    "requested_action": {
+      "@id": "riskified:requested_action",
+      "@type": "xsd:string"
+    },
+    "return_deadline": {
+      "@id": "riskified:return_deadline",
+      "@type": "xsd:dateTime"
+    },
+    "return_requested": {
+      "@id": "riskified:return_requested",
+      "@type": "xsd:boolean"
+    },
+    "customer_note": {
+      "@id": "riskified:customer_note",
+      "@type": "xsd:string"
+    },
+    "Customer": "riskified:Customer",
+    "is_logged_in": {
+      "@id": "riskified:is_logged_in",
+      "@type": "xsd:boolean"
+    },
+    "Fulfillment": "riskified:Fulfillment",
+    "proof_of_delivery": {
+      "@id": "riskified:proof_of_delivery",
+      "@type": "xsd:boolean"
+    },
+    "proof_of_delivery_type": {
+      "@id": "riskified:proof_of_delivery_type",
+      "@type": "xsd:string"
+    },
+    "Address": "riskified:Address",
+    "error_with_code": "riskified:error_with_code",
+    "statusCode": {
+      "@id": "riskified:statusCode",
+      "@type": "xsd:string"
+    },
+    "400_claim_decision": "riskified:400_claim_decision",
+    "ClaimDecisionRequest": "riskified:ClaimDecisionRequest",
+    "ClaimDecisionResponse": "riskified:ClaimDecisionResponse",
+    "ClaimOnlyId": "riskified:ClaimOnlyId",
+    "ClaimDecision": "riskified:ClaimDecision",
+    "LineItemDecision": "riskified:LineItemDecision",
+    "Decision": "riskified:Decision",
+    "refund_amount": {
+      "@id": "riskified:refund_amount",
+      "@type": "xsd:decimal"
+    },
+    "action": {
+      "@id": "riskified:action",
+      "@type": "xsd:string"
+    },
+    "decided_by": {
+      "@id": "riskified:decided_by",
+      "@type": "xsd:string"
+    },
+    "ReturnShipping": "riskified:ReturnShipping",
+    "scanned_at": {
+      "@id": "riskified:scanned_at",
+      "@type": "xsd:dateTime"
+    },
+    "label_created_at": {
+      "@id": "riskified:label_created_at",
+      "@type": "xsd:dateTime"
+    },
+    "arrived_at": {
+      "@id": "riskified:arrived_at",
+      "@type": "xsd:dateTime"
+    },
+    "weight": {
+      "@id": "riskified:weight",
+      "@type": "xsd:decimal"
+    },
+    "weight_unit": {
+      "@id": "riskified:weight_unit",
+      "@type": "xsd:string"
+    },
+    "is_verified": {
+      "@id": "riskified:is_verified",
+      "@type": "xsd:boolean"
+    },
+    "Inspection": "riskified:Inspection",
+    "external_condition": {
+      "@id": "riskified:external_condition",
+      "@type": "xsd:string"
+    },
+    "inspected_at": {
+      "@id": "riskified:inspected_at",
+      "@type": "xsd:dateTime"
+    },
+    "location": {
+      "@id": "riskified:location",
+      "@type": "xsd:string"
+    },
+    "location_id": {
+      "@id": "riskified:location_id",
+      "@type": "xsd:string"
+    },
+    "error_response_messages": "riskified:error_response_messages",
+    "messages": {
+      "@id": "riskified:messages",
+      "@container": "@list"
+    },
+    "ClaimUpdateRequest": "riskified:ClaimUpdateRequest",
+    "ClaimUpdateResponse": "riskified:ClaimUpdateResponse",
+    "ClaimUpdate": "riskified:ClaimUpdate",
+    "LineItemUpdate": "riskified:LineItemUpdate",
+    "event_type": {
+      "@id": "riskified:event_type",
+      "@type": "xsd:string"
+    },
+    "return_shipping": {
+      "@id": "riskified:return_shipping",
+      "@type": "@id"
+    },
+    "inspection": {
+      "@id": "riskified:inspection",
+      "@type": "@id"
+    }
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "Riskified API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects Riskified's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-14) from openapi/riskified-account-secure-openapi.yml, openapi/riskified-chargeback-guarantee-openapi.yml, openapi/riskified-chargeback-guarantee-post-auth-openapi.yml.",
+  "dcterms:created": "2026-10-14",
+  "dcterms:source": [
+    "openapi/riskified-account-secure-openapi.yml",
+    "openapi/riskified-chargeback-guarantee-openapi.yml",
+    "openapi/riskified-chargeback-guarantee-post-auth-openapi.yml",
+    "openapi/riskified-otp-recovery-openapi.yml",
+    "openapi/riskified-policy-protect-refunds-returns-openapi.yml"
+  ]
+}

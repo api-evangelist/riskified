@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/riskified/main/json-schema/riskified-claim-decision-request-schema.json",
+  "title": "ClaimDecisionRequest",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/riskified-policy-protect-refunds-returns-openapi.yml#/components/schemas/ClaimDecisionRequest",
+  "type": "object",
+  "properties": {
+    "claim": {
+      "$ref": "#/$defs/ClaimDecision"
+    }
+  },
+  "$defs": {
+    "ClaimDecision": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier for the claim."
+        },
+        "line_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LineItemDecision"
+          },
+          "description": "An array of line item objects, each one containing information about an item in the claim."
+        },
+        "handling_fee": {
+          "type": "number",
+          "format": "float",
+          "description": "Sum of any fees (i.e., handling or restocking fee, etc.) that was applied to the claim."
+        },
+        "note": {
+          "type": "string",
+          "description": "A note attached to the claim/decision."
+        }
+      },
+      "required": [
+        "id",
+        "line_items"
+      ]
+    },
+    "Decision": {
+      "type": "object",
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": [
+            "approve",
+            "decline",
+            "review",
+            "cancel"
+          ],
+          "description": "The result/decision of the claim."
+        },
+        "decided_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time (ISO 8601) that the final decision on the claim was made."
+        },
+        "decision_reason": {
+          "type": "string",
+          "enum": [
+            "manual_review",
+            "successful_delivery",
+            "chargeback",
+            "business_policy",
+            "riskified",
+            "valid_complaint"
+          ],
+          "description": "The reason for the claim decision."
+        },
+        "refund_amount": {
+          "type": "number",
+          "format": "float",
+          "description": "The dollar amount that was refunded back to the customer, or cost of item that was reshipped."
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "store_credit",
+            "refund",
+            "reshipment",
+            "exchange",
+            "physical_gift_card",
+            "none"
+          ],
+          "description": "The action by the merchant to appease the claim."
+        },
+        "decided_by": {
+          "type": "string",
+          "description": "The person/organization that decided on the claim."
+        }
+      },
+      "required": [
+        "decision",
+        "decided_at"
+      ]
+    },
+    "LineItemDecision": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "string",
+          "description": "The unique identifier for the order which is associated with the claim."
+        },
+        "sku": {
+          "type": "string",
+          "description": "The sku of the item in the fulfillment."
+        },
+        "item_id": {
+          "type": "string",
+          "description": "The unique identifier of the individual line item object in the claim/order."
+        },
+        "claim_reason": {
+          "type": "string",
+          "enum": [
+            "not_received",
+            "missing_item",
+            "wrong_item",
+            "damaged",
+            "customer_preference",
+            "other",
+            "valid_complaint"
+          ],
+          "description": "The reason a refund/return is being claimed."
+        },
+        "orig_claim_reason": {
+          "type": "string",
+          "description": "The original claim reason of the merchant."
+        },
+        "decision": {
+          "$ref": "#/$defs/Decision",
+          "description": "An object containing information regarding the final decision on the claim/item."
+        }
+      },
+      "required": [
+        "order_id",
+        "sku"
+      ]
+    }
+  }
+}

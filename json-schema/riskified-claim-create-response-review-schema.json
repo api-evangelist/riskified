@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/riskified/main/json-schema/riskified-claim-create-response-review-schema.json",
+  "title": "Claim_Create_Response_Review",
+  "description": "Review Required Claim Response",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/riskified-policy-protect-refunds-returns-openapi.yml#/components/schemas/Claim_Create_Response_Review",
+  "type": "object",
+  "properties": {
+    "claim": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier for the claim."
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "review"
+          ],
+          "description": "Textual status describing the result of Riskified’s claim analysis. \n\n**Always 'review' for claims requiring manual review.**"
+        },
+        "decision_reason": {
+          "type": "string",
+          "description": "Additional context on Riskified’s decision. This can be customizable based on merchant needs.\n\n Some example values are: \n - `approved in accordance to policy`\n - `Risky First Claim`\n - `Likely Abusive`\n - `Flagrant Abuse`"
+        },
+        "followed_action": {
+          "type": "string",
+          "description": "Any secondary actions that Riskified recommends in response to the claim. This can be customizable based on merchant needs. Some example values are:\n\n - `warning_1`\n - `warning_2`\n - `handling_fee`"
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "A string of text that highlights any issues seen in the API call. **It’s expected this will be null for the majority of analyzed claims.**\n\nSome issues that can be highlighted in this field may include, but not limited to:\n- `order not found` - the order listed in the API call cannot be found in Riskified’s system\n- `duplicate to claim` - the claim submitted is a duplicate of a previously submitted claim\n- `claim filtered from analysis` - claim not analyzed due to exclusion filters in place in Riskified’s system\n- `order is older than 180 days` - the original order was placed more than 180 days before the claim was submitted, and therefore, the claim is not subject to analysis."
+    }
+  }
+}

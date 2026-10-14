@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/riskified/main/json-schema/riskified-otp-initiate-response-schema.json",
+  "title": "OtpInitiateResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/riskified-otp-recovery-openapi.yml#/components/schemas/OtpInitiateResponse",
+  "type": "object",
+  "properties": {
+    "widgetToken": {
+      "type": "string",
+      "description": "The JWT (JSON Web Token) for the OTP widget"
+    }
+  }
+}
