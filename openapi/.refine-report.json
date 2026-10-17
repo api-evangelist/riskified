@@ -1,0 +1,42 @@
+{
+  "provider": "riskified",
+  "sources": [
+    "riskified-account-secure-openapi.yml",
+    "riskified-chargeback-guarantee-openapi.yml",
+    "riskified-chargeback-guarantee-post-auth-openapi.yml",
+    "riskified-otp-recovery-openapi.yml",
+    "riskified-policy-protect-refunds-returns-openapi.yml"
+  ],
+  "outputs": [
+    "riskified-customer-actions-api-openapi.yml",
+    "riskified-customer-management-api-openapi.yml",
+    "riskified-order-pre-auth-review-and-psd2-3ds-cvv-recommendations-api-openapi.yml",
+    "riskified-pre-authorization-flow-api-openapi.yml",
+    "riskified-automation-endpoints-api-openapi.yml",
+    "riskified-post-authorization-flow-api-openapi.yml",
+    "riskified-otp-recover-sync-flow-api-openapi.yml",
+    "riskified-refunds-api-openapi.yml",
+    "riskified-returns-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/riskified-account-secure-openapi.yml",
+    "archived openapi/riskified-chargeback-guarantee-openapi.yml",
+    "archived openapi/riskified-chargeback-guarantee-post-auth-openapi.yml",
+    "archived openapi/riskified-otp-recovery-openapi.yml",
+    "archived openapi/riskified-policy-protect-refunds-returns-openapi.yml"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "riskified-account-secure-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "riskified-chargeback-guarantee-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "riskified-chargeback-guarantee-post-auth-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "riskified-otp-recovery-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "riskified-policy-protect-refunds-returns-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "riskified-policy-protect-refunds-returns-openapi.yml: declared missing tag: Refunds",
+    "riskified-policy-protect-refunds-returns-openapi.yml: declared missing tag: Returns",
+    "apis.yml register: written (+9 apis, 16 total)"
+  ],
+  "skipped": []
+}

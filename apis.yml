@@ -402,9 +402,11 @@ apis:
     type: Documentation
   - url: https://developers.riskified.com/reference/pre-auth-flow-checkout_denied
     type: Documentation
-  description: Submit orders to Riskified for fraud and chargeback risk evaluation, in either a pre-authorization (Decide / Decision) or post-authorization
-    (Submit / Decide) flow. Returns an APPROVED, DECLINED, or SUBMITTED status, with approved orders financially guaranteed against fraudulent
-    chargebacks. Companion endpoints (Cancel, Fulfill, Refund, Chargeback, Checkout Denied) keep the order lifecycle in sync.
+  description: >-
+    Submit orders to Riskified for fraud and chargeback risk evaluation, in either a pre-authorization
+    (Decide / Decision) or post-authorization (Submit / Decide) flow. Returns an APPROVED, DECLINED, or
+    SUBMITTED status, with approved orders financially guaranteed against fraudulent chargebacks. Companion
+    endpoints (Cancel, Fulfill, Refund, Chargeback, Checkout Denied) keep the order lifecycle in sync.
 - aid: riskified:riskified-adaptive-checkout-api
   name: Riskified Adaptive Checkout API
   tags:
@@ -446,9 +448,11 @@ apis:
     type: Documentation
   - url: https://developers.riskified.com/docs/regulated-psd2-decide
     type: Documentation
-  description: Recommend the optimal authentication path at checkout — friction-free, CVV, 3DS, or PSD2 exemption — to maximize approval rates
-    while remaining SCA-compliant. The Advise endpoint returns a recommendation; Decide endpoints commit to a Riskified-guaranteed outcome. Covers
-    both regulated (PSD2/SCA) and non-regulated geographies.
+  description: >-
+    Recommend the optimal authentication path at checkout — friction-free, CVV, 3DS, or PSD2 exemption
+    — to maximize approval rates while remaining SCA-compliant. The Advise endpoint returns a recommendation;
+    Decide endpoints commit to a Riskified-guaranteed outcome. Covers both regulated (PSD2/SCA) and non-regulated
+    geographies.
 - aid: riskified:riskified-account-secure-api
   name: Riskified Account Secure API
   tags:
@@ -470,9 +474,10 @@ apis:
     type: Documentation
   - url: https://developers.riskified.com/docs/account-secure-integration-guide
     type: Documentation
-  description: Protect non-purchase customer journeys against account takeover, synthetic identity, and credential abuse. Submit Login, Reset
-    Password, Customer Create, and Customer Update events and receive a real-time risk decision so merchants can step up authentication, block,
-    or allow the action.
+  description: >-
+    Protect non-purchase customer journeys against account takeover, synthetic identity, and credential
+    abuse. Submit Login, Reset Password, Customer Create, and Customer Update events and receive a real-time
+    risk decision so merchants can step up authentication, block, or allow the action.
 - aid: riskified:riskified-policy-protect-api
   name: Riskified Policy Protect API
   tags:
@@ -500,9 +505,10 @@ apis:
     type: Documentation
   - url: https://developers.riskified.com/docs/review-replacement-flow-integration-guide
     type: Documentation
-  description: Detect and prevent refund, return, and promotional abuse. Submit refund and return claims for adjudication (claim_create), retrieve
-    Riskified's decision (claim_decision), and update in-flight returns (claim_update). Supports both original-flow and replacement-flow review
-    patterns.
+  description: >-
+    Detect and prevent refund, return, and promotional abuse. Submit refund and return claims for adjudication
+    (claim_create), retrieve Riskified's decision (claim_decision), and update in-flight returns (claim_update).
+    Supports both original-flow and replacement-flow review patterns.
 - aid: riskified:riskified-otp-api
   name: Riskified OTP API
   tags:
@@ -515,9 +521,10 @@ apis:
   properties:
   - url: https://developers.riskified.com/reference/otp-initiate
     type: Documentation
-  description: Initiate a one-time password challenge as a step-up verification mechanism for high-risk login, password reset, or account modification
-    events. Pairs with the Account Secure API to mediate friction adaptively. Hosted on the self-veri.com domain with dedicated sandbox and production
-    environments.
+  description: >-
+    Initiate a one-time password challenge as a step-up verification mechanism for high-risk login, password
+    reset, or account modification events. Pairs with the Account Secure API to mediate friction adaptively.
+    Hosted on the self-veri.com domain with dedicated sandbox and production environments.
 - aid: riskified:riskified-beacon-sdk-api
   name: Riskified Beacon (Device Intelligence) SDK
   tags:
@@ -558,9 +565,11 @@ apis:
     type: ChangeLog
   - url: https://developers.riskified.com/docs/beacon-react-native-changelog
     type: ChangeLog
-  description: Collect device, browser, and behavioral telemetry from the shopper's session and feed it into Riskified's risk models. The Beacon
-    is delivered as a JavaScript snippet for web and as iOS, Android, React Native, and Unity SDKs for mobile and game-engine surfaces. Required
-    for accurate decisioning across Chargeback Guarantee, Adaptive Checkout, Account Secure, and Policy Protect.
+  description: >-
+    Collect device, browser, and behavioral telemetry from the shopper's session and feed it into Riskified's
+    risk models. The Beacon is delivered as a JavaScript snippet for web and as iOS, Android, React Native,
+    and Unity SDKs for mobile and game-engine surfaces. Required for accurate decisioning across Chargeback
+    Guarantee, Adaptive Checkout, Account Secure, and Policy Protect.
 - aid: riskified:riskified-chargeback-gateway-integration-api
   name: Riskified Chargeback Gateway Integration (CGI) API
   tags:
@@ -589,19 +598,20 @@ apis:
     type: Documentation
   - url: https://developers.riskified.com/docs/stripe-cgi
     type: Documentation
-  description: Connect Riskified directly to a payment gateway (Adyen, Braintree, PayPal, Shopify Payments, Stripe) so chargeback notifications
-    and evidence flow into the Dispute Resolve product without merchant glue code. Underlies the automated chargeback recovery workflow.
-- aid: riskified:riskified-account-secure
-  name: Riskified Customer Actions API
-  description: Operations related to customer activity, including login, password resets, customer verification attempts, and customer-merchant
-    contact events.
+  description: >-
+    Connect Riskified directly to a payment gateway (Adyen, Braintree, PayPal, Shopify Payments, Stripe)
+    so chargeback notifications and evidence flow into the Dispute Resolve product without merchant glue
+    code. Underlies the automated chargeback recovery workflow.
+- aid: riskified:riskified-automation-endpoints-api
+  name: Riskified Automation Endpoints API
+  description: Operations for managing order lifecycle (cancel, refund, fulfill, chargeback)
   humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
   baseURL: https://wh.riskified.com/
   tags:
-  - Customer Actions
+  - Automation Endpoints
   properties:
   - type: OpenAPI
-    url: openapi/riskified-account-secure-openapi.yml
+    url: openapi/riskified-automation-endpoints-api-openapi.yml
   - type: JSONSchema
     url: json-schema/riskified-login-action-schema.json
   - type: JSONSchema
@@ -614,16 +624,6 @@ apis:
     url: json-schema/riskified-customer-create-response-schema.json
   - type: JSONSchema
     url: json-schema/riskified-login-action-response-schema.json
-- aid: riskified:riskified-chargeback-guarantee
-  name: Riskified Pre-Authorization Flow API
-  description: Operations that allow you to send orders to Riskified for fraud review before payment authorization
-  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
-  baseURL: https://wh.riskified.com/
-  tags:
-  - Pre-Authorization Flow
-  properties:
-  - type: OpenAPI
-    url: openapi/riskified-chargeback-guarantee-openapi.yml
   - type: JSONSchema
     url: json-schema/riskified-adaptive-checkout-psd2-approved-schema.json
   - type: JSONSchema
@@ -636,20 +636,8 @@ apis:
     url: json-schema/riskified-advise-3ds-response-schema.json
   - type: JSONSchema
     url: json-schema/riskified-decide-response-decline-schema.json
-- aid: riskified:riskified-chargeback-guarantee-post-auth
-  name: Riskified Post-Authorization Flow API
-  description: Operations that allow you to send orders to Riskified for fraud review after payment authorization
-  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
-  baseURL: https://wh.riskified.com/
-  tags:
-  - Post-Authorization Flow
-  properties:
-  - type: OpenAPI
-    url: openapi/riskified-chargeback-guarantee-post-auth-openapi.yml
   - type: JSONSchema
     url: json-schema/riskified-decide-response-approve-schema.json
-  - type: JSONSchema
-    url: json-schema/riskified-decide-response-decline-schema.json
   - type: JSONSchema
     url: json-schema/riskified-chargeback-response-schema.json
   - type: JSONSchema
@@ -658,30 +646,10 @@ apis:
     url: json-schema/riskified-refund-response-schema.json
   - type: JSONSchema
     url: json-schema/riskified-submit-response-submitted-schema.json
-- aid: riskified:riskified-otp-recovery
-  name: Riskified OTP Recover (Sync flow) API
-  description: Operations for initiating and verifying one-time password recovery requests.
-  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
-  baseURL: https://wh.riskified.com/
-  tags:
-  - OTP Recover (Sync flow)
-  properties:
-  - type: OpenAPI
-    url: openapi/riskified-otp-recovery-openapi.yml
   - type: JSONSchema
     url: json-schema/riskified-otp-initiate-request-schema.json
   - type: JSONSchema
     url: json-schema/riskified-otp-initiate-response-schema.json
-- aid: riskified:riskified-policy-protect-refunds-returns
-  name: Riskified Policy Protect Refunds Returns Openapi.Yml API
-  description: The Policy Protect Refunds Returns Openapi.Yml API from Riskified — 3 operation(s) for policy protect refunds returns openapi.yml.
-  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
-  baseURL: https://wh.riskified.com/
-  tags:
-  - Policy Protect Refunds Returns Openapi.Yml
-  properties:
-  - type: OpenAPI
-    url: openapi/riskified-policy-protect-refunds-returns-openapi.yml
   - type: JSONSchema
     url: json-schema/riskified-claim-create-response-excluded-schema.json
   - type: JSONSchema
@@ -694,7 +662,493 @@ apis:
     url: json-schema/riskified-claim-create-response-decline-schema.json
   - type: JSONSchema
     url: json-schema/riskified-claim-decision-request-schema.json
-
+- aid: riskified:riskified-customer-actions-api
+  name: Riskified Customer Actions API
+  description: >-
+    Operations related to customer activity, including login, password resets, customer verification attempts,
+    and customer-merchant contact events.
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - Customer Actions
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-customer-actions-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-update-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-reset-password-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-psd2-approved-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-psd2-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-cvv-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-3ds-declined-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-3ds-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-chargeback-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-cancel-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-refund-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-submit-response-submitted-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-excluded-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-captured-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-review-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-decision-request-schema.json
+- aid: riskified:riskified-customer-management-api
+  name: Riskified Customer Management API
+  description: Operations related to account management, including customer creation and updates.
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - Customer Management
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-customer-management-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-update-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-reset-password-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-psd2-approved-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-psd2-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-cvv-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-3ds-declined-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-3ds-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-chargeback-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-cancel-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-refund-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-submit-response-submitted-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-excluded-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-captured-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-review-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-decision-request-schema.json
+- aid: riskified:riskified-order-pre-auth-review-and-psd2-3ds-cvv-recommendations-api
+  name: Riskified Order Pre-Auth Review and PSD2/3DS/CVV Recommendations API
+  description: >-
+    Riskified's PSD2 Optimization product, which is complementary to our Chargeback Guarantee product,
+    is designed to minimize the friction associated with SCA and maximize conversions - all while meeting
+    full PSD2 compliance.
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - Order Pre-Auth Review and PSD2/3DS/CVV Recommendations
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-order-pre-auth-review-and-psd2-3ds-cvv-recommendations-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-update-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-reset-password-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-psd2-approved-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-psd2-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-cvv-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-3ds-declined-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-3ds-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-chargeback-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-cancel-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-refund-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-submit-response-submitted-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-excluded-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-captured-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-review-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-decision-request-schema.json
+- aid: riskified:riskified-otp-recover-sync-flow-api
+  name: Riskified OTP Recover (Sync flow) API
+  description: Operations for initiating and verifying one-time password recovery requests.
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - OTP Recover (Sync flow)
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-otp-recover-sync-flow-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-update-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-reset-password-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-psd2-approved-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-psd2-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-cvv-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-3ds-declined-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-3ds-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-chargeback-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-cancel-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-refund-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-submit-response-submitted-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-excluded-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-captured-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-review-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-decision-request-schema.json
+- aid: riskified:riskified-post-authorization-flow-api
+  name: Riskified Post-Authorization Flow API
+  description: >-
+    Operations that allow you to send orders to Riskified for fraud review after payment authorization
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - Post-Authorization Flow
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-post-authorization-flow-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-update-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-reset-password-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-psd2-approved-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-psd2-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-cvv-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-3ds-declined-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-3ds-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-chargeback-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-cancel-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-refund-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-submit-response-submitted-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-excluded-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-captured-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-review-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-decision-request-schema.json
+- aid: riskified:riskified-pre-authorization-flow-api
+  name: Riskified Pre-Authorization Flow API
+  description: >-
+    Operations that allow you to send orders to Riskified for fraud review before payment authorization
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - Pre-Authorization Flow
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-pre-authorization-flow-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-update-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-reset-password-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-psd2-approved-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-psd2-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-cvv-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-3ds-declined-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-3ds-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-chargeback-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-cancel-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-refund-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-submit-response-submitted-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-excluded-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-captured-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-review-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-decision-request-schema.json
+- aid: riskified:riskified-refunds-api
+  name: Riskified Refunds API
+  description: The Refunds API from Riskified — 2 operation(s) for refunds.
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - Refunds
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-refunds-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-update-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-reset-password-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-psd2-approved-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-psd2-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-cvv-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-3ds-declined-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-3ds-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-chargeback-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-cancel-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-refund-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-submit-response-submitted-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-excluded-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-captured-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-review-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-decision-request-schema.json
+- aid: riskified:riskified-returns-api
+  name: Riskified Returns API
+  description: The Returns API from Riskified — 1 operation(s) for returns.
+  humanURL: https://developers.riskified.com/reference/post-auth-flow-decide
+  baseURL: https://wh.riskified.com/
+  tags:
+  - Returns
+  properties:
+  - type: OpenAPI
+    url: openapi/riskified-returns-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-update-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-reset-password-action-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-customer-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-login-action-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-psd2-approved-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-psd2-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-cvv-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-adaptive-checkout-3ds-declined-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-advise-3ds-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-decide-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-chargeback-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-cancel-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-refund-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-submit-response-submitted-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-request-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-otp-initiate-response-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-excluded-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-captured-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-review-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-approve-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-create-response-decline-schema.json
+  - type: JSONSchema
+    url: json-schema/riskified-claim-decision-request-schema.json
 x-readme-harvest:
   date: '2026-10-14'
   ops: 20

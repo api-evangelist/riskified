@@ -1,0 +1,3188 @@
+openapi: 3.2.0
+info:
+  title: Chargeback Guarantee - Post Auth Automation Endpoints API
+  description: '# Riskified API for Fraud Prevention and Risk Management
+
+
+    This API allows merchants to submit orders for review, check order status, and manage the complete order lifecycle.'
+  version: 1.0.0
+  contact:
+    name: Riskified Support
+    url: http://apiref.riskified.com/
+    email: support@riskified.com
+  x-explorer-enabled: false
+  x-conventions:
+    dateTime: All date-time fields are RFC 3339 (ISO 8601).
+servers:
+- url: https://sandbox.riskified.com
+  description: Sandbox environment for testing and integration
+- url: https://wh.riskified.com
+  description: Production environment for live transactions
+tags:
+- name: Automation Endpoints
+  description: Operations for managing order lifecycle (cancel, refund, fulfill, chargeback)
+paths:
+  /api/cancel:
+    post:
+      summary: Cancellation
+      description: 'Mark a previously submitted order as cancelled. If the order has not yet been reviewed, it is excluded from future review. If the order has already been reviewed and approved, canceling it will also trigger a full refund on any associated charges.
+
+
+        This endpoint is used when an order is fully cancelled after submission.'
+      operationId: cancel
+      tags:
+      - Automation Endpoints
+      parameters:
+      - $ref: '#/components/parameters/RiskifiedShopDomain'
+      - $ref: '#/components/parameters/RiskifiedSignature'
+      - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/Accept'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cancel_order_wrapper'
+            examples:
+              customer_cancel:
+                summary: Customer requested cancellation
+                value:
+                  order:
+                    id: order-cc-guest-123456
+                    cancel_reason: Customer requested cancellation
+                    cancelled_at: '2025-03-14T12:30:00.000Z'
+              inventory_cancel:
+                summary: Cancellation due to inventory issues
+                value:
+                  order:
+                    id: order-pp-reg-789012
+                    cancel_reason: Out of stock
+                    cancelled_at: '2025-03-14T14:45:00.000Z'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel_Response'
+              examples:
+                cancel_good_response_200:
+                  value:
+                    order:
+                      id: checkout-cc-123456
+                      status: cancelled
+                      description: Excluded by Riskified (due to cancellation)
+                      old_status: approved
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                cancel_bad_response_400:
+                  value:
+                    error:
+                      message: JSON malformed - only UTF-8 well formatted JSON payload allowed (RFC 4627)
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                cancel_unauthorized_response_401:
+                  value:
+                    error:
+                      message: 'Failed verifying request: ''X-RISKIFIED-HMAC-SHA256'' header is either missing or incorrect'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                cancel_too_many_requests_response_429:
+                  value:
+                    error:
+                      message: Too many update requests for this order. Please try again later.
+        '500':
+          description: Contact Riskified support
+        '504':
+          description: Temporary error, please retry
+  /api/chargeback:
+    post:
+      summary: Chargeback
+      description: 'Notifies Riskified that a chargeback has been submitted for a specific order.
+
+        Note: Riskified offers fully automated chargeback gateway integrations for major gateways: Braintree, Stripe, Adyen, PayPal; this process automates end-to-end chargeback handling from chargeback reporting to the disputing process.
+
+        Riskified stands behind its chargeback guarantee for all approved orders.'
+      operationId: chargeback
+      tags:
+      - Automation Endpoints
+      parameters:
+      - $ref: '#/components/parameters/RiskifiedShopDomain'
+      - $ref: '#/components/parameters/RiskifiedSignature'
+      - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/Accept'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/chargeback_order_wrapper'
+            examples:
+              chargeback_fulfillment_first_dispute_won:
+                $ref: '#/components/examples/chargeback_fulfillment_first_dispute_won'
+              chargeback_without_fulfill:
+                $ref: '#/components/examples/chargeback_without_fulfill'
+              chargeback_with_fulfill:
+                $ref: '#/components/examples/chargeback_with_fulfill'
+              chargeback_first_dispute_won:
+                $ref: '#/components/examples/chargeback_first_dispute_won'
+              chargeback_second_dispute_lost:
+                $ref: '#/components/examples/chargeback_second_dispute_lost'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/chargeback_response'
+              examples:
+                chargeback_good_response_200:
+                  value:
+                    order:
+                      id: '123456'
+                      status: chargeback
+                      old_status: approved
+                      description: Received by Riskified
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                refund_bad_response_400:
+                  value:
+                    error:
+                      message: JSON malformed - only UTF-8 well formatted JSON payload allowed (RFC 4627)
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                refund_unauthorized_response_401:
+                  value:
+                    error:
+                      message: 'Failed verifying request: ''X-RISKIFIED-HMAC-SHA256'' header is either missing or incorrect'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                refund_too_many_requests_response_429:
+                  value:
+                    error:
+                      message: Too many update requests for this order. Please try again later.
+        '500':
+          description: Contact Riskified support
+        '504':
+          description: Temporary error, please retry
+  /api/decision:
+    post:
+      summary: Merchant Decision
+      description: Notify Riskified of the final external status of an order. Use this call to update Riskified when the merchant’s or payment gateway’s final decision differs from Riskified’s recommendation — for example, if the order was declined, canceled, or successfully captured after review. This ensures Riskified maintains full visibility into the complete order lifecycle and can continuously improve decision accuracy.
+      operationId: decision
+      tags:
+      - Automation Endpoints
+      parameters:
+      - $ref: '#/components/parameters/RiskifiedShopDomain'
+      - $ref: '#/components/parameters/RiskifiedSignature'
+      - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/Accept'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/decision_order_wrapper'
+            examples:
+              payment_approved:
+                summary: Payment authorized and order confirmed
+                value:
+                  order:
+                    id: '450789469'
+                    decision:
+                      external_status: approved
+                      reason: transaction authorized and order confirmed
+                      decided_at: '2013-04-23T13:36:50-04:00'
+                      notes: ''
+                      amount: 120
+                      currency: USD
+                    gateway: Adyen
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/decision_response'
+              examples:
+                decision_good_response_200:
+                  value:
+                    order:
+                      id: '450789469'
+                      status: approved
+                      description: Reviewed and approved by Riskified
+                      old_status: approved
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decision_bad_response_400:
+                  value:
+                    error:
+                      message: JSON malformed - only UTF-8 well formatted JSON payload allowed (RFC 4627)
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decision_unauthorized_response_401:
+                  value:
+                    error:
+                      message: 'Failed verifying request: ''X-RISKIFIED-HMAC-SHA256'' header is either missing or incorrect'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decision_too_many_requests_response_429:
+                  value:
+                    error:
+                      message: Too many update requests for this order. Please try again later.
+        '500':
+          description: Contact Riskified support
+        '504':
+          description: Temporary error, please retry
+  /api/fulfill:
+    post:
+      summary: Order Fulfillment
+      description: This endpoint informs Riskified that fulfillment information has been generated for a specific order, encompassing both successful and unsuccessful attempts. It can be called multiple times if there are multiple shipments on a single order. This functionality is essential for the automated submission of chargebacks, AKA CGI, and creation compelling evidence documentation for chargeback disputes. In its absence, merchants are required to manually upload proof of delivery via the Control Center.
+      operationId: fulfill
+      tags:
+      - Automation Endpoints
+      parameters:
+      - $ref: '#/components/parameters/RiskifiedShopDomain'
+      - $ref: '#/components/parameters/RiskifiedSignature'
+      - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/Accept'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/fulfillment_order_wrapper'
+            examples:
+              order:
+                summary: Fulfillment
+                value:
+                  order:
+                    id: '1234'
+                    fulfillments:
+                    - fulfillment_id: COC78FRQ7DR
+                      created_at: '2020-06-15T11:00:00-05:00'
+                      status: success
+                      tracking_company: fedex
+                      tracking_numbers: '5758262322'
+                      tracking_urls: http://fedex.com/track?q=abc123
+                      message: estimated delivery 2 days
+                      receipt: 'authorization: 765656'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fulfill_response'
+              examples:
+                fulfill_good_response_200:
+                  value:
+                    order:
+                      id: '3000067'
+                      status: fulfilled
+                      description: Received by Riskified
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                refund_bad_response_400:
+                  value:
+                    error:
+                      message: JSON malformed - only UTF-8 well formatted JSON payload allowed (RFC 4627)
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                refund_unauthorized_response_401:
+                  value:
+                    error:
+                      message: 'Failed verifying request: ''X-RISKIFIED-HMAC-SHA256'' header is either missing or incorrect'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                refund_too_many_requests_response_429:
+                  value:
+                    error:
+                      message: Too many update requests for this order. Please try again later.
+        '500':
+          description: Contact Riskified support
+        '504':
+          description: Temporary error, please retry
+  /api/refund:
+    post:
+      summary: Partial Refund
+      description: 'Mark a previously submitted order as refunded. This can be a full or partial refund.
+
+
+        This endpoint is used when an order is refunded after submission.'
+      operationId: refund
+      tags:
+      - Automation Endpoints
+      parameters:
+      - $ref: '#/components/parameters/RiskifiedShopDomain'
+      - $ref: '#/components/parameters/RiskifiedSignature'
+      - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/Accept'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/refund_order_wrapper'
+            examples:
+              full_refund:
+                summary: Full refund
+                value:
+                  order:
+                    id: order-cc-guest-123456
+                    refunds:
+                    - refund_id: refund-123
+                      refunded_at: '2025-03-15T10:30:00.000Z'
+                      amount: 129.99
+                      currency: USD
+                      reason: Customer dissatisfaction
+              partial_refund:
+                summary: Partial refund for damaged item
+                value:
+                  order:
+                    id: order-pp-reg-789012
+                    refunds:
+                    - refund_id: refund-456
+                      refunded_at: '2025-03-15T11:30:00.000Z'
+                      amount: 89.99
+                      currency: USD
+                      reason: Item damaged during shipping
+                      sku: FTW-SPORT-SLV
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/refund_response'
+              examples:
+                refund_good_response_200:
+                  value:
+                    order:
+                      id: checkout-cc-123456
+                      status: approved
+                      description: Reviewed and approved by Riskified
+                      old_status: approved
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                refund_bad_response_400:
+                  value:
+                    error:
+                      message: JSON malformed - only UTF-8 well formatted JSON payload allowed (RFC 4627)
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                refund_unauthorized_response_401:
+                  value:
+                    error:
+                      message: 'Failed verifying request: ''X-RISKIFIED-HMAC-SHA256'' header is either missing or incorrect'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                refund_too_many_requests_response_429:
+                  value:
+                    error:
+                      message: Too many update requests for this order. Please try again later.
+        '500':
+          description: Contact Riskified support
+        '504':
+          description: Temporary error, please retry
+components:
+  schemas:
+    kyc_details:
+      type: object
+      description: The details of Know Your Customer (KYC) checks for the customer. Each check corresponds to a new object in the array. If kyc_details[] is provided, objects should contain all required fields.
+      properties:
+        vendor_name:
+          type: string
+          description: The name of the provider who performed the KYC check.
+        update_at:
+          type: string
+          format: date-time
+          description: The date and time (ISO8601) when KYC was attempted by the vendor
+        kyc_verified:
+          type: boolean
+          description: The result of the KYC attempt
+        kyc_type:
+          type: string
+          enum:
+          - strong
+          - soft
+          description: If the KYC check has multiple levels, the type should be provided here.
+      required:
+      - vendor_name
+      - update_at
+      - kyc_verified
+      example:
+        vendor_name: Socure
+        update_at: '2025-11-19T16:00:00Z'
+        kyc_verified: true
+        kyc_type: soft
+    crypto_line_item:
+      type: object
+      description: Represents a cryptocurrency transaction line item.
+      properties:
+        price:
+          type: number
+          format: float
+          description: The amount spent (in order currency) on cryptocurrency or asset(s).
+          example: 420
+        quantity:
+          type: integer
+          enum:
+          - 1
+          description: Quantity must always be 1 for cryptocurrency transactions.
+          example: 1
+        title:
+          type: string
+          description: The abbreviation of the cryptocurrency in all caps.
+          example: ETH
+        product_id:
+          type: string
+          description: The full asset name of the cryptocurrency.
+          maxLength: 256
+          example: Ethereum
+        product_type:
+          type: string
+          enum:
+          - crypto
+          description: Specifies that this line item represents a digital asset.
+          example: crypto
+        category:
+          type: string
+          description: "The type of cryptocurrency transaction. \n Use `checkout` if purchasing at a third party merchant using cryptocurrency."
+          enum:
+          - one_time_buy
+          - one_time_sell
+          - one_time_order
+          - recurring_buy
+          - recurring_sell
+          - checkout
+          - nft
+          example: one_time_order
+        brand:
+          type: string
+          description: The brand name of the item.
+        requires_shipping:
+          type: boolean
+          enum:
+          - false
+          - true
+          example: false
+          description: States whether or not the item requires shipping. Should be set to False unless crypto is being sent to another customer as remittance.
+        sku:
+          type: string
+          description: A unique identifier of the item in the fulfillment.
+        condition:
+          type: string
+          description: Description of the physical condition of the item, mostly relevant for used items.
+        seller:
+          $ref: '#/components/schemas/seller'
+          description: '**(Conditional Requirement)** Required for marketplace or guest/host accommodations. Details about the seller of the item, relevant for marketplace orders.'
+        vendor:
+          $ref: '#/components/schemas/vendor_line_item'
+          description: '**(Conditional Requirement)** Required if there is a different affiliated partner for each product or line item.'
+        sub_category:
+          type: string
+          description: The sub-category of the item. For event tickets, the sub-category of the event.
+        delivered_at:
+          type: string
+          format: date-time
+          description: The timestamp indicating when the cryptocurrency was delivered to the wallet.
+          example: '2022-04-14T15:00:00+00:00'
+        delivered_to:
+          type: string
+          description: '**(Conditional Requirement)** Required for mixed shipment orders. The delivery type must contain one of the following values
+
+            shipping_address: The Order''s shipping address is the end user''s entered address.
+
+            store_pickup: If the end user selects store pickup, the shipping address value should contain the store''s address.'
+          enum:
+          - shipping_address
+          - store_pickup
+        recipient:
+          type: object
+          description: Recipient information for the cryptocurrency transfer.
+          $ref: '#/components/schemas/recipient_crypto'
+        drop_point:
+          type: string
+          description: If the end user is handing the package at a drop-off point, the shipping address value should contain the drop off location address
+        size:
+          type: string
+          description: The size of the item (e.g. shirt or shoe size)
+        registry_type:
+          type: string
+          description: 'The registry type must contain one of the following values: wedding, baby, other'
+          enum:
+          - wedding
+          - baby
+          - other
+        shipping_address_id:
+          type: string
+          description: '**(Conditional Requirement)** unique ID, is required in case of multiple shipping addresses.'
+        sender_name:
+          type: string
+          description: The sender name.
+        photo_uploaded:
+          type: boolean
+          description: Indicating whether a photo was uploaded.
+        photo_url:
+          type: string
+          description: The photo url (if uploaded).
+        message:
+          type: string
+          description: The card's message.
+        display_name:
+          type: string
+          description: The display name.
+        greeting_photo_url:
+          type: string
+          description: The greeting photo url (if exists).
+        greeting_message:
+          type: string
+          description: The greeting message.
+        card_type:
+          type: string
+          description: The card's type.
+      required:
+      - price
+      - quantity
+      - title
+      - product_type
+      - product_id
+      - category
+      - requires_shipping
+      - recipient
+      example:
+        title: ETH
+        quantity: 1
+        price: 420
+        category: one_time_order
+        product_type: crypto
+        product_id: Ethereum
+        requires_shipping: false
+        delivered_at: '2022-04-14T15:00:00+00:00'
+        recipient:
+          email: user@example.com
+          crypto_wallet:
+            address: '0xc0ffee254729296a45a3885639AC7E10F9d54979'
+            network: ethereum
+            type: primary
+    fulfillment_order:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the order that completed fulfillment.
+        fulfillments:
+          type: array
+          items:
+            $ref: '#/components/schemas/fulfillment_details'
+          description: A list of fulfillment attempts for the order.
+      required:
+      - id
+      - fulfillments
+    refund_response:
+      type: object
+      description: Refund Response
+      properties:
+        order:
+          type: object
+          properties:
+            id:
+              type: string
+              description: "Unique ID of order being acted upon. \n\n Note: This value should be later reflected also as order.id on the subsequent calls"
+              example: '53953819'
+            status:
+              type: string
+              enum:
+              - approved
+              description: "Textual status describing the result of Riskified analysis. \n\n Always 'approve' for approved orders. Order is approved and guaranteed by Riskified"
+            description:
+              type: string
+              description: Additional context on Riskified decision.
+            old_status:
+              type: string
+              description: Old order status
+          required:
+          - id
+          - status
+          - description
+          - old_status
+    dispute_details:
+      type: object
+      properties:
+        case_id:
+          type: string
+          description: Dispute identifier as defined by the issuer/gateway
+        status:
+          type: string
+          enum:
+          - won
+          - lost
+          - open
+          - pending
+          - expired
+          - accepted
+          description: "The current status of the dispute. Possible values: \n* `open` - dispute was created and is awaiting action; \n* `pending` - evidence was submitted and the dispute is under review; \n* `expired` - the response window passed without submission and the case is considered lost due to timeout; \n* `accepted` - the dispute was intentionally accepted and liability is acknowledged;\n* `won` - the dispute was resolved in the merchant's favor;\n* `lost` - the dispute was resolved against the merchant. \n\n Note: we expect an updated API call when the dispute status changes."
+        disputed_at:
+          type: string
+          format: date-time
+          description: When (ISO8601) was the dispute sent.
+        expected_resolution_date:
+          type: string
+          format: date-time
+          description: When (ISO8601) should we expect a decision from the issuer (60-75 days usually).
+        dispute_type:
+          type: string
+          enum:
+          - first_dispute
+          - second_dispute
+          - arbitrary_court
+          description: 'Note: we expect an updated api call when the dispute type changes'
+      required:
+      - case_id
+      - status
+    fulfillment_details:
+      type: object
+      properties:
+        fulfillment_id:
+          type: string
+          description: Unique identifier of this fulfillment attempt.
+        created_at:
+          type: string
+          format: date-time
+          description: When (ISO8601) the order was fulfilled.
+        status:
+          type: string
+          enum:
+          - success
+          - cancelled
+          - error
+          - failure
+          description: The fulfillment status.
+        line_items:
+          type: array
+          description: A list of each line item in the attempted fulfillment.
+          items:
+            $ref: '#/components/schemas/line_item'
+        tracking_company:
+          type: string
+          description: 'The name of the shipping company. Supported values include:
+
+
+            - `usps` — USPS
+
+            - `ups` — UPS
+
+            - `fedex` — FedEx
+
+            - `dhl_express` — DHL / DHL Express
+
+            - `dhl_ecommerce` — DHL Global Mail / DHL eCommerce
+
+            - `canada_post` — Canada Post
+
+
+            If the company is not listed, provide the carrier name as a string.'
+        tracking_numbers:
+          type: string
+          description: A list of shipping numbers, provided by the shipping company.
+        tracking_urls:
+          type: string
+          description: The URLs to track the fulfillment.
+        message:
+          type: string
+          description: Additional textual description regarding the fulfillment status.
+        receipt:
+          type: string
+          description: Information about the receipt.
+      required:
+      - fulfillment_id
+      - created_at
+      - tracking_company
+      - tracking_numbers
+    crypto_wallet:
+      type: object
+      description: A crypto wallet associated with the customer account.
+      properties:
+        address:
+          type: string
+          description: The network-specific address of the wallet.
+          example: '0xc0ffee254729296a45a3885639AC7E10F9d54979'
+        network:
+          type: string
+          description: The name of the crypto network. Must be lowercase with underscores between words (e.g. "bitcoin", "binance_smart_chain", "bitcoin_cash", "ethereum").
+          example: ethereum
+        type:
+          type: string
+          description: The wallet type.
+          enum:
+          - primary
+          - secondary
+          - custodial
+          - non_custodial
+          - hardware
+          - exchange
+          example: exchange
+      required:
+      - address
+      - network
+    refund_order_wrapper:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/refund'
+      required:
+      - order
+    customer:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The customer's email address.
+        verified_email:
+          type: boolean
+          description: Indicates whether the merchant verified the customer’s email.
+        first_name:
+          type: string
+          description: The first name of the customer.
+        last_name:
+          type: string
+          description: The first name of the customer.
+        id:
+          type: string
+          description: '**(Conditional Requirement)** The customer’s unique ID in the merchant’s system.
+
+            Required in the case of a registered customer.'
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp (ISO8601) of the initial registration of the customer's account in the merchant's systems.
+        verified_email_at:
+          type: string
+          format: date-time
+          description: Date and time (ISO8601) of customer email verification.
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp (ISO8601) of the most recent update to the customers account.
+        note:
+          type: string
+          description: Any notes related to the customer in the merchant's system.
+        total_spent:
+          type: number
+          format: float
+          description: The total amount spent by the customer across all their orders in the merchant's system.
+        group_name:
+          type: string
+          description: The name of the group the customer belongs to in the merchant's system.
+        accepts_marketing:
+          type: boolean
+          description: Indicates whether the customer accepts marketing.
+        last_order_id:
+          type: string
+          description: The ID of the last order purchased by the customer.
+        tags:
+          type: string
+          description: Any tags related to the customer in the merchant's system
+        buy_attempts:
+          type: integer
+          description: The number of attempts the customer has made to purchase an item in the merchant's system.
+        sell_attempts:
+          type: integer
+          description: The number of attempts the customer has made to sell an item in the merchant's system.
+        first_purchase_at:
+          type: string
+          format: date-time
+          description: The timestamp (ISO8601) for the first purchase of this user on the merchant’s website.
+        orders_count:
+          type: integer
+          description: The number of orders made by the customer on the site in the past.
+        account_type:
+          type: string
+          description: '**(Conditional Requirement)** Required if there are multiple account types. The customer’s account type. Recommended values include:
+
+            * guest
+
+            * registered
+
+            * premium
+
+            * business'
+        phone:
+          type: string
+          description: The customer’s phone number.
+        verified_phone:
+          type: boolean
+          description: Indicates whether the customer's phone number was verified.
+        verified_phone_at:
+          type: string
+          format: date-time
+          description: Date and time (ISO8601) of customer phone number verification.
+        date_of_birth:
+          type: string
+          format: date
+          description: Customer’s date of birth. Date part only (ISO8601).
+        gender:
+          type: string
+          enum:
+          - male
+          - female
+          description: 'The customer''s gender:'
+        user_name:
+          type: string
+          description: Required in case the site user name is not the email address.
+        document_id:
+          type: string
+          description: '**(Conditional Requirement)** Required for merchants residing in Brazil.
+
+            Customer''s personal identification number.'
+        document_type:
+          type: string
+          description: '**(Conditional Requirement)** Required for merchants residing in Brazil.
+
+            Customer''s personal identification type.'
+        social:
+          type: array
+          items:
+            $ref: '#/components/schemas/social_details'
+        linked_accounts:
+          type: integer
+          description: Specifies how many different accounts the customer making the order is linked to in your current database (via payment data or any other method of your choosing). This integer value can be sent to Riskified to customize into the decisioning engine and setup rules around..
+        phone_mandatory:
+          type: boolean
+          description: Required for Account Actions. Indicates whether phone was a required field during registration.
+        referrer_customer_id:
+          type: string
+          description: The customer ID of the customer that referred the current customer to the merchant website. This parameter is only relevant for Account Actions.
+        social_signup_type:
+          type: string
+          enum:
+          - facebook
+          - google
+          - linkedin
+          - twitter
+          - yahoo
+          - other
+          description: 'Required for Account Actions. In case the user signed up with any social network. Must be one of the following.
+
+            * facebook
+
+            * google
+
+            * linkedin
+
+            * twitter
+
+            * yahoo
+
+            * other'
+        address:
+          $ref: '#/components/schemas/address'
+          description: A list of addresses associated with the customer.
+        spending_limit:
+          type: number
+          format: float
+          description: If any, the credit limit that has been allocated or has been approved for the customer.
+        has_defaulted:
+          type: boolean
+          description: If the customer has defaulted on a previous plan/loan with your business . TRUE/FALSE values.
+        kyc_verified:
+          type: boolean
+          description: Indicates the outcome of a KYC check.
+        kyc_details:
+          type: array
+          description: The details of Know Your Customer (KYC) checks for the customer. Each check corresponds to a new object in the array. If kyc_details[] is provided, objects should contain all required fields.
+          items:
+            $ref: '#/components/schemas/kyc_details'
+        buyer_anonymous_id:
+          type: string
+          description: An alternative unique identifier for the customer.
+        crypto_wallets:
+          type: array
+          description: A list of crypto wallets associated with the customer account.
+          items:
+            $ref: '#/components/schemas/crypto_wallet'
+          example:
+          - address: '0xc0ffee254729296a45a3885639AC7E10F9d54979'
+            network: ethereum
+            type: primary
+      required:
+      - email
+      - first_name
+      - last_name
+      - created_at
+      example:
+        email: test@mailmail.com
+        verified_email: true
+        first_name: John
+        last_name: Test
+        id: d8fjv234
+        created_at: '2019-02-20T15:09:00Z'
+        verified_email_at: '2019-02-21T10:00:00Z'
+        updated_at: '2019-02-20T15:09:00Z'
+        note: VIP customer, high return rate.
+        total_spent: 1000.5
+        group_name: Wholesale
+        accepts_marketing: true
+        last_order_id: '12345'
+        tags: wholesale, loyal_customer, new_york
+        buy_attempts: 15
+        sell_attempts: 2
+        first_purchase_at: '2019-03-01T12:00:00Z'
+        orders_count: 10
+        account_type: registered
+        phone: '+143873984567290'
+        verified_phone: true
+        verified_phone_at: '2019-02-22T11:30:00Z'
+        date_of_birth: '1985-10-25'
+        gender: male
+        user_name: john_test_85
+        document_id: 123.456.789-00
+        document_type: CPF
+        social:
+        - network: facebook
+          id: fb_12345
+        linked_accounts: 2
+        phone_mandatory: true
+        referrer_customer_id: ref_9876
+        social_signup_type: google
+        address:
+          first_name: John
+          last_name: Test
+          address1: 123 Smart St
+          country: United States
+          country_code: US
+          phone: '+143873984567290'
+          city: Los Angeles
+          zip: '90210'
+          province: California
+          address2: Apt 4B
+          company: My Company
+          additional_phone: '+14245551234'
+          verified_phone: true
+          province_code: CA
+          latitude: 34.0522
+          longitude: -118.2437
+          id: addr_cust_01
+        spending_limit: 5000
+        has_defaulted: false
+        kyc_verified: true
+        kyc_details:
+        - vendor_name: socure
+          update_at: '2025-11-19T16:00:00Z'
+          kyc_verified: true
+          kyc_type: soft
+        buyer_anonymous_id: anon_b1a2c3d4
+    cancel:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the order to cancel.
+        cancel_reason:
+          type: string
+          description: A reason for cancelling or fully refunding the order.
+        cancelled_at:
+          type: string
+          format: date-time
+          description: When the order was cancelled, ISO8601 format.
+      required:
+      - id
+      - cancel_reason
+      - cancelled_at
+    vendor_line_item:
+      type: object
+      properties:
+        vendor_id:
+          type: string
+          example: VNDR7890
+          description: A unique id representing the selling vendor.
+        vendor_name:
+          type: string
+          example: Vendor
+          description: 'The name of the selling vendor. Examples of affiliated partners include: metasearch engine, white label partner.'
+    error_response:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/error'
+    decision_details:
+      type: object
+      properties:
+        external_status:
+          $ref: '#/components/schemas/decision_type'
+          description: 'The external status, valid values are:
+
+            * approved: The order was approved by the merchant or the gateway.
+
+            * declined: Despite Riskified recommendation to approve, the merchant decided overturn the decision and decline it.
+
+            * cancelled: The order was cancelled due to non-fraud reasons, such as out of stock.
+
+            * declined_fraud: The order was not fulfilled due to fraud related reasons.
+
+            * declined_business: The order was declined by the merchant''s business reasons.'
+          example: approved
+        decided_at:
+          type: string
+          format: date-time
+          example: '2025-11-19T16:15:00Z'
+          description: When the order was decided, ISO8601 format.
+        reason:
+          type: string
+          example: Approved by automated risk system
+          description: A reason for the decision.
+        amount:
+          type: number
+          format: float
+          example: 400
+          description: The amount the decision is relevant on.
+        currency:
+          type: string
+          example: USD
+          description: The three letter code (ISO 4217) for the currency used for the payment.
+        notes:
+          type: string
+          example: No suspicious activity detected; customer history clear.
+          description: Free text for describing the decision.
+      required:
+      - external_status
+      example:
+        external_status: approved
+        decided_at: '2025-11-19T16:15:00Z'
+        reason: Approved by automated risk system
+        amount: 400
+        currency: USD
+        notes: No suspicious activity detected; customer history clear.
+    refund:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the order to refund.
+        refunds:
+          type: array
+          items:
+            $ref: '#/components/schemas/refund_details'
+          description: A list of partial refunds for the order.
+      required:
+      - id
+      - refunds
+      example:
+        id: ORD-450789469
+        refunds:
+        - refund_id: RFND-87654321
+          amount: 50
+          currency: USD
+          sku: ITEM-XYZ-SKU
+          refunded_at: '2025-11-20T17:45:00Z'
+          reason: Customer cancelled item due to delay
+          sku_quantity: 1
+    error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
+        details:
+          type: string
+          description: Error details
+    social_details:
+      type: object
+      properties:
+        network:
+          type: string
+          description: The name of the social network.
+        public_username:
+          type: string
+          description: The customer's public username.
+        id:
+          type: string
+          description: The customer's profile id.
+        account_url:
+          type: string
+          description: Direct URL to the customer's profile page on the social network.
+        community_score:
+          type: integer
+          description: Aggregate community score for the customer
+        profile_picture:
+          type: string
+          description: URL of the customer's profile picture.
+        email:
+          type: string
+          description: Customer's email address registered on the social network.
+        bio:
+          type: string
+          description: Short biography of the customer on the social network.
+        following:
+          type: integer
+          description: Number of users following the customer on the social network.
+        followed:
+          type: integer
+          description: Number of users followed by the customer on the social network.
+        posts:
+          type: integer
+          description: Number of posts published by the customer on the social network.
+        auth_token:
+          type: string
+          description: The authentication token of the user.
+        social_data:
+          type: object
+          description: The user data from the network.
+      example:
+        network: facebook
+        public_username: john_test_official
+        id: fb_profile_10123456789
+        account_url: https://www.facebook.com/john_test_official
+        community_score: 85
+        profile_picture: https://img.social.com/p/10123456789.jpg
+        email: john.doe.social@testmail.com
+        bio: Software engineer, based in NYC. Love hiking and code.
+        following: 450
+        followed: 320
+        posts: 155
+        auth_token: ABC-123-XYZ-789-TOKEN
+        social_data:
+          join_date: '2015-08-01'
+          verified_badge: true
+    remittance_line_item:
+      type: object
+      properties:
+        price:
+          type: number
+          format: float
+          description: The price of the remittance line item.
+          example: 150
+        quantity:
+          type: integer
+          enum:
+          - 1
+          example: 1
+          description: Quantity must always be 1 for remittance line items.
+        title:
+          type: string
+          description: Describes the remittance type (e.g., ACH Transfer, Cash Transfer, Bank Deposit, Cash at Agent, Mobile wallet).
+          example: ACH Transfer
+        category:
+          type: string
+          example: ACH
+          description: 'The category of the item: ACH, Wallet Deposit, etc.'
+        product_type:
+          type: string
+          description: Specifies that this line item is a remittance type.
+          enum:
+          - remittance
+          example: remittance
+        product_id:
+          type: string
+          maxLength: 256
+          description: The id of the item. Limited to 256 characters
+        requires_shipping:
+          type: boolean
+          enum:
+          - true
+          description: Always true for remittance line items.
+        recipient:
+          $ref: '#/components/schemas/recipient_ACH'
+          description: Recipient bank details.
+      required:
+      - price
+      - quantity
+      - title
+      - product_type
+      - requires_shipping
+      - category
+      - product_id
+      example:
+        title: Bank Account Transfer
+        quantity: 1
+        requires_shipping: true
+        product_type: remittance
+        price: 1500
+        product_id: '2327384328722094'
+        category: BANK_TRANSFER
+        brand: MoneyXchange
+        sub_category: International
+        sku: RMT-INTL-1500
+        recipient:
+          account_number: '113401075211'
+          routing_number: '345342175111'
+          bank_code: ABCD-UYTD-34567000
+          email: recipient.user@example.com
+          created_at: 1669460400
+          updated_at: 1700996400
+          self_recipient: false
+    events_line_item:
+      type: object
+      properties:
+        price:
+          type: number
+          format: float
+          description: The price of one unit of the product.
+        quantity:
+          type: integer
+          description: The number of items that were ordered.
+        title:
+          type: string
+          description: The title of the item.
+        product_id:
+          type: string
+          description: The id of the item. Limited to 256 characters
+        category:
+          type: string
+          description: The category of the item. For event tickets, the category of the event.
+        brand:
+          type: string
+          description: The brand name of the item.
+        product_type:
+          type: string
+          description: 'The product type should contain the following value: event'
+          enum:
+          - event
+          example: event
+        requires_shipping:
+          type: boolean
+          example: false
+          description: Should be equal to `false` for the digital items that don't require shipping.
+        sku:
+          type: string
+          description: A unique identifier of the item in the fulfillment.
+        condition:
+          type: string
+          description: Description of the physical condition of the item, mostly relevant for used items.
+        seller:
+          $ref: '#/components/schemas/seller'
+          description: '**(Conditional Requirement)** Required for marketplace or guest/host accommodations. Details about the seller of the item, relevant for marketplace orders.'
+        vendor:
+          $ref: '#/components/schemas/vendor_line_item'
+          description: '**(Conditional Requirement)** Required if there is a different affiliated partner for each product or line item.'
+        sub_category:
+          type: string
+          description: The sub-category of the item. For event tickets, the sub-category of the event.
+        delivered_at:
+          type: string
+          description: The planned delivery date of the product or item.
+        delivered_to:
+          type: string
+          description: '**(Conditional Requirement)** Required for mixed shipment orders. The delivery type must contain one of the following values
+
+            shipping_address: The Order''s shipping address is the end user''s entered address.
+
+            store_pickup: If the end user selects store pickup, the shipping address value should contain the store''s address.'
+          enum:
+          - shipping_address
+          - store_pickup
+        drop_point:
+          type: string
+          description: If the end user is handing the package at a drop-off point, the shipping address value should contain the drop off location address
+        size:
+          type: string
+          description: The size of the item (e.g. shirt or shoe size)
+        registry_type:
+          type: string
+          description: 'The registry type must contain one of the following values: wedding, baby, other'
+          enum:
+          - wedding
+          - baby
+          - other
+        shipping_address_id:
+          type: string
+          description: '**(Conditional Requirement)** unique ID, is required in case of multiple shipping addresses.'
+        event_date:
+          type: string
+          format: date-time
+          description: The date and time (ISO8601) of the event.
+        city:
+          type: string
+          description: The city where the event will take place in.
+        country_code:
+          type: string
+          description: The 2 letter country code (ISO 3166-1 alpha-2) of the country where the event takes place.
+        section:
+          type: string
+          description: The assigned seating section in the venue.
+        latitude:
+          type: number
+          format: float
+          description: The latitude part of the coordinates of the event location.
+        longitude:
+          type: number
+          format: float
+          description: The longitude part of the coordinates of the event location.
+        cancellation_policy:
+          type: string
+          description: The booking cancellation policy.
+      required:
+      - price
+      - quantity
+      - title
+      - product_id
+      - category
+      - product_type
+      - requires_shipping
+      - event_date
+      - city
+      - country_code
+      example:
+        price: 150
+        quantity: 1
+        title: Rock Band Concert
+        product_id: '12345'
+        category: Concerts
+        brand: Ticket Seller
+        product_type: event
+        requires_shipping: false
+        sku: '123456789'
+        sub_category: Rock
+        event_date: '2022-05-07T00:00:00Z'
+        city: Dallas
+        country_code: US
+        section: general
+        latitude: 32.7767
+        longitude: -96.797
+        recipient:
+          email: test@mailmail.com
+          phone: '11234567890'
+        seller:
+          customer:
+            email: test@mailmail.com
+            first_name: John
+            last_name: Doe
+            id: d8fjv234
+            created_at: '2019-02-20T15:09:00Z'
+            updated_at: '2019-02-20T15:09:00Z'
+            total_spent: 1000
+            orders_count: 10
+            account_type: registered
+            phone: '+143873984567290'
+          correspondence: 5
+          price_negotiated: false
+          starting_price: '150.00'
+        condition: new
+        delivered_at: '2022-05-07T00:00:00Z'
+        delivered_to: null
+        drop_point: null
+        size: null
+        registry_type: null
+        shipping_address_id: null
+        cancellation_policy: Full refund if cancelled 48 hours before the event.
+    fulfill_response:
+      type: object
+      description: Fulfill Response
+      properties:
+        order:
+          type: object
+          properties:
+            id:
+              type: string
+              description: "Unique ID of order being acted upon. \n\n Note: This value should be later reflected also as order.id on the subsequent calls"
+              example: '53953819'
+            status:
+              type: string
+              enum:
+              - fulfilled
+              description: Textual status describing the result of the operation.
+          required:
+          - id
+          - status
+    travel_line_item:
+      type: object
+      properties:
+        price:
+          type: number
+          format: float
+          description: The price of one unit of the product.
+        quantity:
+          type: integer
+          description: The number of items that were ordered.
+        title:
+          type: string
+          description: The title of the item.
+        product_id:
+          type: string
+          description: The id of the item. Limited to 256 characters
+        category:
+          type: string
+          description: The category of the item. For event tickets, the category of the event.
+        brand:
+          type: string
+          description: The brand name of the item.
+        product_type:
+          type: string
+          description: 'The product type should contain the following value: travel.'
+          enum:
+          - travel
+          example: travel
+        requires_shipping:
+          type: boolean
+          example: false
+          description: Should be `false` for travel items that don't require shipping.
+        sku:
+          type: string
+          description: A unique identifier of the item in the fulfillment.
+        condition:
+          type: string
+          description: Description of the physical condition of the item, mostly relevant for used items.
+        seller:
+          $ref: '#/components/schemas/seller'
+          description: '**(Conditional Requirement)** Required for marketplace or guest/host accommodations. Details about the seller of the item, relevant for marketplace orders.'
+        vendor:
+          $ref: '#/components/schemas/vendor_line_item'
+          description: '**(Conditional Requirement)** Required if there is a different affiliated partner for each product or line item.'
+        sub_category:
+          type: string
+          description: The sub-category of the item. For event tickets, the sub-category of the event.
+        delivered_at:
+          type: string
+          description: The planned delivery date of the product or item.
+        delivered_to:
+          type: string
+          description: '**(Conditional Requirement)** Required for mixed shipment orders. The delivery type must contain one of the following values
+
+            shipping_address: The Order''s shipping address is the end user''s entered address.
+
+            store_pickup: If the end user selects store pickup, the shipping address value should contain the store''s address.'
+          enum:
+          - shipping_address
+          - store_pickup
+        drop_point:
+          type: string
+          description: If the end user is handing the package at a drop-off point, the shipping address value should contain the drop off location address
+        size:
+          type: string
+          description: The size of the item (e.g. shirt or shoe size)
+        registry_type:
+          type: string
+          description: 'The registry type must contain one of the following values: wedding, baby, other'
+          enum:
+          - wedding
+          - baby
+          - other
+        shipping_address_id:
+          type: string
+          description: '**(Conditional Requirement)** unique ID, is required in case of multiple shipping addresses.'
+        leg_id:
+          type: string
+          description: 'The current leg id.For flight tickets, flight number (e.g. ''101'').For bus tickets, bus number (e.g: ''A7'').'
+        departure_city:
+          type: string
+          description: The name of the city of departure for the current leg.
+        departure_country_code:
+          type: string
+          description: The 2 letter country code (ISO 3166-1 alpha-2) for the departure country of the current leg.
+        arrival_city:
+          type: string
+          description: The name of the city of arrival for the current leg.
+        arrival_country_code:
+          type: string
+          description: The 2 letter country code (ISO 3166-1 alpha-2) for the arrival country of the current leg.
+        departure_date:
+          type: string
+          format: date-time
+          description: Date and time of departure for the current leg. Add corresponding timezone indication or ensure correct UTC standardization (ISO8601) e.g. 2019-07-24T20:55:00+2:00
+        carrier_code:
+          type: string
+          description: 'A publicly agreed code describing the carrier/company conducting the current leg. For Flights: The IATA 2 letter carrier code.'
+        route_index:
+          type: integer
+          description: 'A running index (starts with 1), describing the order of routes by time.
+
+            Each route_index and leg_index combination constitutes an individual line item. The two (2) route example below requires four (4) line items.
+
+
+            E.g: If an order contains 2 Routes:
+
+            New-York->London->Paris (connection in London)
+
+            New-York->London should have route_index=1, leg_index=1
+
+            London->Paris should have route_index=1, leg_index=2
+
+
+            Paris->London->New-York
+
+            Paris->London should have route_index=2, leg_index=1
+
+            London->New-York should have route_index=2, leg_index=2'
+        leg_index:
+          type: integer
+          description: A running index (starts with 1), describing the order of legs in the same route. For more details, see route_index field.
+        transport_method:
+          type: string
+          description: The method of transportation.
+          enum:
+          - plane
+          - ship
+          - bus
+          - train
+          - tram
+        departure_port_code:
+          type: string
+          description: 'Departure port code for the current leg. For flights: the 3 letter IATA airport code.'
+        arrival_port_code:
+          type: string
+          description: 'Arrival port code for the current leg. For flights: the 3 letter IATA airport code.'
+        arrival_date:
+          type: string
+          format: date-time
+          description: '**(Conditional Requirement)** Required for Flights. Date and time of arrival for the current leg. Add corresponding timezone indication or ensure correct UTC standardization (ISO8601) e.g. 2019-07-24T20:55:00+2:00'
+        carrier_name:
+          type: string
+          description: The name of the carrier/company conducting the current leg.
+        ticket_class:
+          type: string
+          description: The class for this leg's ticket (e.g. business, economy, first).
+        cancellation_policy:
+          type: string
+          description: The booking cancellation policy.
+      required:
+      - price
+      - quantity
+      - title
+      - product_id
+      - category
+      - product_type
+      - requires_shipping
+      - leg_id
+      - departure_city
+      - departure_country_code
+      - arrival_city
+      - arrival_country_code
+      - departure_date
+      - route_index
+      - leg_index
+      - transport_method
+      example:
+        price: 150
+        quantity: 1
+        title: LIS|MAD
+        product_id: '12345'
+        category: Flight
+        brand: European Air
+        product_type: travel
+        requires_shipping: false
+        sku: '123456789'
+        sub_category: Plane Tickets
+        leg_id: '101'
+        departure_city: Lisbon
+        departure_country_code: PT
+        arrival_city: Madrid
+        arrival_country_code: ES
+        departure_date: 2022-03-20T18:40Z
+        carrier_code: UX
+        route_index: 1
+        leg_index: 1
+        transport_method: plane
+        departure_port_code: LIS
+        arrival_port_code: MAD
+        arrival_date: 2022-03-20T21:00Z
+        carrier_name: European Air
+        ticket_class: A
+        condition: new
+        seller: null
+        delivered_at: '2022-03-20T21:00:00Z'
+        delivered_to: null
+        drop_point: null
+        size: null
+        registry_type: null
+        shipping_address_id: null
+        cancellation_policy: Non-refundable after ticketing.
+    decision_response:
+      type: object
+      description: Decision Response
+      properties:
+        order:
+          type: object
+          properties:
+            id:
+              type: string
+              description: "Unique ID of order being acted upon. \n\n Note: This value should be later reflected also as order.id on the subsequent calls"
+              example: '53953819'
+            status:
+              type: string
+              enum:
+              - approved
+              - declined
+              description: Textual status describing the result of Riskified analysis.
+            description:
+              type: string
+              description: Additional context on Riskified decision.
+            old_status:
+              type: string
+              description: Old order status
+          required:
+          - id
+          - status
+          - description
+          - old_status
+    recipient_ACH:
+      type: object
+      properties:
+        account_number:
+          type: string
+          description: Required for bank deposits. The full account number.
+          example: '113401075211'
+        routing_number:
+          type: string
+          description: Required for bank deposits. The routing number (ABA) of the customer's bank.
+          example: '345342175111'
+        bank_code:
+          type: string
+          description: Bank code.
+          example: ABCD-UYTD-34567000
+        email:
+          type: string
+          description: Recipient email address
+        created_at:
+          type: number
+          format: date-time
+          description: Time when recipient was added to customer's account.
+        updated_at:
+          type: number
+          format: date-time
+          description: Time when recipient details were last updated.
+        self_recipient:
+          type: boolean
+          example: false
+          description: Indication if the money are transfered to the account owner.
+      required:
+      - account_number
+      - routing_number
+      example:
+        account_number: '113401075211'
+        routing_number: '345342175111'
+        self_recipient: false
+        bank_code: ABCD-UYTD-34567000
+        email: recipient.user@example.com
+        created_at: 1669460400
+        updated_at: 1700996400
+    chargeback_order_wrapper:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/chargeback_order'
+      required:
+      - order
+    refund_details:
+      type: object
+      properties:
+        refund_id:
+          type: string
+          description: Unique identifier for this refund.
+        sku:
+          type: string
+          description: A unique identifier of the item in the refund.
+        refunded_at:
+          type: string
+          format: date-time
+          description: When (ISO8601) the refund was issued to the customer.
+        amount:
+          type: number
+          format: float
+          description: Total amount of refund, specified as a positive number.
+        currency:
+          type: string
+          description: The 3-letter code (ISO 4217) for the currency used for the payment. Defaults to USD.
+        reason:
+          type: string
+          description: Text note detailing the reason this refund was issued.
+        sku_quantity:
+          type: integer
+          description: Integer representing number of items returned of a specific SKU.
+      required:
+      - refund_id
+      - amount
+      - currency
+    digital_line_item:
+      type: object
+      properties:
+        price:
+          type: number
+          format: float
+          description: The price of one unit of the product.
+        quantity:
+          type: integer
+          description: The number of items that were ordered.
+        title:
+          type: string
+          description: The title of the item.
+        product_id:
+          type: string
+          description: The id of the item. Limited to 256 characters
+        category:
+          type: string
+          description: The category of the item. For event tickets, the category of the event.
+        brand:
+          type: string
+          description: The brand name of the item.
+        product_type:
+          type: string
+          description: 'The product type should contain the following value: digital'
+          enum:
+          - digital
+          example: digital
+        requires_shipping:
+          type: boolean
+          example: false
+          description: Should be `false` for digital items. States whether or not the item requires shipping.
+        sku:
+          type: string
+          description: A unique identifier of the item in the fulfillment.
+        condition:
+          type: string
+          description: Description of the physical condition of the item, mostly relevant for used items.
+        seller:
+          $ref: '#/components/schemas/seller'
+          description: '**(Conditional Requirement)** Required for marketplace or guest/host accommodations. Details about the seller of the item, relevant for marketplace orders.'
+        vendor:
+          $ref: '#/components/schemas/vendor_line_item'
+          description: '**(Conditional Requirement)** Required if there is a different affiliated partner for each product or line item.'
+        sub_category:
+          type: string
+          description: The sub-category of the item. For event tickets, the sub-category of the event.
+        delivered_at:
+          type: string
+          description: The planned delivery date of the product or item.
+        delivered_to:
+          type: string
+          description: '**(Conditional Requirement)** Required for mixed shipment orders. The delivery type must contain one of the following values
+
+            shipping_address: The Order''s shipping address is the end user''s entered address.
+
+            store_pickup: If the end user selects store pickup, the shipping address value should contain the store''s address.'
+          enum:
+          - shipping_address
+          - store_pickup
+        drop_point:
+          type: string
+          description: If the end user is handing the package at a drop-off point, the shipping address value should contain the drop off location address
+        size:
+          type: string
+          description: The size of the item (e.g. shirt or shoe size)
+        registry_type:
+          type: string
+          description: 'The registry type must contain one of the following values: wedding, baby, other'
+          enum:
+          - wedding
+          - baby
+          - other
+        shipping_address_id:
+          type: string
+          description: '**(Conditional Requirement)** unique ID, is required in case of multiple shipping addresses.'
+        sender_name:
+          type: string
+          description: The sender name.
+        photo_uploaded:
+          type: boolean
+          description: Indicating whether a photo was uploaded.
+        photo_url:
+          type: string
+          description: The photo url (if uploaded).
+        message:
+          type: string
+          description: The card's message.
+        display_name:
+          type: string
+          description: The display name.
+        greeting_photo_url:
+          type: string
+          description: The greeting photo url (if exists).
+        greeting_message:
+          type: string
+          description: The greeting message.
+        card_type:
+          type: string
+          description: The card's type.
+        recipient:
+          $ref: '#/components/schemas/recipient'
+          description: Recipient details
+      required:
+      - price
+      - quantity
+      - title
+      - product_id
+      - category
+      - product_type
+      - requires_shipping
+      - recipient
+      example:
+        price: 200
+        quantity: 1
+        title: Digital Item
+        product_id: '51217'
+        category: Card
+        brand: Apple
+        product_type: digital
+        requires_shipping: false
+        sku: '69536334'
+        sub_category: Digital Item
+        sender_name: Jane Doe
+        message: This is a test.
+        recipient:
+          email: test@mailmail.com
+          phone: '11234567890'
+        photo_uploaded: true
+        photo_url: https://example.com/photo/card-bg-123.jpg
+        display_name: Gift for John
+        card_type: birthday
+        condition: new
+        seller: null
+        delivered_at: '2025-11-26T12:00:00Z'
+        delivered_to: null
+        drop_point: null
+        size: null
+        registry_type: null
+        shipping_address_id: null
+    rides_line_item:
+      type: object
+      properties:
+        price:
+          type: number
+          format: float
+          description: The price of one unit of the product.
+        quantity:
+          type: integer
+          description: The number of items that were ordered.
+        title:
+          type: string
+          description: The title of the item.
+        product_id:
+          type: string
+          description: The id of the item. Limited to 256 characters
+        category:
+          type: string
+          description: The category of the item. For event tickets, the category of the event.
+        brand:
+          type: string
+          description: The brand name of the item.
+        product_type:
+          type: string
+          description: 'The product type should contain the following value: ride.'
+          enum:
+          - ride
+          example: ride
+        requires_shipping:
+          type: boolean
+          example: false
+          description: Should be `false` for digital items. States whether or not the item requires shipping.
+        sku:
+          type: string
+          description: A unique identifier of the item in the fulfillment.
+        condition:
+          type: string
+          description: Description of the physical condition of the item, mostly relevant for used items.
+        seller:
+          $ref: '#/components/schemas/seller'
+          description: '**(Conditional Requirement)** Required for marketplace or guest/host accommodations. Details about the seller of the item, relevant for marketplace orders.'
+        vendor:
+          $ref: '#/components/schemas/vendor_line_item'
+          description: '**(Conditional Requirement)** Required if there is a different affiliated partner for each product or line item.'
+        sub_category:
+          type: string
+          description: The sub-category of the item. For event tickets, the sub-category of the event.
+        delivered_at:
+          type: string
+          description: The planned delivery date of the product or item.
+        delivered_to:
+          type: string
+          description: '**(Conditional Requirement)** Required for mixed shipment orders. The delivery type must contain one of the following values
+
+            shipping_address: The Order''s shipping address is the end user''s entered address.
+
+            store_pickup: If the end user selects store pickup, the shipping address value should contain the store''s address.'
+          enum:
+          - shipping_address
+          - store_pickup
+        drop_point:
+          type: string
+          description: If the end user is handing the package at a drop-off point, the shipping address value should contain the drop off location address
+        size:
+          type: string
+          description: The size of the item (e.g. shirt or shoe size)
+        registry_type:
+          type: string
+          description: 'The registry type must contain one of the following values: wedding, baby, other'
+          enum:
+          - wedding
+          - baby
+          - other
+        shipping_address_id:
+          type: string
+          description: '**(Conditional Requirement)** unique ID, is required in case of multiple shipping addresses.'
+        pickup_date:
+          type: string
+          format: date-time
+          description: Ride pickup date. Add corresponding timezone indication or ensure correct UTC standardization (ISO8601) e.g. 2019-07-24T14:55:00+2:00
+        route_index:
+          type: integer
+          description: "A running index (starts with 1), describing the order of routes by time.\n\n E.g: A return trip will be represented in two line_items, the onward trip line_item will be assigned with route_index = 1, the return trip line_item with route_index = 2."
+        leg_index:
+          type: integer
+          description: 'A running index (starts with 1), describing the order of legs in the same route. E.g: Will always equal 1, unless the rider needs to change a vehicle within a route.'
+        pickup_latitude:
+          type: number
+          format: float
+          description: The latitude part of the pickup location coordinates.
+        pickup_longitude:
+          type: number
+          format: float
+          description: The longitude part of the pickup location coordinates.
+        pickup_address:
+          type: array
+          items:
+            $ref: '#/components/schemas/address'
+          description: Pickup location address.
+        dropoff_date:
+          type: string
+          format: date-time
+          description: Ride dropoff date. Add corresponding timezone indication or ensure correct UTC standardization (ISO8601) e.g. 2019-07-24T14:55:00+2:00
+        dropoff_latitude:
+          type: number
+          format: float
+          description: The latitude part of the dropoff location coordinates.
+        dropoff_longitude:
+          type: number
+          format: float
+          description: The longitude part of the dropoff location coordinates.
+        dropoff_address:
+          type: array
+          items:
+            $ref: '#/components/schemas/address'
+          description: Dropoff location address.
+        transport_method:
+          type: string
+          description: 'The transport method used, such as: taxi, car, rv, bus, plane, ship, train, tram, cruise'
+          enum:
+          - taxi
+          - car
+          - rv
+          - bus
+          - plane
+          - ship
+          - train
+          - tram
+          - cruise
+        price_by:
+          type: string
+          description: 'Pricing method: meter/fixed.'
+        vehicle_class:
+          type: string
+          description: 'Vehicle class, such as: economy, executive, van, etc.'
+        carrier_name:
+          type: string
+          description: Ride/taxi company name.
+        driver_id:
+          type: string
+          description: Driver ID/vehicle number (if self driven).
+        tariff:
+          type: string
+          description: 'Relevant tariff for the ride, such as: regular, night, 2, etc.'
+        note_to_driver:
+          type: string
+          description: Additional message to driver.
+        meet_n_greet:
+          type: string
+          description: Airport/pickup meet and greet message.
+        cancellation_policy:
+          type: string
+          description: Reservation cancellation policy.
+        authorized_payment:
+          type: number
+          format: float
+          description: Authorized pre-payment value for this ride (order currency).
+        damage_excess:
+          type: number
+          format: float
+          description: Amount the customer is liable for in case of damage to the vehicle.
+      required:
+      - price
+      - quantity
+      - title
+      - product_id
+      - category
+      - product_type
+      - requires_shipping
+      - pickup_date
+      - route_index
+      - leg_index
+      example:
+        price: 45
+        quantity: 1
+        title: Airport Transfer to Downtown
+        product_id: RDE9876
+        category: Rideshare
+        brand: CityCab
+        product_type: ride
+        requires_shipping: false
+        sku: CC-T-45
+        sub_category: Taxi
+        pickup_date: '2025-12-15T06:00:00-05:00'
+        route_index: 1
+        leg_index: 1
+        pickup_latitude: 33.9416
+        pickup_longitude: -118.4004
+        pickup_address:
+        - first_name: John
+          last_name: Test
+          address1: LAX Terminal 1
+          country: United States
+          country_code: US
+          phone: '+143873984567290'
+          city: Los Angeles
+          zip: '90045'
+          province: California
+        dropoff_date: '2025-12-15T06:45:00-05:00'
+        dropoff_latitude: 34.0522
+        dropoff_longitude: -118.2437
+        dropoff_address:
+        - first_name: John
+          last_name: Test
+          address1: 456 Main St
+          country: United States
+          country_code: US
+          phone: '+143873984567290'
+          city: Los Angeles
+          zip: '90012'
+          province: California
+        transport_method: car
+        price_by: fixed
+        vehicle_class: executive
+        carrier_name: RideShare XYZ
+        driver_id: DRV-678
+        tariff: standard
+        note_to_driver: Meet at Terminal B, Door 3.
+        meet_n_greet: Sign with customer name.
+        cancellation_policy: Free if cancelled 2 hours prior.
+        authorized_payment: 45
+        damage_excess: 0
+        condition: null
+        seller: null
+        delivered_at: '2025-12-15T06:45:00-05:00'
+        delivered_to: null
+        drop_point: null
+        size: null
+        registry_type: null
+        shipping_address_id: null
+    cancel_order_wrapper:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/cancel'
+      required:
+      - order
+    chargeback_response:
+      type: object
+      description: Refund Response
+      properties:
+        order:
+          type: object
+          properties:
+            id:
+              type: string
+              description: "Unique ID of order being acted upon. \n\n Note: This value should be later reflected also as order.id on the subsequent calls"
+              example: '53953819'
+            status:
+              type: string
+              enum:
+              - chargeback
+              description: "Textual status describing the result of Riskified analysis. \n\n Always 'approve' for approved orders. Order is approved and guaranteed by Riskified"
+            description:
+              type: string
+              description: Additional context on Riskified decision.
+            old_status:
+              type: string
+              description: Old order status
+          required:
+          - id
+          - status
+          - description
+          - old_status
+    fulfillment_order_wrapper:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/fulfillment_order'
+      required:
+      - order
+    physical_line_item:
+      type: object
+      description: A line item that is a physical product. This is the default type of line item.
+      properties:
+        price:
+          type: number
+          format: float
+          description: The price of one unit of the product.
+        quantity:
+          type: integer
+          description: The number of items that were ordered.
+        title:
+          type: string
+          description: The title of the item.
+        product_id:
+          type: string
+          description: The id of the item. Limited to 256 characters
+        category:
+          type: string
+          description: The category of the item. For event tickets, the category of the event.
+        brand:
+          type: string
+          description: The brand name of the item.
+        product_type:
+          type: string
+          description: 'The product type should contain one the following value: physical.'
+          enum:
+          - physical
+          example: physical
+        requires_shipping:
+          type: boolean
+          example: true
+          description: States whether or not the item requires shipping. This field is important for merchants dealing with digital goods.
+        sku:
+          type: string
+          description: A unique identifier of the item in the fulfillment.
+        condition:
+          type: string
+          description: Description of the physical condition of the item, mostly relevant for used items.
+        seller:
+          $ref: '#/components/schemas/seller'
+          description: '**(Conditional Requirement)** Required for marketplace or guest/host accommodations. Details about the seller of the item, relevant for marketplace orders.'
+        vendor:
+          $ref: '#/components/schemas/vendor_line_item'
+          description: '**(Conditional Requirement)** Required if there is a different affiliated partner for each product or line item.'
+        sub_category:
+          type: string
+          description: The sub-category of the item. For event tickets, the sub-category of the event.
+        delivered_at:
+          type: string
+          description: The planned delivery date of the product or item.
+        delivered_to:
+          type: string
+          description: '**(Conditional Requirement)** Required for mixed shipment orders. The delivery type must contain one of the following values
+
+            shipping_address: The Order''s shipping address is the end user''s entered address.
+
+            store_pickup: If the end user selects store pickup, the shipping address value should contain the store''s address.'
+          enum:
+          - shipping_address
+          - store_pickup
+        drop_point:
+          type: string
+          description: If the end user is handing the package at a drop-off point, the shipping address value should contain the drop off location address
+        size:
+          type: string
+          description: The size of the item (e.g. shirt or shoe size)
+        registry_type:
+          type: string
+          description: 'The registry type must contain one of the following values: wedding, baby, other'
+          enum:
+          - wedding
+          - baby
+          - other
+        shipping_address_id:
+          type: string
+          description: '**(Conditional Requirement)** unique ID, is required in case of multiple shipping addresses.'
+      required:
+      - price
+      - quantity
+      - title
+      - product_id
+      - category
+      - product_type
+      - requires_shipping
+      example:
+        price: 20
+        quantity: 1
+        title: Tempered Glass Guard for Apple iPhone X
+        product_id: ABC123
+        category: On Sale
+        brand: Complete Cover
+        product_type: physical
+        requires_shipping: true
+        sku: sj18fn402
+        sub_category: Super Sale
+        condition: new
+        seller: null
+        delivered_at: '2025-12-01T10:00:00Z'
+        delivered_to: shipping_address
+        drop_point: null
+        size: Small
+        registry_type: null
+        shipping_address_id: addr_ship_01
+    decision_type:
+      type: string
+      enum:
+      - approved
+      - declined
+      - cancelled
+      - declined_fraud
+      - declined_business
+    chargeback_order:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Order ID
+        chargeback_details:
+          $ref: '#/components/schemas/chargeback_details'
+          description: A list of fulfillment attempts for the order.
+        fulfillment:
+          $ref: '#/components/schemas/fulfillment_details'
+          description: "**(Conditional Requirement)** Required for tangible goods.\n\n Details regarding the fulfillment of the item, including shipping information."
+        dispute_details:
+          $ref: '#/components/schemas/dispute_details'
+          description: "**(Conditional Requirement)** Required for disputed chargebacks.\n\n Details regarding the chargeback dispute."
+      required:
+      - id
+      - chargeback_details
+    chargeback_details:
+      type: object
+      properties:
+        chargeback_at:
+          type: string
+          format: date-time
+          description: The chargeback date (ISO8601), as received from the acquirer.
+        chargeback_currency:
+          type: string
+          description: The chargeback currency, ISO 4217
+        chargeback_amount:
+          type: number
+          format: float
+          description: 'The chargeback amount as stated in the chargeback notice, specified as a positive number. For partial chargeback reimbursement, specify the amount lost, no the amount reimbursed.  '
+        reason_code:
+          type: string
+          description: The chargeback reason code, as received from the acquirer
+        type:
+          type: string
+          enum:
+          - rfi
+          - cb
+          - tc40
+          description: 'The chargeback transaction type, as received from the acquirer:
+
+            * rfi Request for Information.
+
+            * cb Notification of Chargeback.
+
+            * tc40 Card Network Fraud Alert (including SAFE and equivalents)'
+        gateway:
+          type: string
+          description: The payment gateway who processed the order
+        id:
+          type: string
+          description: The chargeback unique identifier as received from the gateway/acquirer on the chargeback's notice
+        reason_description:
+          type: string
+          description: The chargeback reason description, as received from the acquirer
+        mid:
+          type: string
+          description: The merchant account id at the payment gateway.
+        arn:
+          type: string
+          description: Acquirer Reference Number (ARN) A unique number that tags a credit card transaction when it goes from the merchant's bank (the acquiring bank) through the card scheme to the cardholder's bank (the issuer).
+        credit_card_company:
+          type: string
+          description: 'Credit card brand: VISA, Mastercard, AMEX, JCB, etc.'
+        respond_by:
+          type: string
+          format: date-time
+          description: Last date (ISO8601)to challenge CHB.
+        card_issuer:
+          type: string
+          description: The card issuer.
+        fee_amount:
+          type: number
+          format: float
+          description: The chargeback fee amount.
+        fee_currency:
+          type: string
+          description: The chargeback fee currency.
+        cardholder:
+          type: string
+          description: The identifier of the person who submitted the CHB, as it appears on the chargeback notice.
+        message:
+          type: string
+          description: Optional issuer message.
+        transaction_id:
+          type: string
+          description: Unique identifier generated by the payment processor to the original payment transaction/settlement.
+          example: '1215540751846411'
+        credit_card_bin:
+          type: string
+          description: The issuer identification number (IIN), formerly known as bank identification number (BIN) of the customer's credit card. Made up of the first 6 or 8 digits of the credit card number (per value received from the Payment Service Providers/tokenization response).
+          example: '11122233'
+        credit_card_last_four_digits:
+          type: string
+          description: The last 4 digits of the card number.
+          example: '4536'
+        transaction_store_id:
+          type: string
+          description: Identifier of the store, brand, or business entity associated with the transaction. Primarily relevant for merchants operating multiple stores, brands, or business entities, such as omnichannel merchants.
+          example: store_nyc_01
+        transaction_point_of_sale:
+          type: string
+          description: Point of Sale (POS) identifier associated with the transaction. Primarily relevant for merchants operating physical retail locations where transactions are processed through specific POS systems or terminals.
+          example: pos_terminal_07
+        transaction_cash_register_number:
+          type: string
+          description: Identifier of the specific cash register or POS terminal where the transaction was processed. Primarily relevant for physical retail environments with multiple registers or checkout terminals.
+          example: register_03
+      required:
+      - chargeback_at
+      - chargeback_currency
+      - chargeback_amount
+      - reason_code
+      - type
+      - gateway
+      - id
+    address:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: The first name of the person associated with the address.
+        last_name:
+          type: string
+          description: The last name of the person associated with the address.
+        address1:
+          type: string
+          description: The street name of the address.
+        country:
+          type: string
+          description: The name of the country address.
+        country_code:
+          type: string
+          description: The 2 letter country code (ISO 3166-1 alpha-2) of the country address.
+        phone:
+          type: string
+          description: The phone number at the address.
+        city:
+          type: string
+          description: The city of the address.
+        zip:
+          type: string
+          description: The zip or postal code of the address.
+        address2:
+          type: string
+          description: An optional additional field for the street address.
+        company:
+          type: string
+          description: '**(Conditional Requirement)** Required if the address is associated to a company. The company of the person associated with the address.'
+        additional_phone:
+          type: string
+          description: Additional phone number at the address.
+        verified_phone:
+          type: boolean
+          description: Indicates whether the provided phone number was verified.
+        province:
+          type: string
+          description: The name of the state or province of the address.
+        province_code:
+          type: string
+          description: The two-letter ISO 3166-2 alpha-2 code for the state or province of the address.
+        neighborhood:
+          type: string
+          description: The district or city division of the address. The neighborhood should be provided if used in a country’s official postal addresses. Examples of this include the Colonia in Mexico or Bairro in Brazil.
+        latitude:
+          type: number
+          format: float
+          description: The latitude coordinates of the address.
+        longitude:
+          type: number
+          format: float
+          description: The longitude coordinates of the address.
+        id:
+          type: string
+          description: '**(Conditional Requirement)** unique ID, is required in case of multiple shipping addresses.'
+      required:
+      - first_name
+      - last_name
+      - address1
+      - country
+      - country_code
+      - phone
+      - city
+      - zip
+      - province
+      example:
+        first_name: John
+        last_name: Test
+        address1: 123 Smart St
+        country: United States
+        country_code: US
+        phone: '+143873984567290'
+        city: Los Angeles
+        zip: '90210'
+        province: California
+        address2: Apt 4B
+        company: My Company
+        additional_phone: '+14245551234'
+        verified_phone: true
+        province_code: CA
+        latitude: 34.0522
+        longitude: -118.2437
+        id: addr_cust_01
+    accommodation_line_item:
+      type: object
+      properties:
+        price:
+          type: number
+          format: float
+          description: The price of one unit of the product.
+        quantity:
+          type: integer
+          description: The number of items that were ordered.
+        title:
+          type: string
+          description: The title of the item.
+        product_id:
+          type: string
+          description: The id of the item. Limited to 256 characters
+        category:
+          type: string
+          description: The category of the item. For event tickets, the category of the event.
+        brand:
+          type: string
+          description: The brand name of the item.
+        product_type:
+          type: string
+          description: 'The product type should contain the following value: ccommodation'
+          enum:
+          - accommodation
+          example: accommodation
+        requires_shipping:
+          type: boolean
+          example: false
+          description: Should be `false` for the items that don't require shipping.
+        sku:
+          type: string
+          description: A unique identifier of the item in the fulfillment.
+        condition:
+          type: string
+          description: Description of the physical condition of the item, mostly relevant for used items.
+        seller:
+          $ref: '#/components/schemas/seller'
+          description: '**(Conditional Requirement)** Required for marketplace or guest/host accommodations. Details about the seller of the item, relevant for marketplace orders.'
+        vendor:
+          $ref: '#/components/schemas/vendor_line_item'
+          description: '**(Conditional Requirement)** Required if there is a different affiliated partner for each product or line item.'
+        sub_category:
+          type: string
+          description: The sub-category of the item. For event tickets, the sub-category of the event.
+        delivered_at:
+          type: string
+          description: The planned delivery date of the product or item.
+        delivered_to:
+          type: string
+          description: '**(Conditional Requirement)** Required for mixed shipment orders. The delivery type must contain one of the following values
+
+            shipping_address: The Order''s shipping address is the end user''s entered address.
+
+            store_pickup: If the end user selects store pickup, the shipping address value should contain the store''s address.'
+          enum:
+          - shipping_address
+          - store_pickup
+        drop_point:
+          type: string
+          description: If the end user is handing the package at a drop-off point, the shipping address value should contain the drop off location address
+        size:
+          type: string
+          description: The size of the item (e.g. shirt or shoe size)
+        registry_type:
+          type: string
+          description: 'The registry type must contain one of the following values: wedding, baby, other'
+          enum:
+          - wedding
+          - baby
+          - other
+        shipping_address_id:
+          type: string
+          description: '**(Conditional Requirement)** unique ID, is required in case of multiple shipping addresses.'
+        check_in_date:
+          type: string
+          format: date-time
+          description: The room check-in date (ISO8601).
+        city:
+          type: string
+          description: The accommodation city.
+        country_code:
+          type: string
+          description: The 2 letter country code (ISO 3166-1 alpha-2) of the country where the accommodation is located.
+        check_out_date:
+          type: string
+          format: date-time
+          description: The room check-out date.
+        accommodation_type:
+          type: string
+          description: The accommodation type, such as hotel, B&B, etc.
+        room_type:
+          type: string
+          description: The room type, such as single, double, suite, etc.
+        number_of_guests:
+          type: integer
+          description: The number of guests expected in the room.
+        rating:
+          type: string
+          description: The accommodation rating, as published on the merchant's website.
+        cancellation_policy:
+          type: string
+          description: The booking cancellation policy.
+      required:
+      - price
+      - quantity
+      - title
+      - product_id
+      - category
+      - product_type
+      - requires_shipping
+      - check_in_date
+      - city
+      - country_code
+      - cancellation_policy
+      example:
+        price: 150
+        quantity: 3
+        title: Honeymoon Suite - 3 Nights
+        product_id: '12345'
+        category: Hotel
+        brand: Great Hotel Group
+        product_type: accommodation
+        requires_shipping: false
+        sku: '123456789'
+        sub_category: Hotel Reservations
+        accommodation_type: Hotel
+        cancellation_policy: Full refund if cancelled before 48 hours.
+        check_in_date: '2022-04-14T15:00:00+00:00'
+        check_out_date: '2022-04-17T11:00:00+00:00'
+        city: Riviera Maya
+        country_code: MX
+        number_of_guests: 2
+        rating: 4.5 stars
+        room_type: Honeymoon Suite
+        condition: null
+        delivered_at: '2022-04-14T15:00:00+00:00'
+        delivered_to: null
+        drop_point: null
+        size: null
+        registry_type: null
+        shipping_address_id: null
+        seller:
+          customer:
+            email: hotel.host@greathotelgroup.com
+            first_name: Resort
+            last_name: Manager
+            id: HOST_5599
+            created_at: '2018-10-01T08:00:00Z'
+            account_type: business
+            phone: '+529841234567'
+          correspondence: 2
+          price_negotiated: false
+          starting_price: '150.00'
+    recipient:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Recipient email address
+        phone:
+          type: string
+          description: Recipient phone number
+        social:
+          $ref: '#/components/schemas/social_details'
+          description: Recipient's known social identity.
+        account_number:
+          type: string
+          description: '**(Conditional Requirement)** Required for ACH transactions. The full account number.'
+        routing_number:
+          type: string
+          description: '**(Conditional Requirement)** Required for ACH transactions. The routing number (ABA) of the customer''s bank.'
+        crypto_wallet:
+          $ref: '#/components/schemas/crypto_wallet'
+          description: The recipient crypto wallet receiving the line item.
+      required:
+      - email
+      example:
+        email: recipient.user@example.com
+        phone: '+15551234567'
+        social:
+          network: facebook
+          id: fb_recipient_9988
+          public_username: recip_user_name
+          community_score: 75
+        account_number: null
+        routing_number: null
+        crypto_wallet:
+          address: '0xc0ffee254729296a45a3885639AC7E10F9d54979'
+          network: ethereum
+          type: primary
+    giftcard_line_item:
+      type: object
+      properties:
+        price:
+          type: number
+          format: float
+          description: The price of one unit of the product.
+        quantity:
+          type: integer
+          description: The number of items that were ordered.
+        title:
+          type: string
+          description: The title of the item.
+        product_id:
+          type: string
+          description: The id of the item. Limited to 256 characters
+        category:
+          type: string
+          description: The category of the item. For event tickets, the category of the event.
+        brand:
+          type: string
+          description: The brand name of the item.
+        product_type:
+          type: string
+          description: 'The product type should contain the following value: giftcard'
+          enum:
+          - giftcard
+          example: giftcard
+        requires_shipping:
+          type: boolean
+          example: false
+          description: States whether or not the item requires shipping. Set to True for a physical gift card and False for a digital gift card.
+        sku:
+          type: string
+          description: A unique identifier of the item in the fulfillment.
+        condition:
+          type: string
+          description: Description of the physical condition of the item, mostly relevant for used items.
+        seller:
+          $ref: '#/components/schemas/seller'
+          description: '**(Conditional Requirement)** Required for marketplace or guest/host accommodations. Details about the seller of the item, relevant for marketplace orders.'
+        vendor:
+          $ref: '#/components/schemas/vendor_line_item'
+          description: '**(Conditional Requirement)** Required if there is a different affiliated partner for each product or line item.'
+        sub_category:
+          type: string
+          description: The sub-category of the item. For event tickets, the sub-category of the event.
+        delivered_at:
+          type: string
+          description: The planned delivery date of the product or item.
+        delivered_to:
+          type: string
+          description: '**(Conditional Requirement)** Required for mixed shipment orders. The delivery type must contain one of the following values
+
+            shipping_address: The Order''s shipping address is the end user''s entered address.
+
+            store_pickup: If the end user selects store pickup, the shipping address value should contain the store''s address.'
+          enum:
+          - shipping_address
+          - store_pickup
+        drop_point:
+          type: string
+          description: If the end user is handing the package at a drop-off point, the shipping address value should contain the drop off location address
+        size:
+          type: string
+          description: The size of the item (e.g. shirt or shoe size)
+        registry_type:
+          type: string
+          description: 'The registry type must contain one of the following values: wedding, baby, other'
+          enum:
+          - wedding
+          - baby
+          - other
+        shipping_address_id:
+          type: string
+          description: '**(Conditional Requirement)** unique ID, is required in case of multiple shipping addresses.'
+        sender_name:
+          type: string
+          description: The sender name.
+        photo_uploaded:
+          type: boolean
+          description: Indicating whether a photo was uploaded.
+        photo_url:
+          type: string
+          description: The photo url (if uploaded).
+        message:
+          type: string
+          description: The card's message.
+        display_name:
+          type: string
+          description: The display name.
+        greeting_photo_url:
+          type: string
+          description: The greeting photo url (if exists).
+        greeting_message:
+          type: string
+          description: The greeting message.
+        card_type:
+          type: string
+          description: The card's type.
+        recipient:
+          $ref: '#/components/schemas/recipient'
+          description: Recipient details
+      required:
+      - price
+      - quantity
+      - title
+      - product_id
+      - category
+      - product_type
+      - requires_shipping
+      - recipient
+      example:
+        price: 200
+        quantity: 1
+        title: Gift Card
+        product_id: '51217'
+        category: Gift Card
+        brand: Apple
+        product_type: giftcard
+        requires_shipping: false
+        sku: '69536334'
+        sub_category: Digital Gift Card
+        sender_name: Jane Doe
+        message: This is a test.
+        recipient:
+          email: test@mailmail.com
+          phone: '11234567890'
+        photo_uploaded: true
+        photo_url: https://example.com/photo/card-bg-123.jpg
+        display_name: Gift for John
+        card_type: birthday
+        condition: new
+        seller: null
+        delivered_at: '2025-11-26T12:00:00Z'
+        delivered_to: null
+        drop_point: null
+        size: null
+        registry_type: null
+        shipping_address_id: null
+    Cancel_Response:
+      type: object
+      description: Cancel Response
+      properties:
+        order:
+          type: object
+          properties:
+            id:
+              type: string
+              description: "Unique ID of order being acted upon. \n\n Note: This value should be later reflected also as order.id on the subsequent calls"
+              example: '53953819'
+            status:
+              type: string
+              enum:
+              - cancelled
+              description: "Textual status describing the result of Riskified analysis. \n\n Always 'approve' for approved orders. Order is approved and guaranteed by Riskified"
+            description:
+              type: string
+              description: Additional context on Riskified decision.
+            old_status:
+              type: string
+              description: Old order status
+          required:
+          - id
+          - status
+          - description
+          - old_status
+    line_item:
+      anyOf:
+      - $ref: '#/components/schemas/physical_line_item'
+      - $ref: '#/components/schemas/digital_line_item'
+      - $ref: '#/components/schemas/travel_line_item'
+      - $ref: '#/components/schemas/rides_line_item'
+      - $ref: '#/components/schemas/events_line_item'
+      - $ref: '#/components/schemas/accommodation_line_item'
+      - $ref: '#/components/schemas/remittance_line_item'
+      - $ref: '#/components/schemas/crypto_line_item'
+      - $ref: '#/components/schemas/giftcard_line_item'
+    recipient_crypto:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Recipient email address.
+          example: user@example.com
+        phone:
+          type: string
+          description: Recipient phone number.
+          example: '+14155552671'
+        crypto_wallet:
+          $ref: '#/components/schemas/crypto_wallet'
+          description: Cryptocurrency wallet details.
+      required:
+      - crypto_wallet
+    seller:
+      type: object
+      properties:
+        customer:
+          type: object
+          $ref: '#/components/schemas/customer'
+          description: A Customer object representing the seller.
+        correspondence:
+          type: integer
+          description: Number of messages sent between the customer and the seller.
+        price_negotiated:
+          type: boolean
+          description: True if the seller and customer negotiated the price between themselves.
+        starting_price:
+          type: string
+          format: float
+          description: The original price of the order, prior to any negotiation between seller and customer.
+      required:
+      - customer
+      example:
+        customer:
+          email: seller.jane@marketplace.com
+          first_name: Jane
+          last_name: Seller
+          id: seller_f4k6g8
+          created_at: '2020-05-10T09:00:00Z'
+        correspondence: 12
+        price_negotiated: true
+        starting_price: '175.00'
+    decision_order:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the order the decision is on.
+        gateway:
+          type: string
+          description: Use if the final gateway was unknown during order submission. If the transaction was processed using 3D Secure (3DS), append `_3ds` to the gateway name, for example, `adyen_3ds`.
+        decision:
+          $ref: '#/components/schemas/decision_details'
+      required:
+      - id
+      - decision
+    decision_order_wrapper:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/decision_order'
+      required:
+      - order
+  examples:
+    chargeback_with_fulfill:
+      description: Chargeback notification with fulfillment info.
+      value:
+        order:
+          id: orderid1234
+          chargeback_details:
+            id: chargebackid1234
+            chargeback_at: '2025-11-01T12:00:00Z'
+            chargeback_currency: USD
+            chargeback_amount: 50.5
+            reason_code: '4863'
+            type: cb
+            gateway: braintree
+            reason_description: Transaction not recognized
+            mid: t_123
+            arn: a123456789012bc3de45678901f23a45
+            credit_card_company: visa
+            respond_by: '2025-12-01'
+            card_issuer: Wells Fargo Bank
+            credit_card_bin: '411111'
+            credit_card_last_four_digits: '4242'
+            transaction_id: txn_01HXYZABC123
+            transaction_store_id: store_nyc_01
+            transaction_point_of_sale: pos_07
+            transaction_cash_register_number: reg_03
+          fulfillment:
+            fulfillment_id: fulfillmentid1234
+            created_at: '2025-10-25T13:36:50-04:00'
+            status: success
+            tracking_company: fedex
+            tracking_numbers: trackingnumber1234
+    chargeback_first_dispute_won:
+      description: Chargeback notification for the first dispute - won.
+      value:
+        order:
+          id: orderid1234
+          chargeback_details:
+            id: chargebackid1234
+            chargeback_at: '2025-11-01T12:00:00Z'
+            chargeback_currency: USD
+            chargeback_amount: 50.5
+            reason_code: '4863'
+            type: cb
+            gateway: braintree
+            reason_description: Transaction not recognized
+            mid: t_123
+            arn: a123456789012bc3de45678901f23a45
+            credit_card_company: visa
+            respond_by: '2025-12-01'
+            card_issuer: Wells Fargo Bank
+            credit_card_bin: '411111'
+            credit_card_last_four_digits: '4242'
+            transaction_id: txn_01HXYZABC123
+            transaction_store_id: store_nyc_01
+            transaction_point_of_sale: pos_07
+            transaction_cash_register_number: reg_03
+          dispute_details:
+            case_id: a1234
+            status: won
+            disputed_at: '2025-11-10'
+            expected_resolution_date: '2025-11-14'
+            dispute_type: first_dispute
+    chargeback_fulfillment_first_dispute_won:
+      description: Chargeback notification for the first won dispute, with fulfillment info.
+      value:
+        order:
+          id: orderid1234
+          chargeback_details:
+            id: chargebackid1234
+            chargeback_at: '2025-11-01T12:00:00Z'
+            chargeback_currency: USD
+            chargeback_amount: 50.5
+            reason_code: '4863'
+            type: cb
+            gateway: braintree
+            reason_description: Transaction not recognized
+            mid: t_123
+            arn: a123456789012bc3de45678901f23a45
+            credit_card_company: visa
+            respond_by: '2025-12-01'
+            card_issuer: Wells Fargo Bank
+            credit_card_bin: '411111'
+            credit_card_last_four_digits: '4242'
+            transaction_id: txn_01HXYZABC123
+            transaction_store_id: store_nyc_01
+            transaction_point_of_sale: pos_07
+            transaction_cash_register_number: reg_03
+          fulfillment:
+            fulfillment_id: fulfillmentid1234
+            created_at: '2025-10-25T13:36:50-04:00'
+            status: success
+            tracking_company: fedex
+            tracking_numbers: trackingnumber1234
+          dispute_details:
+            case_id: a1234
+            status: won
+            disputed_at: '2025-11-07'
+            expected_resolution_date: '2025-11-14'
+            dispute_type: first_dispute
+    chargeback_second_dispute_lost:
+      description: Chargeback notification for the second dispute - lost.
+      value:
+        order:
+          id: orderid1234
+          chargeback_details:
+            id: chargebackid1234
+            chargeback_at: '2025-11-01T12:00:00Z'
+            chargeback_currency: USD
+            chargeback_amount: 50.5
+            reason_code: '4863'
+            type: cb
+            gateway: braintree
+            reason_description: Transaction not recognized
+            mid: t_123
+            arn: a123456789012bc3de45678901f23a45
+            credit_card_company: visa
+            respond_by: '2025-12-01'
+            card_issuer: Wells Fargo Bank
+            credit_card_bin: '411111'
+            credit_card_last_four_digits: '4242'
+            transaction_id: txn_01HXYZABC123
+            transaction_store_id: store_nyc_01
+            transaction_point_of_sale: pos_07
+            transaction_cash_register_number: reg_03
+          dispute_details:
+            case_id: a1234
+            status: lost
+            disputed_at: '2025-11-14'
+            expected_resolution_date: '2025-11-14'
+            dispute_type: second_dispute
+    chargeback_without_fulfill:
+      description: Chargeback notification, no fulfill object.
+      value:
+        order:
+          id: orderid1234
+          chargeback_details:
+            id: chargebackid1234
+            chargeback_at: '2025-11-01T12:00:00Z'
+            chargeback_currency: USD
+            chargeback_amount: 50.5
+            reason_code: '4863'
+            type: cb
+            gateway: braintree
+            reason_description: Transaction not recognized
+            mid: t_123
+            arn: a123456789012bc3de45678901f23a45
+            credit_card_company: MasterCard
+            card_issuer: Wells Fargo Bank
+            credit_card_bin: '411111'
+            credit_card_last_four_digits: '4242'
+            transaction_id: txn_01HXYZABC123
+            transaction_store_id: store_nyc_01
+            transaction_point_of_sale: pos_07
+            transaction_cash_register_number: reg_03
+  parameters:
+    RiskifiedShopDomain:
+      name: x-riskified-shop-domain
+      in: header
+      required: true
+      schema:
+        type: string
+        example: merchant.example.com
+      description: The merchant shop domain registered with Riskified.
+    ContentType:
+      name: Content-Type
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+        - application/json
+      description: 'As payloads are sent to Riskified in JSON format, value should be: `application/json`'
+    Accept:
+      name: accept
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+        - application/vnd.riskified.com; version=2
+      description: 'Specify the version of the API to target. For example, to target the latest version of the API, use the following: `application/vnd.riskified.com; version=2`'
+    RiskifiedSignature:
+      name: x-riskified-hmac-sha256
+      in: header
+      required: true
+      schema:
+        type: string
+        example: b1946ac92492d2347c6235b4d2611184
+      description: 'Verification hash for the Request.
+
+        Generated by performing an SHA256 encryption on the request''s POST body and calculating the HMAC hash of the result using your Riskified authentication token.
+
+        Please use UTF8 encoding.'
+x-samples-languages:
+- json
+- shell
+- javascript
+- python
+- node
+x-provenance:
+  method: searched
+  source: https://developers.riskified.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developers.riskified.com/reference/cancel.md
+  - https://developers.riskified.com/reference/chargeback.md
+  - https://developers.riskified.com/reference/decision.md
+  - https://developers.riskified.com/reference/fulfill.md
+  - https://developers.riskified.com/reference/post-auth-flow-checkout_denied.md
+  - https://developers.riskified.com/reference/post-auth-flow-decide.md
+  - https://developers.riskified.com/reference/post-auth-flow-submit.md
+  - https://developers.riskified.com/reference/refund.md
+  merge:
+    pages: 8
+    deduped: 169
+    conflicts_kept_first: 0

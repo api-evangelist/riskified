@@ -1,0 +1,669 @@
+openapi: 3.2.0
+info:
+  title: Account Secure Customer Actions API
+  description: 'The Customer Trust suite is designed to protect both merchants and customers from fraud and abuse. Account Secure guards the security of customer store accounts - protecting against chargebacks, data theft and more. Policy Enforcement ensures that customers aren''t abusing store policies and promotions.
+
+
+    Note: Riskified''s beacon/mobile SDK implementation is crucial to providing effective Account Secure'
+  version: 1.0.0
+  contact:
+    name: Riskified Support
+    url: http://apiref.riskified.com/
+    email: support@riskified.com
+  x-explorer-enabled: false
+  x-conventions:
+    dateTime: All date-time fields are RFC 3339 (ISO 8601).
+servers:
+- url: https://api-sandbox.riskified.com/customers
+  description: Sandbox environment for testing and integration
+- url: https://api.riskified.com/customers
+  description: Production environment for deployment
+tags:
+- name: Customer Actions
+  description: Operations related to customer activity, including login, password resets, customer verification attempts, and customer-merchant contact events.
+paths:
+  /login:
+    post:
+      summary: Login Attempt Request
+      description: 'Login API is a **synchronous POST-method** API call.
+
+
+        API is triggered **only** for customer-initiated authentication requests, e.g., user tries to login to their account. It must **not** be called for authentications associated with:
+
+        - New account registrations
+
+        - Successful password resets
+
+        - Silent logins
+
+
+        API is triggered regardless of success or failure. There is a `login_status_type` to indicate success/failure and `failure_reason` to indicate the reason.
+
+
+        **Response:**
+
+        - `decision` field will be set as one of the following values: `allow`, `notify`, or `challenge`.
+
+        - `login_id` field will show a Riskified-assigned identifier for the event.'
+      operationId: login
+      tags:
+      - Customer Actions
+      parameters:
+      - $ref: '#/components/parameters/RiskifiedShopDomain'
+      - $ref: '#/components/parameters/RiskifiedSignature'
+      - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/Accept'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login_action'
+            examples:
+              login_action_example:
+                summary: Example login
+                value:
+                  customer_id: '207119551'
+                  customer_created_at: '2019-09-12T14:04:50-05:00'
+                  implicit_login: false
+                  username: donnie7
+                  email: bob.norman@hostmail.com
+                  login_at_checkout: false
+                  social_login_type: facebook
+                  login_status:
+                    login_status_type: success
+                  client_details:
+                    accept_language: en-CA
+                    user_agent: Mozilla/5.0 (CFNetwork/548.0.3 Darwin/11.2.0)
+                  session_details:
+                    cart_token: 68778783ad298f1c80c3bafcddeea02f
+                    browser_ip: 111.111.111.111
+                    created_at: '2025-11-18T13:36:50-04:00'
+                    source: mobile_app
+                    device_id: 01234567-89ABCDEF-01234567-89ABCDEF
+                    referring_site: http://www.nba.com/
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/login_action_response'
+              examples:
+                login_action_response_example_allow:
+                  description: Example of an allowed login acton
+                  $ref: '#/components/examples/login_action_response_example_allow'
+                login_action_response_example_notify:
+                  description: Example of a login action with notifying a customer about the login attempt
+                  $ref: '#/components/examples/login_action_response_example_notify'
+                login_action_response_example_challenge:
+                  description: Example of a login action requireing verification
+                  $ref: '#/components/examples/login_action_response_example_challenge'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decide_bad_response_400:
+                  value:
+                    error:
+                      message: JSON malformed - only UTF-8 well formatted JSON payload allowed (RFC 4627)
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decide_unauthorized_response_401:
+                  value:
+                    error:
+                      message: 'Failed verifying request: ''X-RISKIFIED-HMAC-SHA256'' header is either missing or incorrect'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decide_too_many_requests_response_429:
+                  value:
+                    error:
+                      message: Too many update requests for this order. Please try again later.
+        '500':
+          description: Contact Riskified support
+        '504':
+          description: Temporary error, please retry
+  /reset_password:
+    post:
+      operationId: reset_password
+      tags:
+      - Customer Actions
+      parameters:
+      - $ref: '#/components/parameters/RiskifiedShopDomain'
+      - $ref: '#/components/parameters/RiskifiedSignature'
+      - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/Accept'
+      summary: Reset Password Request
+      description: 'Reset password API is a **synchronous POST-method** API call.
+
+
+        It allows Riskified to understand whether an account has been secured following an incident (if not it needs to be treated as a ''compromised'' account). It also enables measuring account recovery rate - an important KPI for both Riskified and the merchants.
+
+
+        **When to trigger:**
+
+        - When a password-reset action has been requested
+
+        - When the request has been processed
+
+
+        **Response:**
+
+        `decision` is always `allow`.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reset_password_action'
+            examples:
+              reset_password_action_example:
+                $ref: '#/components/examples/reset_password_action_example'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reset_password_action_response'
+              examples:
+                reset_password_action_response_example_allow:
+                  description: Example of an allowed login acton
+                  $ref: '#/components/examples/reset_password_action_response_example_allow'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decide_bad_response_400:
+                  value:
+                    error:
+                      message: JSON malformed - only UTF-8 well formatted JSON payload allowed (RFC 4627)
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decide_unauthorized_response_401:
+                  value:
+                    error:
+                      message: 'Failed verifying request: ''X-RISKIFIED-HMAC-SHA256'' header is either missing or incorrect'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decide_too_many_requests_response_429:
+                  value:
+                    error:
+                      message: Too many update requests for this order. Please try again later.
+        '500':
+          description: Contact Riskified support
+        '504':
+          description: Temporary error, please retry
+components:
+  schemas:
+    session_details:
+      type: object
+      description: 'An object containing basic information regarding the session.
+
+
+        Session data points, such as `cart_token`, `browser_ip`, and `user_agent`, should be those associated with values at the time of user''s login request - **before** the authentication result is available.'
+      properties:
+        cart_token:
+          type: string
+          description: 'The session id at the time that the user is on the login webpage or started password reset, prior to authentication attempt.
+
+            Must match the `session_details.cart_token` value set by the Beacon JavaScript snippet. For standard integrations, this value is automatically generated by Beacon. For merchants who manage their own sessions, the same session ID must be passed to both the Beacon and this field. Must remain consistent throughout a purchase flow. Max 100 characters.'
+        browser_ip:
+          type: string
+          description: The customer's browser IP address during the session.
+        created_at:
+          type: string
+          description: The date and time (ISO8601) of the session.
+        source:
+          type: string
+          enum:
+          - desktop_web
+          - mobile_web
+          - web
+          - mobile_app
+          - other
+          description: 'The platform that the session originated from.
+
+
+            **Possible values:**
+
+            - `desktop_web`: Session originated on the website, using a desktop device
+
+            - `mobile_web`: Session originated on the mobile website, using a mobile device
+
+            - `web`: Session originated on the website, with no available info about the type of device used
+
+            - `mobile_app`: Session originated on the mobile app, using a mobile device
+
+            - `other`: The session''s origin is unknown'
+        device_id:
+          type: string
+          description: '**(Conditional Requirement)** Required for mobile applications. The mobile device identifier, which corresponds to a value extracted via the Riskified mobile beacon SDK.'
+        referring_site:
+          type: string
+          description: '**(Strongly Recommended)** The webpage from which the customer accessed the shop. Domain level is enough, and usually set the shop_url provided by Riskified. In case you have several sites may be used by different population, set different url per the scenario (e.g. regular ec-site: www.shop-regular.com, employee ec-site: www.shop-employee.com)'
+      required:
+      - created_at
+      - cart_token
+      - browser_ip
+      - source
+      example:
+        cart_token: 68778783ad298f1c80c3bafcddeea02f
+        browser_ip: 111.111.111.111
+        created_at: '2025-11-18T11:00:00-05:00'
+        source: mobile_app
+        device_id: 01234567-89ABCDEF-01234567-89ABCDEF
+        referring_site: http://www.nba.com/
+    error_response:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/error'
+    login_action_response:
+      type: object
+      description: The response to the login action request.
+      properties:
+        login_id:
+          type: string
+          description: Riskified-assigned identifier for the event.
+        decision:
+          type: string
+          enum:
+          - allow
+          - notify
+          - challenge
+          description: 'The decision made by Riskified regarding the login attempt.
+
+
+            **Possible values:**
+
+            - `allow`: Login is approved
+
+            - `notify`: Login is allowed but customer should be notified
+
+            - `challenge`: Additional verification required before allowing login'
+      required:
+      - login_id
+      - decision
+    login_status:
+      type: object
+      description: An object containing details of the customer's login attempt.
+      properties:
+        login_status_type:
+          type: string
+          enum:
+          - success
+          - failure
+          description: 'Indicates the success or failure of a login attempt.
+
+
+            **Possible values:**
+
+            - `success`: Login was successful
+
+            - `failure`: Login failed'
+        failure_reason:
+          type: string
+          enum:
+          - wrong password
+          - captcha
+          - disabled account
+          - nonexistent account
+          - other
+          description: '**(Conditional Requirement)** The reason for the unsuccessful login, required if `login_status_type` = `''failure''`.
+
+
+            **Possible values:**
+
+            - `wrong password`: When login failed with wrong password
+
+            - `captcha`: When login failed at Captcha or reCaptcha
+
+            - `disabled account`: When login failed due to the account being logically deleted (disabled)
+
+            - `nonexistent account`: When login failed because account never exists at merchant
+
+            - `other`: When login failed due to other reasons such as "account is locked"'
+      required:
+      - login_status_type
+      example:
+        login_status_type: success
+    error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
+        details:
+          type: string
+          description: Error details
+    client_details:
+      type: object
+      description: An object containing technical information regarding the customer’s browsing session
+      properties:
+        user_agent:
+          type: string
+          description: The full User-Agent sent from the client.
+        accept_language:
+          type: string
+          description: List of two-letter language codes sent from the client.
+      required:
+      - user_agent
+      - accept_language
+      example:
+        accept_language: en-CA
+        user_agent: Mozilla/5.0 (CFNetwork/548.0.3 Darwin/11.2.0)
+    reset_password_action_response:
+      type: object
+      description: The response to the reset password action request.
+      properties:
+        decision:
+          type: string
+          enum:
+          - allow
+          description: The decision made by Riskified regarding the reset password attempt.
+      required:
+      - decision
+    login_action:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          description: '**(Conditional Requirement)** A unique numeric identifier for the customer. customer_id should be null when login failes because of no customer account exisistent (e.g. failure_reason = ''nonexistent account''). '
+        email:
+          type: string
+          description: '**(Conditional Requirement)** The email address used for the login attempt.
+
+            It is required for successful logins. It is an optional field for failed logins (if username is provided).'
+        login_status:
+          $ref: '#/components/schemas/login_status'
+          description: An object containing details of the customer's login attempt.
+        client_details:
+          $ref: '#/components/schemas/client_details'
+          description: An object containing technical information regarding the customer’s browsing session.
+        session_details:
+          $ref: '#/components/schemas/session_details'
+          description: An object containing basic information regarding the session.
+        customer_created_at:
+          type: string
+          format: date-time
+          description: '**(Conditional Requirement)** Use if login_status_type = ''success''.
+
+
+            • The timestamp (ISO8601) of the initial registration of the customer''s account in the merchant''s systems.
+
+
+            • customer_created_at should be null for failed logins (login_status_type = ''failure'') where the failure_reason = ''nonexistent account'' or ''other''.'
+        implicit_login:
+          type: boolean
+          description: Indicates whether this login was made by entering the user’s credentials or not (“remember me” - cookie usage)
+        username:
+          type: string
+          description: '**(Conditional Requirement)** The username used for the login attempt.
+
+            Username is an optional field for successful logins. It is a required field for failed logins (if no email address is provided).'
+        login_at_checkout:
+          type: boolean
+          description: Indicates whether the login attempt was made at checkout.
+        challenge_redirect_url:
+          type: string
+          description: "**(Conditional Requirement)** URL to which customer will be redirected to upon taking action from the verification emails. It is only required for integrations that involve **'challenge'** decisions. It will be the secure magic link, embedded in a user's challenge email 'it was me' prompt.\n\n Note: mandatory for merchants using the challenge flow"
+          example: https://www.merchant-website.com/account/?token=abcd1234
+        account_recovery_url:
+          type: string
+          description: URL to which customer will be redirected to upon taking action from the verification emails to recover user account. It is used as redirect URL for 'it was not me' CTA in a user's notify/challenge email. However, merchant can also set fixed url for redirect in Riskified system instead of setting `account_recovery_url` in login request.
+          example: https://www.merchant-website.com/account/recover?token=abcd1234
+        localization_language:
+          type: string
+          description: The 2 letter code (ISO 639-1) to indicate the language the user has selected for merchant site content browsing and communications.
+          example: en-US
+        vendor_name:
+          type: string
+          description: The name of the affiliated partner or selling vendor.
+        social_login_type:
+          type: string
+          enum:
+          - facebook
+          - google
+          - linkedin
+          - twitter
+          - yahoo
+          - other
+          description: 'In case the user used a social network to log in, send one of the following values.
+
+
+            **Possible values:**
+
+            - `facebook`
+
+            - `google`
+
+            - `linkedin`
+
+            - `twitter`
+
+            - `yahoo`
+
+            - `other`'
+      required:
+      - login_status
+      - client_details
+      - session_details
+      example:
+        customer_id: '207119551'
+        customer_created_at: '2019-09-12T14:04:50-05:00'
+        implicit_login: false
+        username: donnie7
+        email: bob.norman@hostmail.com
+        login_at_checkout: true
+        login_status:
+          login_status_type: success
+        client_details:
+          accept_language: en-CA
+          user_agent: Mozilla/5.0 (CFNetwork/548.0.3 Darwin/11.2.0)
+        session_details:
+          cart_token: 68778783ad298f1c80c3bafcddeea02f
+          browser_ip: 111.111.111.111
+          created_at: '2025-11-18T13:36:50-04:00'
+          source: mobile_app
+          device_id: 01234567-89ABCDEF-01234567-89ABCDEF
+          referring_site: http://www.nba.com/
+    reset_password_action:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          description: A unique numeric identifier for the customer.
+          example: '207119551'
+        email:
+          type: string
+          description: The email address on the registered customer account.
+          example: bob.norman@hostmail.com
+        status:
+          type: string
+          description: 'Indicates the status of the request.
+
+
+            **Possible values:**
+
+            - `pending`: Password reset has been requested but new password has not been set
+
+            - `success`: Password has successfully been reset and old password is no longer valid
+
+            - `failed`: Password failed to be reset and old password is still valid'
+          enum:
+          - pending
+          - success
+          - failed
+        reason:
+          type: string
+          description: 'The reason for the password reset request.
+
+
+            **Possible values:**
+
+            - `user_requested`: Customer is logged in and initiates a password change from their account
+
+            - `forgot_password`: Customer has forgotten password and directly initiates process to create a new password
+
+            - `forced_reset`: An internal system-initiated password reset request'
+          enum:
+          - user_requested
+          - forgot_password
+          - forced_reset
+        client_details:
+          $ref: '#/components/schemas/client_details'
+          description: An object containing technical information regarding the customer’s browsing session.
+        session_details:
+          $ref: '#/components/schemas/session_details'
+          description: An object containing basic information regarding the session.
+        vendor_name:
+          type: string
+          description: The name of the affiliated partner or selling vendor.
+      required:
+      - customer_id
+      - status
+      - reason
+      - email
+      - client_details
+      - session_details
+  examples:
+    login_action_response_example_challenge:
+      summary: Example login response requireing confirminh the account owner identity before accessing their account
+      value:
+        login_id: f50cb25b-914a-4537-a6e7-75badfa3fade
+        decision: challenge
+        mfa:
+          _type: magic_link
+    login_action_response_example_allow:
+      summary: Example login response allowing login
+      value:
+        login_id: 742bd65c-f417-437b-a274-d84950c06d99
+        decision: allow
+    reset_password_action_response_example_allow:
+      summary: Example response allowing password reset.
+      value:
+        decision: allow
+    login_action_response_example_notify:
+      summary: Example login response requireing notifying the account owner of a suspicious login
+      value:
+        login_id: 93ddf2f2-b601-4e0a-9cc7-125398317b8c
+        decision: notify
+    reset_password_action_example:
+      summary: Example reset password
+      value:
+        customer_id: '207119551'
+        status: success
+        reason: user_requested
+        email: great.customer@email.com
+        client_details:
+          accept_language: en-CA
+          user_agent: Mozilla/5.0 (CFNetwork/548.0.3 Darwin/11.2.0)
+        session_details:
+          created_at: '2025-11-18T11:00:00-05:00'
+          cart_token: 68778783ad298f1c80c3bafcddeea02f
+          referring_site: http://www.nba.com/
+          browser_ip: 111.111.111.111
+          source: mobile_app
+  parameters:
+    Accept:
+      name: accept
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+        - application/vnd.riskified.com; version=2
+      description: 'Specify the version of the API to target. For example, to target the latest version of the API, use the following: `application/vnd.riskified.com; version=2`'
+    RiskifiedShopDomain:
+      name: x-riskified-shop-domain
+      in: header
+      required: true
+      schema:
+        type: string
+        example: merchant.example.com
+      description: The merchant shop domain registered with Riskified.
+    RiskifiedSignature:
+      name: x-riskified-hmac-sha256
+      in: header
+      required: true
+      schema:
+        type: string
+        example: b1946ac92492d2347c6235b4d2611184
+      description: 'Verification hash for the Request.
+
+        Generated by performing an SHA256 encryption on the request''s POST body and calculating the HMAC hash of the result using your Riskified authentication token.
+
+        Please use UTF8 encoding.'
+    ContentType:
+      name: content_type
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+        - application/json
+      description: 'As payloads are sent to Riskified in JSON format, value should be: `application/json`'
+x-samples-languages:
+- json
+- shell
+- javascript
+- python
+- node
+x- explorer-enabled: false
+x-provenance:
+  method: searched
+  source: https://developers.riskified.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developers.riskified.com/reference/customer_create.md
+  - https://developers.riskified.com/reference/customer_update.md
+  - https://developers.riskified.com/reference/login.md
+  - https://developers.riskified.com/reference/reset_password.md
+  merge:
+    pages: 4
+    deduped: 37
+    conflicts_kept_first: 0

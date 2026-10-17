@@ -1,0 +1,1210 @@
+openapi: 3.2.0
+info:
+  title: Account Secure Customer Management API
+  description: 'The Customer Trust suite is designed to protect both merchants and customers from fraud and abuse. Account Secure guards the security of customer store accounts - protecting against chargebacks, data theft and more. Policy Enforcement ensures that customers aren''t abusing store policies and promotions.
+
+
+    Note: Riskified''s beacon/mobile SDK implementation is crucial to providing effective Account Secure'
+  version: 1.0.0
+  contact:
+    name: Riskified Support
+    url: http://apiref.riskified.com/
+    email: support@riskified.com
+  x-explorer-enabled: false
+  x-conventions:
+    dateTime: All date-time fields are RFC 3339 (ISO 8601).
+servers:
+- url: https://api-sandbox.riskified.com/customers
+  description: Sandbox environment for testing and integration
+- url: https://api.riskified.com/customers
+  description: Production environment for deployment
+tags:
+- name: Customer Management
+  description: Operations related to account management, including customer creation and updates.
+paths:
+  /customer_create:
+    post:
+      summary: Customer Create
+      description: 'Customer create is a **synchronous POST-method** API call.
+
+
+        Riskified receives account data creation events and performs fraud review to block suspicious account as well as blocking multiple account creation attempts.
+
+
+        **Response:**
+
+        `decision` field will be set as one of the following values: `allow`, `block`. block response contains `decision_reason` when `api-version=2` is set in request header.'
+      operationId: customer_create
+      tags:
+      - Customer Management
+      parameters:
+      - $ref: '#/components/parameters/RiskifiedShopDomain'
+      - $ref: '#/components/parameters/RiskifiedSignature'
+      - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/Accept'
+      - $ref: '#/components/parameters/APIVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customer_create'
+            examples:
+              customer_create_example:
+                $ref: '#/components/examples/customer_create_example'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customer_create_response'
+              examples:
+                customer_create_response_example_allow:
+                  description: Example of allowing the customer creation process
+                  $ref: '#/components/examples/customer_create_response_example_allow'
+                customer_create_response_example_block:
+                  description: Example response advising to block customer creation process (without api-version header)
+                  $ref: '#/components/examples/customer_create_response_example_block'
+                customer_create_response_example_block_customer_creation:
+                  description: Example response advising to block - multiple account creation attempt (with api-version header)
+                  $ref: '#/components/examples/customer_create_response_example_block_customer_creation'
+                customer_create_response_example_block_suspicious:
+                  description: Example response advising to block - suspicious account fraud (without api-version header)
+                  $ref: '#/components/examples/customer_create_response_example_block_suspicious'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decide_bad_response_400:
+                  value:
+                    error:
+                      message: JSON malformed - only UTF-8 well formatted JSON payload allowed (RFC 4627)
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decide_unauthorized_response_401:
+                  value:
+                    error:
+                      message: 'Failed verifying request: ''X-RISKIFIED-HMAC-SHA256'' header is either missing or incorrect'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decide_too_many_requests_response_429:
+                  value:
+                    error:
+                      message: Too many update requests for this order. Please try again later.
+        '500':
+          description: Contact Riskified support
+        '504':
+          description: Temporary error, please retry
+  /customer_update:
+    post:
+      summary: Customer Update
+      description: 'Customer update is a **synchronous POST-method** API call.
+
+
+        API is triggered at the time of in account activity, such as when changing email, address, saving a new payment method etc.
+
+
+        **Response:**
+
+        `decision` field will be set as one of the following values: `allow`, `block`.'
+      operationId: customer_update
+      tags:
+      - Customer Management
+      parameters:
+      - $ref: '#/components/parameters/RiskifiedShopDomain'
+      - $ref: '#/components/parameters/RiskifiedSignature'
+      - $ref: '#/components/parameters/ContentType'
+      - $ref: '#/components/parameters/Accept'
+      - $ref: '#/components/parameters/APIVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customer_update'
+            examples:
+              customer_update_example:
+                $ref: '#/components/examples/customer_update_example'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customer_update_response'
+              examples:
+                customer_create_response_example_allow:
+                  description: Example of a customer update call response.
+                  $ref: '#/components/examples/customer_update_response_example_allow'
+                customer_create_response_example_block:
+                  description: Example of a customer update call response advising to block customer update process.
+                  $ref: '#/components/examples/customer_update_response_example_block'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decide_bad_response_400:
+                  value:
+                    error:
+                      message: JSON malformed - only UTF-8 well formatted JSON payload allowed (RFC 4627)
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decide_unauthorized_response_401:
+                  value:
+                    error:
+                      message: 'Failed verifying request: ''X-RISKIFIED-HMAC-SHA256'' header is either missing or incorrect'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+              examples:
+                decide_too_many_requests_response_429:
+                  value:
+                    error:
+                      message: Too many update requests for this order. Please try again later.
+        '500':
+          description: Contact Riskified support
+        '504':
+          description: Temporary error, please retry
+components:
+  schemas:
+    account_balance:
+      type: object
+      description: An object containing account balance information as provided by the Payment Service Provider or bank. If provided, this object should contain all required fields.
+      properties:
+        available_balance:
+          type: integer
+          description: The amount in the customer’s bank account.
+        service_name:
+          type: string
+          enum:
+          - plaid
+          - mx
+          - stripe
+          - truelayer
+          - klarna
+          - visa
+          - mastercard
+          - yodlee
+          description: The service used to complete the transaction and to request the bank account balance.
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time (ISO8601) when the account balance was queried.
+        currency_code:
+          type: string
+          description: The three letter code (ISO 4217) for the currency of the account balance.
+      required:
+      - available_balance
+      - service_name
+      - updated_at
+      - currency_code
+      example:
+        available_balance: 2450
+        service_name: plaid
+        updated_at: '2025-03-11T09:42:11Z'
+        currency_code: USD
+    buy_now_pay_later_payment_details:
+      title: Buy Now, Pay Later (BNPL)
+      type: object
+      properties:
+        payment_type:
+          type: string
+          enum:
+          - bnpl
+          example: bnpl
+          description: Indicates the type of payment.
+        payment_frequency:
+          type: integer
+          description: Number of days between each payment.
+          example: '482058180408'
+        initial_payment_amount:
+          type: number
+          format: float
+          description: Dollar amount of the first installment.
+          example: '134000358'
+        installments:
+          type: integer
+          description: Number of payment installments.
+          example: '3'
+      required:
+      - payment_type
+      example:
+        payment_type: bnpl
+        installments: '3'
+    bank_wire_payment_details:
+      title: Bank Wire / ACH
+      type: object
+      properties:
+        payment_type:
+          type: string
+          enum:
+          - bank_transfer
+          example: bank_transfer
+          description: Indicates the type of payment.
+        account_number:
+          type: string
+          description: The full account number
+          example: '482058180408'
+        routing_number:
+          type: string
+          description: The routing number (ABA) of the customer's bank
+          example: '134000358'
+        token:
+          type: string
+          description: '**(Conditional Requirement)** Required for Plaid Partner integration. The Plaid processor_token value created by calling /processor/token/create. Please see further documentation for Plaid integration.'
+        account_balance:
+          $ref: '#/components/schemas/account_balance'
+          description: An object containing account balance information as provided by the Payment Service Provider or bank. If provided, this object should contain all required fields.
+        account_identity:
+          $ref: '#/components/schemas/account_identity'
+          description: An object containing identity information about the purchasing customer as provided by the Payment Service Provider or bank.
+      required:
+      - payment_type
+      - account_number
+      - routing_number
+      example:
+        payment_type: bank_transfer
+        account_number: '482058180408'
+        routing_number: '134000358'
+        token: processor-token-plaid-xyz
+        account_balance:
+          available_balance: 2450
+          service_name: plaid
+          updated_at: '2025-03-11T09:42:11Z'
+          currency_code: USD
+        account_identity:
+          names:
+          - John Test
+          addresses:
+          - address1: 123 Smart St
+            city: Los Angeles
+            province_code: CA
+            zip: '90210'
+            country_code: US
+          phone_numbers:
+          - '+143873984567290'
+          emails:
+          - test@mailmail.com
+    account_identity:
+      type: object
+      description: An object containing identity information about the purchasing customer as provided by the Payment Service Provider or bank.
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+          description: A list of names associated with the bank account.
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/account_identity_address'
+          description: A list of addresses associated with the customer bank account.
+        phone_numbers:
+          type: array
+          items:
+            type: string
+          description: A list of phone numbers associated with the customer bank account.
+        emails:
+          type: array
+          items:
+            type: string
+          description: A list of emails associated with the customer bank account.
+      example:
+        names:
+        - John Test
+        addresses:
+        - address1: 123 Smart St
+          city: Los Angeles
+          province_code: CA
+          zip: '90210'
+          country_code: US
+        phone_numbers:
+        - '+143873984567290'
+        emails:
+        - test@mailmail.com
+    account_identity_address:
+      type: object
+      properties:
+        address1:
+          type: string
+          description: The street name of the address.
+        city:
+          type: string
+          description: The city of the address.
+        province_code:
+          type: string
+          description: The two-letter ISO 3166-2 alpha-2 code for the state or province of the address.
+        zip:
+          type: string
+          description: The zip or postal code of the address.
+        country_code:
+          type: string
+          description: The 2 letter country code (ISO 3166-1 alpha-2) of the country address.
+      example:
+        address1: 123 Smart St
+        city: Los Angeles
+        province_code: CA
+        zip: '90210'
+        country_code: US
+    client_details:
+      type: object
+      description: An object containing technical information regarding the customer’s browsing session
+      properties:
+        user_agent:
+          type: string
+          description: The full User-Agent sent from the client.
+        accept_language:
+          type: string
+          description: List of two-letter language codes sent from the client.
+      required:
+      - user_agent
+      - accept_language
+      example:
+        accept_language: en-CA
+        user_agent: Mozilla/5.0 (CFNetwork/548.0.3 Darwin/11.2.0)
+    digital_wallets_payment_details:
+      title: Digital Wallets
+      type: object
+      properties:
+        payment_type:
+          type: string
+          enum:
+          - apple_pay
+          - google_pay
+          - samsung_pay
+          - wechat_pay
+          - amazon_pay
+          - alipay
+          example: apple_pay
+          description: Indicates the type of payment.
+        credit_card_bin:
+          type: string
+          example: '482932'
+          description: 'The issuer identification number (IIN), formerly known as bank identification number (BIN) of the customer''s credit card.
+
+            Made up of the first 6 or 8 digits of the credit card number (per value received from the Payment Service Providers/tokenization response).'
+        credit_card_company:
+          type: string
+          example: Visa
+          description: '**(Conditional Requirement)** Required for PSD2 Optimization implementation. The company who issued the customer''s credit card'
+        credit_card_number:
+          type: string
+          example: '9876'
+          description: The credit card number, with leading digits redacted with Xs (only the last four digits are not hidden)
+        credit_card_country:
+          type: string
+          description: '**(Conditional Requirement)** Required for PSD2 Optimization implementation. The issuer 2 letter country code. These codes are used to identify the country name'
+        credit_card_token:
+          type: string
+          description: The token returned from the credit card company
+        cardholder_name:
+          type: string
+          description: Name of the cardholder
+        mid:
+          type: string
+          description: The merchant account id at the payment gateway
+        id:
+          type: string
+          description: A unique identifier of the payment detail object within the array of payment details. When this is not provided, a default running number will be attached to each element in the payment details array.
+        stored_payment_created_at:
+          type: string
+          format: date-time
+          description: "**(Conditional Requirement)** Required for CVV recommendations.\n\n Date and time (ISO8601) when the payment method was saved to the customer's account"
+        stored_payment_updated_at:
+          type: string
+          format: date-time
+          description: "**(Conditional Requirement)** Required for CVV recommendations.\n\n Most recent date and time (ISO8601) when the saved payment method was updated by the customer"
+        installments:
+          type: integer
+          description: '**(Conditional Requirement)** Required for merchants residing in Brazil
+
+
+            Number of payment installments'
+        acquirer_bin:
+          type: string
+          description: The acquirer identification number (IIN), formerly known as bank identification number (BIN) of the merchant's acquirer
+        acquirer_region:
+          type: string
+          enum:
+          - NONEU
+          - EU
+          description: '**(Conditional Requirement)** Required for PSD2 Optimization implementation.'
+        expiry_month:
+          type: integer
+          minimum: 1
+          maximum: 12
+          description: The payment expiration month.
+        expiry_year:
+          type: integer
+          description: The payment expiration year; a 4-digit integer formatted as YYYY
+        initial_payment_amount:
+          type: number
+          format: float
+          description: The initial amount paid.
+        payment_frequency:
+          type: integer
+          description: The frequency of payments made.
+        billing_address_id:
+          type: string
+          description: '**(Conditional Requirement)** Unique ID, is required in case of multiple billing addresses.'
+      required:
+      - payment_type
+      example:
+        payment_type: apple_pay
+        credit_card_bin: '482932'
+        credit_card_company: Visa
+        credit_card_number: '9876'
+        credit_card_country: US
+        credit_card_token: tok_preauth_XYZ789
+        cardholder_name: John Test Customer
+        mid: PREAUTH_MID_456
+        id: pmt_pre_01
+        stored_payment_created_at: '2024-05-15T10:00:00Z'
+        stored_payment_updated_at: '2024-11-01T14:30:00Z'
+        installments: 1
+        acquirer_bin: '999999'
+        acquirer_region: NONEU
+        expiry_month: 12
+        expiry_year: 2028
+        initial_payment_amount: 410
+        payment_frequency: 1
+        billing_address_id: addr_bill_01
+    customer:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The customer's email address.
+          example: customer@example.com
+        verified_email:
+          type: boolean
+          description: '**(Recommended)** Indicates whether the merchant verified the customer’s email.'
+          example: true
+        first_name:
+          type: string
+          description: The first name of the customer.
+          example: John
+        last_name:
+          type: string
+          description: The last name of the customer.
+          example: Doe
+        id:
+          type: string
+          description: 'The customer’s unique ID in the merchant’s system.
+
+            Required in the case of a registered customer.'
+          example: '123456'
+        created_at:
+          type: string
+          description: The timestamp of the initial registration of the customer's account in the merchant's systems.
+          example: '2023-01-15T10:00:00-05:00'
+        orders_count:
+          type: integer
+          description: The number of orders made by the customer on the site in the past.
+          example: 5
+        account_type:
+          type: string
+          description: 'Required if there are multiple account types. The customer’s account type. Recommended values include:
+
+            * guest
+
+            * registered
+
+            * premium
+
+            * business'
+          example: registered
+        phone:
+          type: string
+          description: The customer’s phone number.
+          example: '+1234567890'
+        verified_phone:
+          type: boolean
+          description: Indicates whether the customer's phone number was verified.
+          example: true
+        date_of_birth:
+          type: string
+          format: date
+          description: Customer’s date of birth. Date part only (ISO8601).
+          example: '1990-05-20'
+        gender:
+          type: string
+          enum:
+          - male
+          - female
+          description: 'The customer''s gender.
+
+
+            **Possible values:**
+
+            - `male`
+
+            - `female`'
+          example: male
+        user_name:
+          type: string
+          description: Required in case the site user name is not the email address.
+          example: john_doe
+        address:
+          $ref: '#/components/schemas/address'
+          description: A list of addresses associated with the customer.
+      required:
+      - email
+      - first_name
+      - last_name
+      - created_at
+    credit_card_payment_details_pre_auth:
+      title: Credit Card
+      type: object
+      properties:
+        payment_type:
+          type: string
+          enum:
+          - card
+          example: card
+          description: Indicates the type of payment.
+        credit_card_bin:
+          type: string
+          example: '482932'
+          description: 'The issuer identification number (IIN), formerly known as bank identification number (BIN) of the customer''s credit card.
+
+            Made up of the first 6 or 8 digits of the credit card number (per value received from the Payment Service Providers/tokenization response).'
+        credit_card_company:
+          type: string
+          example: Visa
+          description: '**(Conditional Requirement)** Required for PSD2 Optimization implementation. The company who issued the customer''s credit card'
+        credit_card_number:
+          type: string
+          example: '9876'
+          description: The credit card number, with leading digits redacted with Xs (only the last four digits are not hidden)
+        credit_card_country:
+          type: string
+          description: '**(Conditional Requirement)** Required for PSD2 Optimization implementation. The issuer 2 letter country code. These codes are used to identify the country name'
+        credit_card_token:
+          type: string
+          description: The token returned from the credit card company
+        cardholder_name:
+          type: string
+          description: Name of the cardholder
+        mid:
+          type: string
+          description: The merchant account id at the payment gateway
+        id:
+          type: string
+          description: A unique identifier of the payment detail object within the array of payment details. When this is not provided, a default running number will be attached to each element in the payment details array.
+        stored_payment_created_at:
+          type: string
+          format: date-time
+          description: "**(Conditional Requirement)** Required for CVV recommendations.\n\n Date and time (ISO8601) when the payment method was saved to the customer's account"
+        stored_payment_updated_at:
+          type: string
+          format: date-time
+          description: "**(Conditional Requirement)** Required for CVV recommendations.\n\n Most recent date and time (ISO8601) when the saved payment method was updated by the customer"
+        installments:
+          type: integer
+          description: '**(Conditional Requirement)** Required for merchants residing in Brazil
+
+
+            Number of payment installments'
+        acquirer_bin:
+          type: string
+          description: The acquirer identification number (IIN), formerly known as bank identification number (BIN) of the merchant's acquirer
+        acquirer_region:
+          type: string
+          enum:
+          - NONEU
+          - EU
+          description: '**(Conditional Requirement)** Required for PSD2 Optimization implementation.'
+        expiry_month:
+          type: integer
+          minimum: 1
+          maximum: 12
+          description: The payment expiration month.
+        expiry_year:
+          type: integer
+          description: The payment expiration year; a 4-digit integer formatted as YYYY
+        initial_payment_amount:
+          type: number
+          format: float
+          description: The initial amount paid.
+        payment_frequency:
+          type: integer
+          description: The frequency of payments made.
+        billing_address_id:
+          type: string
+          description: '**(Conditional Requirement)** Unique ID, is required in case of multiple billing addresses.'
+      required:
+      - payment_type
+      - credit_card_bin
+      - credit_card_number
+      example:
+        payment_type: card
+        credit_card_bin: '482932'
+        credit_card_company: Visa
+        credit_card_number: '9876'
+        credit_card_country: US
+        credit_card_token: tok_preauth_XYZ789
+        cardholder_name: John Test Customer
+        mid: PREAUTH_MID_456
+        id: pmt_pre_01
+        stored_payment_created_at: '2024-05-15T10:00:00Z'
+        stored_payment_updated_at: '2024-11-01T14:30:00Z'
+        installments: 1
+        acquirer_bin: '999999'
+        acquirer_region: NONEU
+        expiry_month: 12
+        expiry_year: 2028
+        initial_payment_amount: 410
+        payment_frequency: 1
+        billing_address_id: addr_bill_01
+    error_response:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/error'
+    paypal_payment_details_details_pre_auth:
+      title: Paypal
+      type: object
+      properties:
+        payment_type:
+          type: string
+          enum:
+          - paypal
+          example: paypal
+          description: Indicates the type of payment.
+        payer_email:
+          type: string
+          example: johndoe123@gmail.com
+          description: The payer email assigned to his paypal account as received from paypal
+        mid:
+          type: string
+          description: The merchant account id at the payment gateway
+        id:
+          type: string
+          description: A unique identifier of the payment detail object within the array of payment details. When this is not provided, a default running number will be attached to each element in the payment details array.
+        acquirer_bin:
+          type: string
+          description: The acquirer identification number (IIN), formerly known as bank identification number (BIN) of the merchant's acquirer
+      required:
+      - payment_type
+      - payer_email
+      example:
+        payment_type: paypal
+        payer_email: johndoe123@gmail.com
+        mid: PAYPAL_MID_456
+        id: pmt_paypal_02
+        acquirer_bin: '888888'
+    payment_details:
+      anyOf:
+      - $ref: '#/components/schemas/credit_card_payment_details_pre_auth'
+      - $ref: '#/components/schemas/paypal_payment_details_details_pre_auth'
+      - $ref: '#/components/schemas/bank_wire_payment_details'
+      - $ref: '#/components/schemas/digital_wallets_payment_details'
+      - $ref: '#/components/schemas/buy_now_pay_later_payment_details'
+      - $ref: '#/components/schemas/non_chb_payment_details'
+    error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
+        details:
+          type: string
+          description: Error details
+    customer_update:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          description: A unique numeric identifier for the customer.
+          example: '207119551'
+        password_changed:
+          type: boolean
+          description: Indicates whether the user changed their password.
+          example: true
+        client_details:
+          $ref: '#/components/schemas/client_details'
+          description: An object containing technical information regarding the customer’s browsing session.
+        session_details:
+          $ref: '#/components/schemas/session_details'
+          description: An object containing basic information regarding the session.
+        customer:
+          $ref: '#/components/schemas/customer'
+          description: An object containing information about the customer.
+        payment_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/payment_details'
+          description: The payment details associated with this customer. Should be passed as an array of nested payment_details objects. In cases where several payment methods are sent in the array, the first payment method shall correspond to the first billing address, etc.
+        billing_address:
+          $ref: '#/components/schemas/address'
+          description: The billing address associated with this customer. Should be passed as an array of nested billing_address objects. In cases where several billing addresses are sent in the array, the first billing address shall correspond to the first payment method, etc.
+        shipping_address:
+          $ref: '#/components/schemas/address'
+          description: The shipping address associated with this customer. Should be passed as an array of nested shipping_address objects.
+        vendor_name:
+          type: string
+          description: The name of the affiliated partner or selling vendor.
+        updated_at:
+          type: string
+          format: date-time
+          description: '**(Conditional Requirement)** Required if you need fraud review analysis at account update. Date and time (ISO8601) when the customer account is updated. Please also set `api-version=2` in a header to enable fraud review analysis.'
+          example: '2025-11-15T10:00:00Z'
+      required:
+      - customer_id
+      - password_changed
+      - client_details
+      - session_details
+      - customer
+    customer_create_response:
+      type: object
+      description: The response to the customer create action request.
+      properties:
+        customer_create_id:
+          type: string
+          description: Riskified ID of the created customer.
+        decision:
+          type: string
+          enum:
+          - allow
+          - block
+          description: 'The decision made by Riskified regarding the customer creation process.
+
+
+            **Possible values:**
+
+            - `allow`: Customer creation is approved
+
+            - `block`: Customer creation should be blocked
+
+
+            **Note:** "allow"/"block" response controlled by threshold set for `/customer_create` (threshold is applied to both sandbox and production).'
+        decision_reason:
+          type: string
+          enum:
+          - multiple_accounts
+          - suspicious_account
+          description: The reason of the decision made by Riskified regarding the customer creation process.
+      required:
+      - customer_create_id
+      - decision
+    customer_update_response:
+      type: object
+      description: The response to the customer update action request.
+      properties:
+        customer_create_id:
+          type: string
+          description: Riskified ID of the created customer.
+        decision:
+          type: string
+          enum:
+          - allow
+          - block
+          description: Riskified response if to “allow” or “block” the update process.
+      required:
+      - customer_create_id
+      - decision
+    non_chb_payment_details:
+      title: Store credits and gift card payments
+      type: object
+      properties:
+        payment_type:
+          type: string
+          enum:
+          - gift_card
+          - store_credit
+          - rewards_points
+          example: gift_card
+          description: Indicates the type of payment.
+      required:
+      - payment_type
+      example:
+        payment_type: gift_card
+    session_details:
+      type: object
+      description: 'An object containing basic information regarding the session.
+
+
+        Session data points, such as `cart_token`, `browser_ip`, and `user_agent`, should be those associated with values at the time of user''s login request - **before** the authentication result is available.'
+      properties:
+        cart_token:
+          type: string
+          description: 'The session id at the time that the user is on the login webpage or started password reset, prior to authentication attempt.
+
+            Must match the `session_details.cart_token` value set by the Beacon JavaScript snippet. For standard integrations, this value is automatically generated by Beacon. For merchants who manage their own sessions, the same session ID must be passed to both the Beacon and this field. Must remain consistent throughout a purchase flow. Max 100 characters.'
+        browser_ip:
+          type: string
+          description: The customer's browser IP address during the session.
+        created_at:
+          type: string
+          description: The date and time (ISO8601) of the session.
+        source:
+          type: string
+          enum:
+          - desktop_web
+          - mobile_web
+          - web
+          - mobile_app
+          - other
+          description: 'The platform that the session originated from.
+
+
+            **Possible values:**
+
+            - `desktop_web`: Session originated on the website, using a desktop device
+
+            - `mobile_web`: Session originated on the mobile website, using a mobile device
+
+            - `web`: Session originated on the website, with no available info about the type of device used
+
+            - `mobile_app`: Session originated on the mobile app, using a mobile device
+
+            - `other`: The session''s origin is unknown'
+        device_id:
+          type: string
+          description: '**(Conditional Requirement)** Required for mobile applications. The mobile device identifier, which corresponds to a value extracted via the Riskified mobile beacon SDK.'
+        referring_site:
+          type: string
+          description: '**(Strongly Recommended)** The webpage from which the customer accessed the shop. Domain level is enough, and usually set the shop_url provided by Riskified. In case you have several sites may be used by different population, set different url per the scenario (e.g. regular ec-site: www.shop-regular.com, employee ec-site: www.shop-employee.com)'
+      required:
+      - created_at
+      - cart_token
+      - browser_ip
+      - source
+      example:
+        cart_token: 68778783ad298f1c80c3bafcddeea02f
+        browser_ip: 111.111.111.111
+        created_at: '2025-11-18T11:00:00-05:00'
+        source: mobile_app
+        device_id: 01234567-89ABCDEF-01234567-89ABCDEF
+        referring_site: http://www.nba.com/
+    customer_create:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          description: A unique numeric identifier for the customer.
+          example: '207119551'
+        client_details:
+          $ref: '#/components/schemas/client_details'
+          description: An object containing technical information regarding the customer’s browsing session.
+        session_details:
+          $ref: '#/components/schemas/session_details'
+          description: An object containing basic information regarding the session.
+        customer:
+          $ref: '#/components/schemas/customer'
+          description: An object containing information about the customer.
+        payment_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/payment_details'
+          description: The payment details associated with this customer. Should be passed as an array of nested payment_details objects. In cases where several payment methods are sent in the array, the first payment method shall correspond to the first billing address, etc.
+        billing_address:
+          $ref: '#/components/schemas/address'
+          description: The billing address associated with this customer. Should be passed as an array of nested billing_address objects. In cases where several billing addresses are sent in the array, the first billing address shall correspond to the first payment method, etc.
+        shipping_address:
+          $ref: '#/components/schemas/address'
+          description: The shipping address associated with this customer. Should be passed as an array of nested shipping_address objects.
+        vendor_name:
+          type: string
+          description: The name of the affiliated partner or selling vendor.
+        created_at:
+          type: string
+          format: date-time
+          description: '**(Conditional Requirement)** Required if you need fraud review analysis at account creation. Date and time (ISO8601) when the customer account is created at merchant. Please also set `api-version=2` in a header to enable fraud review analysis.'
+          example: '2025-11-15T10:00:00Z'
+      required:
+      - customer_id
+      - client_details
+      - session_details
+      - customer
+    address:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: The first name of the person associated with the address.
+          example: John
+        last_name:
+          type: string
+          description: The last name of the person associated with the address.
+          example: Doe
+        address1:
+          type: string
+          description: The street name of the address.
+          example: 123 Main St
+        country:
+          type: string
+          description: The name of the country address.
+          example: United States
+        country_code:
+          type: string
+          description: The 2 letter country code (ISO 3166-1 alpha-2) of the country address
+          example: US
+        phone:
+          type: string
+          description: The phone number at the address.
+          example: '+1234567890'
+        city:
+          type: string
+          description: The city of the address.
+          example: New York
+        zip:
+          type: string
+          description: The zip or postal code of the address.
+          example: '10001'
+        address2:
+          type: string
+          description: An optional additional field for the street address.
+          example: Apt 4B
+        company:
+          type: string
+          description: Required if the address is associated to a company. The company of the person associated with the address.
+        additional_phone:
+          type: string
+          description: Additional phone number at the address.
+        verified_phone:
+          type: boolean
+          description: Indicates whether the provided phone number was verified.
+          example: true
+        province:
+          type: string
+          description: The name of the state or province of the address.
+          example: New York
+        province_code:
+          type: string
+          description: The two-letter abbreviation of the state or province of the address.
+          example: NY
+        neighborhood:
+          type: string
+          description: The district or city division of the address. The neighborhood should be provided if used in a country’s official postal addresses. Examples of this include the Colonia in Mexico or Bairro in Brazil.
+        latitude:
+          type: number
+          format: float
+          description: The latitude coordinates of the address.
+        longitude:
+          type: number
+          format: float
+          description: The longitude coordinates of the address.
+        id:
+          type: string
+          description: unique ID, is required in case of multiple shipping addresses.
+      required:
+      - first_name
+      - last_name
+      - address1
+      - country
+      - country_code
+      - phone
+      - city
+      - zip
+      - province
+      example:
+        first_name: John
+        last_name: Test
+        address1: 123 Smart St
+        country: United States
+        country_code: US
+        phone: '+143873984567290'
+        city: Los Angeles
+        zip: '90210'
+        province: California
+        address2: Apt 4B
+        company: My Company
+        additional_phone: '+14245551234'
+        verified_phone: true
+        province_code: CA
+        latitude: 34.0522
+        longitude: -118.2437
+        id: addr_cust_01
+  examples:
+    customer_update_example:
+      summary: Example customer update
+      value:
+        customer_id: '207119551'
+        password_changed: true
+        client_details:
+          accept_language: en-CA
+          user_agent: Mozilla/5.0 (CFNetwork/548.0.3 Darwin/11.2.0)
+        session_details:
+          cart_token: 68778783ad298f1c80c3bafcddeea02f
+          browser_ip: 111.111.111.111
+          created_at: '2025-11-18T13:36:50-04:00'
+          source: mobile_app
+          referring_site: http://www.nba.com/
+        customer:
+          email: bob.norman@hostmail.com
+          verified_email: true
+          first_name: Bob
+          last_name: Norman
+          id: '207119551'
+          created_at: '2013-04-23T13:36:50-04:00'
+          orders_count: 0
+          date_of_birth: '1994-03-01'
+        payment_details: []
+        updated_at: '2025-01-23T13:36:50-04:00'
+    customer_create_response_example_block_suspicious:
+      summary: Example response advising to block - suspicious account fraud (without api-version header)
+      value:
+        customer_create_id: 608eba75-068d-4d2b-b96c-33214cf949f0
+        decision: block
+        decision_reason: suspicious_account
+    customer_create_example:
+      summary: Example customer create
+      value:
+        customer_id: '207119551'
+        client_details:
+          accept_language: en-CA
+          user_agent: Mozilla/5.0 (CFNetwork/548.0.3 Darwin/11.2.0)
+        session_details:
+          cart_token: 68778783ad298f1c80c3bafcddeea02f
+          browser_ip: 111.111.111.111
+          created_at: '2025-11-18T13:36:50-04:00'
+          referring_site: http://www.nba.com/
+          source: mobile_app
+        customer:
+          email: bob.norman@hostmail.com
+          verified_email: true
+          first_name: Bob
+          last_name: Norman
+          id: '207119551'
+          created_at: '2013-04-23T13:36:50-04:00'
+          orders_count: 0
+          date_of_birth: '1994-03-01'
+        payment_details: []
+        created_at: '2026-01-18T13:36:50-04:00'
+    customer_create_response_example_allow:
+      summary: Example response allowing customer creation process.
+      value:
+        customer_create_id: 608eba75-068d-4d2b-b96c-33214cf949f0
+        decision: allow
+    customer_update_response_example_allow:
+      summary: Example response confirming customer update process.
+      value:
+        customer_update_id: 240046e9-b9bc-4334-ad14-ceba83ce1a8e
+        decision: allow
+    customer_create_response_example_block_customer_creation:
+      summary: Example response advising to block - multiple account creation attempt (with api-version header)
+      value:
+        customer_create_id: 608eba75-068d-4d2b-b96c-33214cf949f0
+        decision: block
+        decision_reason: multiple_accounts
+    customer_update_response_example_block:
+      summary: Example response advising to block customer update process.
+      value:
+        customer_update_id: 240046e9-b9bc-4334-ad14-ceba83ce1a8e
+        decision: block
+    customer_create_response_example_block:
+      summary: Example response advising to block customer creation process (without api-version header)
+      value:
+        customer_create_id: 608eba75-068d-4d2b-b96c-33214cf949f0
+        decision: block
+  parameters:
+    RiskifiedShopDomain:
+      name: x-riskified-shop-domain
+      in: header
+      required: true
+      schema:
+        type: string
+        example: merchant.example.com
+      description: The merchant shop domain registered with Riskified.
+    ContentType:
+      name: content_type
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+        - application/json
+      description: 'As payloads are sent to Riskified in JSON format, value should be: `application/json`'
+    Accept:
+      name: accept
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+        - application/vnd.riskified.com; version=2
+      description: 'Specify the version of the API to target. For example, to target the latest version of the API, use the following: `application/vnd.riskified.com; version=2`'
+    APIVersion:
+      name: api-version
+      in: header
+      schema:
+        type: string
+        enum:
+        - '2'
+      description: '**(Conditional Requirement)** Required if you need fraud review analysis at account creation.'
+    RiskifiedSignature:
+      name: x-riskified-hmac-sha256
+      in: header
+      required: true
+      schema:
+        type: string
+        example: b1946ac92492d2347c6235b4d2611184
+      description: 'Verification hash for the Request.
+
+        Generated by performing an SHA256 encryption on the request''s POST body and calculating the HMAC hash of the result using your Riskified authentication token.
+
+        Please use UTF8 encoding.'
+x-samples-languages:
+- json
+- shell
+- javascript
+- python
+- node
+x- explorer-enabled: false
+x-provenance:
+  method: searched
+  source: https://developers.riskified.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developers.riskified.com/reference/customer_create.md
+  - https://developers.riskified.com/reference/customer_update.md
+  - https://developers.riskified.com/reference/login.md
+  - https://developers.riskified.com/reference/reset_password.md
+  merge:
+    pages: 4
+    deduped: 37
+    conflicts_kept_first: 0
