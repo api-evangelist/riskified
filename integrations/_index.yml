@@ -21,18 +21,6 @@
     detected: '2026-10-12'
   arazzo: riskified-plaid-preconfig.yml
   status: arazzo
-- slug: riskified-shopify-own
-  label: Shopify (own)
-  partner: shopify
-  partner_name: Shopify (own)
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://apps.shopify.com/riskified
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
 - slug: riskified-zapier
   label: Zapier
   partner: zapier
@@ -56,5 +44,43 @@
     app_slug: riskified
     beta: false
     builder: unknown (not in the directory record)
+  status: not-a-workflow
+  arazzo: null
+- slug: riskified-shopify-own
+  label: Shopify (own)
+  partner: shopify
+  partner_name: Shopify (own)
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://apps.shopify.com/riskified
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: riskified-commercetools-own
+  label: commercetools (own)
+  partner: commercetools
+  partner_name: commercetools (own)
+  category: Other Solutions
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://commercetools.com/technology-partners/riskified
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: riskified-salesforce-commerce-cloud-own
+  label: Salesforce Commerce Cloud (own)
+  partner: salesforce-commerce-cloud
+  partner_name: Salesforce Commerce Cloud (own)
+  category: finance, eCommerce, paymentsProcessing
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://appexchange.salesforce.com/appxListingDetail?listingId=d719d10c-198a-4d46-9df8-c4a8920c023e
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null

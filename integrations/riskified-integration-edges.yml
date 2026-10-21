@@ -9,6 +9,8 @@ checked:
 - https://zapier.com/api/v4/apps/
 - https://zapier.com/apps/riskified/integrations
 - shopify/integrations/shopify-integration-edges.yml
+- commercetools/integrations/commercetools-integration-edges.yml
+- salesforce-commerce-cloud/integrations/salesforce-commerce-cloud-integration-edges.yml
 summary: null
 marketplace_apps:
 - marketplace: zapier
@@ -36,24 +38,6 @@ edges:
     property: schemas.ProcessorTokenCreateRequest.processor
     detected_by: detect-payment-method-edges.py
     detected: '2026-10-12'
-- partner_name: Shopify (own)
-  partner: shopify
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://apps.shopify.com/riskified
-  mirror_of: shopify/integrations/shopify-integration-edges.yml
-  apps:
-  - Riskified
-  listing_count: 1
-  detected: '2026-10-15'
-  detected_by: mirror-platform-listings.py
-  publisher_verified:
-  - Built for Shopify
 - partner_name: Zapier
   partner: zapier
   partner_match: aggregator
@@ -79,4 +63,56 @@ edges:
     builder: unknown (not in the directory record)
   detected_by: sweep-workflow-automation.py
   first_seen: '2026-10-15'
+- partner_name: Shopify (own)
+  partner: shopify
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://apps.shopify.com/riskified
+  mirror_of: shopify/integrations/shopify-integration-edges.yml
+  apps:
+  - Riskified
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  publisher_verified:
+  - Built for Shopify
+- partner_name: commercetools (own)
+  partner: commercetools
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://commercetools.com/technology-partners/riskified
+  mirror_of: commercetools/integrations/commercetools-integration-edges.yml
+  apps:
+  - Riskified
+  listing_count: 1
+  detected: '2026-10-20'
+  detected_by: mirror-platform-listings.py
+  category: Other Solutions
+- partner_name: Salesforce Commerce Cloud (own)
+  partner: salesforce-commerce-cloud
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://appexchange.salesforce.com/appxListingDetail?listingId=d719d10c-198a-4d46-9df8-c4a8920c023e
+  mirror_of: salesforce-commerce-cloud/integrations/salesforce-commerce-cloud-integration-edges.yml
+  apps:
+  - 'Riskified: Fraud and Risk Management Cartridge for B2C Commerce'
+  listing_count: 1
+  detected: '2026-10-20'
+  detected_by: mirror-platform-listings.py
+  category: finance, eCommerce, paymentsProcessing
 templates: []
