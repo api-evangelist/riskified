@@ -1,4 +1,4 @@
-# Riskified (riskified)
+# Riskified
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,128 +64,173 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Riskified (NYSE RSKD) is an Israeli ecommerce risk-management platform headquartered in Tel Aviv, with a US office in New York. Its AI-powered platform uses machine learning, identity intelligence, and a global merchant network to make sub-second decisions across the entire shopper journey, from account creation through checkout to claims and chargeback recovery. The developer portal at developers.riskified.com exposes five product APIs — Chargeback Guarantee, Adaptive Checkout, Account Secure, Policy Protect, and Dispute Resolve (via Chargeback Gateway Integration) — alongside an OTP service and multi-platform Beacon SDK for device intelligence. Authentication is HMAC-SHA256 over the request body, with first-party SDKs for PHP, Java, and .NET and integrations for Shopify, Magento, Salesforce Commerce Cloud, SAP Commerce, commercetools, VTEX, Adyen, Braintree, PayPal, and Stripe.
+Riskified (NYSE RSKD) is an Israeli ecommerce risk-management platform that uses machine learning and a global merchant intelligence network to make sub-second decisions across the entire shopper journey. Its Chargeback Guarantee, Adaptive Checkout, Account Secure, Policy Protect, and Dispute Resolve products are exposed through a REST + webhook API surface at developers.riskified.com, covering pre-auth and post-auth order review, 3DS / PSD2 optimization, account integrity (login, password reset, customer create/update), claim adjudication for refund and return abuse, and an OTP service. Authentication is HMAC-SHA256 over the request body. Official SDKs ship for PHP, Java, and .NET, with iOS, Android, React Native, and Unity Beacon SDKs for device intelligence, plus first-party integrations for Shopify, Magento/Adobe Commerce, Salesforce Commerce Cloud, SAP Commerce / Hybris, commercetools, VTEX, Adyen, Braintree, PayPal, and Stripe.
 
-**URL:** [Visit APIs.json](https://raw.githubusercontent.com/api-evangelist/riskified/refs/heads/main/apis.yml)
+**Areas:** Fraud Prevention · Chargebacks · E-Commerce · Payments · Risk Management · Machine Learning · Account Takeover · Policy Abuse · 3D · PSD2 · Returns
 
-**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
+## Riskified on APIs.io
 
-## Tags
+Everything profiled for Riskified is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/riskified/](https://apis.io/providers/riskified/)** — or go straight to one of the APIs or properties below.
 
- - Fraud, Fraud Prevention, Chargebacks, Ecommerce, Payments, Risk, Machine Learning, Account Takeover, Policy Abuse, 3DS, PSD2, Returns
+### APIs (16)
 
-## Timestamps
+- [Riskified Chargeback Guarantee API](https://apis.io/apis/riskified/riskified-chargeback-guarantee-api/) — Submit orders to Riskified for fraud and chargeback risk evaluation, in either a pre-authorization (Decide / Decision) or post-authorization (Submit /…
+- [Riskified Adaptive Checkout API](https://apis.io/apis/riskified/riskified-adaptive-checkout-api/) — Recommend the optimal authentication path at checkout — friction-free, CVV, 3DS, or PSD2 exemption — to maximize approval rates while remaining…
+- [Riskified Account Secure API](https://apis.io/apis/riskified/riskified-account-secure-api/) — Protect non-purchase customer journeys against account takeover, synthetic identity, and credential abuse. Submit Login, Reset Password, Customer Create,…
+- [Riskified Policy Protect API](https://apis.io/apis/riskified/riskified-policy-protect-api/) — Detect and prevent refund, return, and promotional abuse. Submit refund and return claims for adjudication (claim_create), retrieve Riskified's decision…
+- [Riskified OTP API](https://apis.io/apis/riskified/riskified-otp-api/) — Initiate a one-time password challenge as a step-up verification mechanism for high-risk login, password reset, or account modification events. Pairs with…
+- [Riskified Beacon (Device Intelligence) SDK](https://apis.io/apis/riskified/riskified-beacon-sdk-api/) — Collect device, browser, and behavioral telemetry from the shopper's session and feed it into Riskified's risk models. The Beacon is delivered as a…
+- [Riskified Chargeback Gateway Integration (CGI) API](https://apis.io/apis/riskified/riskified-chargeback-gateway-integration-api/) — Connect Riskified directly to a payment gateway (Adyen, Braintree, PayPal, Shopify Payments, Stripe) so chargeback notifications and evidence flow into the…
+- [Riskified Automation Endpoints API](https://apis.io/apis/riskified/riskified-automation-endpoints-api/) — Operations for managing order lifecycle (cancel, refund, fulfill, chargeback)
+- [Riskified Customer Actions API](https://apis.io/apis/riskified/riskified-customer-actions-api/) — Operations related to customer activity, including login, password resets, customer verification attempts, and customer-merchant contact events.
+- [Riskified Customer Management API](https://apis.io/apis/riskified/riskified-customer-management-api/) — Operations related to account management, including customer creation and updates.
+- [Riskified Order Pre-Auth Review and PSD2/3DS/CVV Recommendations API](https://apis.io/apis/riskified/riskified-order-pre-auth-review-and-psd2-3ds-cvv-recommendations-api/) — Riskified's PSD2 Optimization product, which is complementary to our Chargeback Guarantee product, is designed to minimize the friction associated with SCA…
+- [Riskified OTP Recover (Sync flow) API](https://apis.io/apis/riskified/riskified-otp-recover-sync-flow-api/) — Operations for initiating and verifying one-time password recovery requests.
+- [Riskified Post-Authorization Flow API](https://apis.io/apis/riskified/riskified-post-authorization-flow-api/) — Operations that allow you to send orders to Riskified for fraud review after payment authorization
+- [Riskified Pre-Authorization Flow API](https://apis.io/apis/riskified/riskified-pre-authorization-flow-api/) — Operations that allow you to send orders to Riskified for fraud review before payment authorization
+- [Riskified Refunds API](https://apis.io/apis/riskified/riskified-refunds-api/) — The Refunds API from Riskified — 2 operation(s) for refunds.
+- [Riskified Returns API](https://apis.io/apis/riskified/riskified-returns-api/) — The Returns API from Riskified — 1 operation(s) for returns.
 
-- **Created:** 2026-05-25
-- **Modified:** 2026-05-25
+### Published properties
 
-## APIs
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-### Riskified Chargeback Guarantee API
-Submit orders for fraud and chargeback risk evaluation through pre-authorization (Decide / Decision) or post-authorization (Submit / Decide) flows. Returns APPROVED, DECLINED, or SUBMITTED, with approved orders financially guaranteed against fraudulent chargebacks. Cancel, Fulfill, Refund, Chargeback, and Checkout Denied endpoints keep order lifecycle state in sync.
+#### AsyncAPI (1)
 
-**Human URL:** [https://developers.riskified.com/reference/post-auth-flow-decide](https://developers.riskified.com/reference/post-auth-flow-decide)
+Event-driven and webhook contracts.
 
-**Base URL:** `https://wh.riskified.com/`
+- [Riskified Webhooks](https://apis.io/asyncapis/riskified/riskified-webhooks/)
 
-### Riskified Adaptive Checkout API
-Recommend the optimal authentication path at checkout — friction-free, CVV, 3DS, or PSD2 exemption — to maximize approval rates while remaining SCA-compliant. Advise returns a recommendation; Decide commits to a Riskified-guaranteed outcome. Covers both regulated (PSD2/SCA) and non-regulated geographies.
+#### MCP servers (1)
 
-**Human URL:** [https://developers.riskified.com/reference/advise](https://developers.riskified.com/reference/advise)
+Model Context Protocol servers that expose the API to agents.
 
-**Base URL:** `https://api.riskified.com/`
+- [riskified-mcp.yml](https://apis.io/servers/riskified/riskified-mcp-yml/)
 
-### Riskified Account Secure API
-Protect non-purchase customer journeys against account takeover, synthetic identity, and credential abuse. Submit Login, Reset Password, Customer Create, and Customer Update events and receive a real-time decision so merchants can step up authentication, block, or allow.
+#### Agentic access (1)
 
-**Human URL:** [https://developers.riskified.com/reference/login](https://developers.riskified.com/reference/login)
+Which operations an agent can call, which act, and which need a human in the loop.
 
-**Base URL:** `https://api.riskified.com/`
+- [Riskified Agentic Access](https://apis.io/agentic-access/riskified/riskified-agentic-access/)
 
-### Riskified Policy Protect API
-Detect and prevent refund, return, and promotional abuse. Submit refund and return claims for adjudication (`claim_create`), retrieve Riskified's decision (`claim_decision`), and update in-flight returns (`claim_update`). Supports both original-flow and replacement-flow review patterns.
+#### JSON Schema (25)
 
-**Human URL:** [https://developers.riskified.com/reference/refunds-claim_create](https://developers.riskified.com/reference/refunds-claim_create)
+The data models the API reads and writes.
 
-**Base URL:** `https://api.riskified.com/`
+- [adaptive_checkout_3ds_declined](https://apis.io/schemas/riskified/riskified-adaptive-checkout-3ds-declined/)
+- [adaptive_checkout_psd2_approved](https://apis.io/schemas/riskified/riskified-adaptive-checkout-psd2-approved/)
+- [advise_3ds_response](https://apis.io/schemas/riskified/riskified-advise-3ds-response/)
+- [advise_cvv_response](https://apis.io/schemas/riskified/riskified-advise-cvv-response/)
+- [advise_psd2_response](https://apis.io/schemas/riskified/riskified-advise-psd2-response/)
+- [Cancel_Response](https://apis.io/schemas/riskified/riskified-cancel-response/)
+- [chargeback_response](https://apis.io/schemas/riskified/riskified-chargeback-response/)
+- [Claim_Create_Response_Approve](https://apis.io/schemas/riskified/riskified-claim-create-response-approve/)
+- [Claim_Create_Response_Captured](https://apis.io/schemas/riskified/riskified-claim-create-response-captured/)
+- [Claim_Create_Response_Decline](https://apis.io/schemas/riskified/riskified-claim-create-response-decline/)
+- [Claim_Create_Response_Excluded](https://apis.io/schemas/riskified/riskified-claim-create-response-excluded/)
+- [Claim_Create_Response_Review](https://apis.io/schemas/riskified/riskified-claim-create-response-review/)
+- [ClaimDecisionRequest](https://apis.io/schemas/riskified/riskified-claim-decision-request/)
+- [customer_create](https://apis.io/schemas/riskified/riskified-customer-create/)
+- [customer_create_response](https://apis.io/schemas/riskified/riskified-customer-create-response/)
+- [customer_update](https://apis.io/schemas/riskified/riskified-customer-update/)
+- [decide_response_approve](https://apis.io/schemas/riskified/riskified-decide-response-approve/)
+- [decide_response_decline](https://apis.io/schemas/riskified/riskified-decide-response-decline/)
+- [login_action](https://apis.io/schemas/riskified/riskified-login-action/)
+- [login_action_response](https://apis.io/schemas/riskified/riskified-login-action-response/)
+- [OtpInitiateRequest](https://apis.io/schemas/riskified/riskified-otp-initiate-request/)
+- [OtpInitiateResponse](https://apis.io/schemas/riskified/riskified-otp-initiate-response/)
+- [refund_response](https://apis.io/schemas/riskified/riskified-refund-response/)
+- [reset_password_action](https://apis.io/schemas/riskified/riskified-reset-password-action/)
+- [submit_response_submitted](https://apis.io/schemas/riskified/riskified-submit-response-submitted/)
 
-### Riskified OTP API
-Initiate a one-time password challenge as a step-up verification mechanism for high-risk login, password reset, or account modification events. Pairs with the Account Secure API to mediate friction adaptively.
+#### JSON-LD (1)
 
-**Human URL:** [https://developers.riskified.com/reference/otp-initiate](https://developers.riskified.com/reference/otp-initiate)
+Linked-data contexts for the provider's vocabulary.
 
-**Base URL:** `https://otp.self-veri.com/recover/v1/otp/`
+- [Riskified Context](https://apis.io/jsonld/riskified/riskified-context/)
 
-### Riskified Beacon (Device Intelligence) SDK
-Collect device, browser, and behavioral telemetry from the shopper's session and feed it into Riskified's risk models. Delivered as a JavaScript snippet for web and as iOS, Android, React Native, and Unity SDKs. Required for accurate decisioning across all Riskified products.
+#### Governance rules (1)
 
-**Human URL:** [https://developers.riskified.com/reference/beacon-sdks](https://developers.riskified.com/reference/beacon-sdks)
+Spectral rulesets for the provider's contracts.
 
-### Riskified Chargeback Gateway Integration (CGI) API
-Connect Riskified directly to a payment gateway (Adyen, Braintree, PayPal, Shopify Payments, Stripe) so chargeback notifications and evidence flow into Dispute Resolve without merchant glue code. Powers automated chargeback representment and recovery.
+- [Riskified API Rules](https://apis.io/rules/riskified/riskified-rules/)
 
-**Human URL:** [https://developers.riskified.com/docs/chargeback-gateway-integration-cgi-overview](https://developers.riskified.com/docs/chargeback-gateway-integration-cgi-overview)
+#### Security (2)
 
-## Common Properties
+Authentication, trust centre, and vulnerability disclosure.
 
-- [Portal — riskified.com](https://www.riskified.com)
-- [Portal — Developer Portal](https://developers.riskified.com/)
-- [APIReference](https://developers.riskified.com/reference)
-- [GettingStarted — API Integration Guide](https://developers.riskified.com/docs/api-integration-guide)
-- [Authentication](https://developers.riskified.com/reference/api-authentication)
-- [Documentation — API Environments](https://developers.riskified.com/reference/api-environments)
-- [Documentation — API Overview](https://developers.riskified.com/reference/api-overview)
-- [Documentation — HTTP Responses](https://developers.riskified.com/reference/http-responses)
-- [Documentation — Notifications](https://developers.riskified.com/reference/notifications)
-- [Documentation — Retries](https://developers.riskified.com/reference/retries)
-- [Documentation — Integrated Platforms](https://developers.riskified.com/reference/integrated-platforms)
-- [Documentation — Integration Hub Guide](https://developers.riskified.com/docs/integration-hub-guide)
-- [Documentation — Integration Timeline](https://developers.riskified.com/docs/integration-timeline)
-- [Documentation — SSO](https://developers.riskified.com/docs/sso)
-- [Documentation — llms.txt](https://developers.riskified.com/llms.txt)
-- [AboutUs](https://www.riskified.com/about)
-- [Blog](https://www.riskified.com/blog/)
-- [PressReleases — Newsroom](https://www.riskified.com/press/)
-- [CaseStudies — Customers](https://www.riskified.com/customers/)
-- [Library — Resources](https://www.riskified.com/resources/)
-- [Careers](https://www.riskified.com/careers/)
-- [Contact — Sales](https://www.riskified.com/contact)
+- [Riskified Domain Security](https://apis.io/security/riskified/riskified-domain-security/)
+- [Riskified Trust Center](https://apis.io/security/riskified/riskified-trust-center/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.riskified.com/)
+- [Documentation](https://developers.riskified.com/reference/api-environments)
+- [Getting started](https://developers.riskified.com/docs/api-integration-guide)
+- [API reference](https://developers.riskified.com/reference)
 - [Pricing](https://www.riskified.com/pricing)
-- [TermsOfService](https://www.riskified.com/terms)
-- [PrivacyPolicy](https://www.riskified.com/privacy-policy)
-- [StatusPage](https://status.riskified.com)
-- [InvestorRelations — NYSE RSKD](https://ir.riskified.com)
-- [ProductInformation — Adaptive Checkout](https://www.riskified.com/adaptive-checkout/)
-- [ProductInformation — Chargeback Guarantee](https://www.riskified.com/chargeback-guarantee/)
-- [ProductInformation — Account Secure](https://www.riskified.com/account-secure/)
-- [ProductInformation — Policy Protect](https://www.riskified.com/policy-protect/)
-- [ProductInformation — Dispute Resolve](https://www.riskified.com/chargeback-guarantee/dispute-resolve/)
-- [LinkedIn](https://www.linkedin.com/company/riskified)
-- [Facebook](https://www.facebook.com/RiskifiedInc)
-- [Instagram](https://www.instagram.com/riskified/)
-- [GitHubOrganization](https://github.com/Riskified)
-- [SDK — PHP (Packagist)](https://packagist.org/packages/riskified/php_sdk)
-- [SDK — Java (Maven Central)](https://central.sonatype.com/artifact/com.riskified/riskified-sdk)
-- [SDK — .NET (NuGet)](https://www.nuget.org/packages/Riskified.SDK)
-- [SDK — PHP on GitHub](https://github.com/Riskified/php_sdk)
-- [SDK — Java on GitHub](https://github.com/Riskified/java_sdk)
-- [SDK — .NET on GitHub](https://github.com/Riskified/sdk_net)
-- [SDK — iOS Beacon](https://github.com/Riskified/riskified_ios_sdk)
-- [Samples — API Examples](https://github.com/Riskified/api_examples)
-- [Integrations — Magento 1](https://github.com/Riskified/magento)
-- [Integrations — Magento 2](https://github.com/Riskified/magento2)
-- [Integrations — Magento 2 (refactor)](https://github.com/Riskified/magento2new)
-- [Integrations — Magento Deco](https://github.com/Riskified/magento-deco)
-- [Integrations — PrestaShop](https://github.com/Riskified/PrestaShop-modules)
-- [Integrations — Shopify](https://developers.riskified.com/docs/shopify-integration)
-- [Integrations — Salesforce Commerce Cloud](https://developers.riskified.com/docs/sfcc)
-- [Integrations — SAP Commerce / Hybris](https://developers.riskified.com/docs/sap-commerce-hybris)
-- [Integrations — commercetools](https://developers.riskified.com/docs/commercetools)
-- [Integrations — VTEX](https://developers.riskified.com/docs/vtex)
-- [ChangeLog — apiref-changelog](https://github.com/Riskified/apiref-changelog)
+- [Support](https://support.riskified.com/hc/en-us?_gl=1*h5db4w*_gcl_au*NTY1ODg5MDI2LjE3ODEyNzE2ODkuLS4tLjE3ODQzMTI0MzAuNjY5OTE5ODU0LjE3ODQ3NDQ4MTAuMTc4NDc1MDQ4MQ..*_ga*MTM0Mzk3ODAyNy4xNzgxMjcxNjkz*_ga_L8RV3KLX8W*czE3ODQ3Mzg2NTQkbzc4JGcxJHQxNzg0NzUzMTM1JGo0MyRsMCRoMTM2NzU4NzA1Ng..)
+- [Changelog](https://github.com/Riskified/apiref-changelog)
+- [Blog](https://www.riskified.com/blog/)
+- [Compliance](https://security.riskified.com/)
+- [Terms of service](https://www.riskified.com/terms)
+- [Privacy policy](https://www.riskified.com/privacy-policy)
+- [GitHub](https://github.com/Riskified)
+- [Status](https://status.riskified.com)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
+**Kin Score 61.6** — strong · rubric 0.25.0 · scored 2026-10-23
 
-**Email:** info@apievangelist.com
+| Facet | Score |
+|---|---|
+| Discoverability | 71.4 |
+| Contract quality | 73.0 |
+| Contract governance | 22.0 |
+| Operational transparency | 55.3 |
+| Developer ergonomics | 73.8 |
+| Access clarity | 60.5 |
+
+**Agent readiness 47.1** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | yes |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 22.2** — Banking & Open Finance
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/riskified/](https://apis.io/providers/riskified/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Riskified: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/riskified/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
